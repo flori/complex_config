@@ -1,0 +1,68 @@
+require 'json'
+require 'tins/xt/ask_and_send'
+
+class ComplexConfig::Settings < JSON::GenericObject
+  def self.[](*a)
+    from_hash *a
+  end
+
+  def each(&block)
+    table.each(&block)
+  end
+  include Enumerable
+
+  def attribute_set?(name)
+    table.key?(name.to_sym)
+  end
+
+  def attribute_names
+    table.keys
+  end
+
+  def attribute_values
+    table.values
+  end
+
+  def to_h
+    each_with_object({}) do |(k, v), h|
+      h[k] = v.ask_and_send(:to_h) || v
+    end
+  end
+
+  def to_s
+    to_h.to_yaml
+  end
+
+  alias inspect to_s
+
+  private
+
+  def respond_to_missing?(id, include_private = false)
+    id =~ /\?\z/ || super
+  end
+
+  def skip
+    throw :skip
+  end
+
+  def method_missing(id, *a, &b)
+    case
+    when id =~ /\?\z/
+      begin
+        public_send $`.to_sym, *a, &b
+      rescue ComplexConfig::AttributeMissing
+        nil
+      end
+    when id =~ /=\z/
+      super
+    when value = ComplexConfig::Provider.apply_plugins(self, id)
+      value
+    else
+      if attribute_set?(id)
+        super
+      else
+        raise ComplexConfig::AttributeMissing, "no attribute named #{id.inspect}"
+      end
+    end
+  end
+end
