@@ -1,10 +1,6 @@
 require 'spec_helper'
 
 RSpec.describe ComplexConfig::Settings do
-  let :provider do
-    ComplexConfig::Provider
-  end
-
   let :settings do
     ComplexConfig::Settings[
       foo: {
@@ -44,15 +40,15 @@ RSpec.describe ComplexConfig::Settings do
 EOT
   end
   it 'raises exception if expected attribute is missing' do
-    skip "doesn't work in spec?!?" # XXX
-    expect { settings.foo.baz }.to raise_error(ComplexConfig::AttributeMissing)
+    pending "still doesn't work"
+    expect { settings.nix }.to raise_error(ComplexConfig::AttributeMissing)
   end
 
   it 'can be checked for set attributes' do
     expect(settings.foo.attribute_set?(:bar)).to eq true
     expect(settings.foo.bar?).to be_truthy
     expect(settings.foo.attribute_set?(:baz)).to eq false
-    # XXX doesn't work in spec?!? expect(settings.foo.baz?).to be_falsy
+    #expect(settings.foo.baz?).to be_falsy
   end
 end
 

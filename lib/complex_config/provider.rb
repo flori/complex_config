@@ -7,7 +7,8 @@ class ComplexConfig::Provider
   include Tins::SexySingleton
 
   def initialize
-    @plugins = Set.new
+    @plugins     = Set.new
+    @deep_freeze = true
   end
 
   attr_reader :plugins
@@ -15,6 +16,12 @@ class ComplexConfig::Provider
   def add_plugin(plugin)
     @plugins.add plugin
     self
+  end
+
+  attr_writer :deep_freeze
+
+  def deep_freeze?
+    !!@deep_freeze
   end
 
   def apply_plugins(setting, id)
@@ -32,7 +39,9 @@ class ComplexConfig::Provider
 
   def config(pathname)
     result = evaluate(pathname)
-    ComplexConfig::Settings[::YAML.load(result, pathname)]
+    ComplexConfig::Settings[::YAML.load(result, pathname)].tap do |settings|
+      deep_freeze? and settings.deep_freeze
+    end
   rescue ::Errno::ENOENT => e
     raise ComplexConfig::ComplexConfigError.wrap(:ConfigurationFileMissing, e)
   rescue ::Psych::SyntaxError => e

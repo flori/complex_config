@@ -114,6 +114,9 @@ Here is the `ComplexConfig::Plugins::MONEY` plugin for example:
 
 ## Changes
 
+* 2014-12-15 Release 0.1.0
+  * Freeze configuration by default.
+
 * 2014-12-12 Release 0.0.0
 
 ## Download

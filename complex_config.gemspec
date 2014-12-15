@@ -1,18 +1,18 @@
 # -*- encoding: utf-8 -*-
-# stub: complex_config 0.0.0 ruby lib
+# stub: complex_config 0.1.0 ruby lib
 
 Gem::Specification.new do |s|
   s.name = "complex_config"
-  s.version = "0.0.0"
+  s.version = "0.1.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib"]
   s.authors = ["Florian Frank"]
-  s.date = "2014-12-12"
+  s.date = "2014-12-15"
   s.description = "This library allows you to access configuration files via a simple interface"
   s.email = "flori@ping.de"
   s.extra_rdoc_files = ["README.md", "lib/complex_config.rb", "lib/complex_config/errors.rb", "lib/complex_config/plugins.rb", "lib/complex_config/plugins/enable.rb", "lib/complex_config/plugins/money.rb", "lib/complex_config/plugins/uri.rb", "lib/complex_config/provider.rb", "lib/complex_config/rude.rb", "lib/complex_config/settings.rb", "lib/complex_config/shortcuts.rb", "lib/complex_config/version.rb"]
-  s.files = [".gitignore", ".rspec", ".travis.yml", ".utilsrc", "Gemfile", "README.md", "Rakefile", "VERSION", "complex_config.gemspec", "lib/complex_config.rb", "lib/complex_config/errors.rb", "lib/complex_config/plugins.rb", "lib/complex_config/plugins/enable.rb", "lib/complex_config/plugins/money.rb", "lib/complex_config/plugins/uri.rb", "lib/complex_config/provider.rb", "lib/complex_config/rude.rb", "lib/complex_config/settings.rb", "lib/complex_config/shortcuts.rb", "lib/complex_config/version.rb", "spec/complex_config/plugins_spec.rb", "spec/complex_config/provider_spec.rb", "spec/complex_config/settings_spec.rb", "spec/complex_config/shortcuts_spec.rb", "spec/config/broken_config.yml", "spec/config/config.yml", "spec/spec_helper.rb"]
+  s.files = [".gitignore", ".rspec", ".travis.yml", ".utilsrc", "Gemfile", "README.md", "Rakefile", "TODO.md", "VERSION", "complex_config.gemspec", "lib/complex_config.rb", "lib/complex_config/errors.rb", "lib/complex_config/plugins.rb", "lib/complex_config/plugins/enable.rb", "lib/complex_config/plugins/money.rb", "lib/complex_config/plugins/uri.rb", "lib/complex_config/provider.rb", "lib/complex_config/rude.rb", "lib/complex_config/settings.rb", "lib/complex_config/shortcuts.rb", "lib/complex_config/version.rb", "spec/complex_config/plugins_spec.rb", "spec/complex_config/provider_spec.rb", "spec/complex_config/settings_spec.rb", "spec/complex_config/shortcuts_spec.rb", "spec/config/broken_config.yml", "spec/config/config.yml", "spec/spec_helper.rb"]
   s.homepage = "https://github.com/flori/complex_config"
   s.licenses = ["Apache-2.0"]
   s.rdoc_options = ["--title", "ComplexConfig -- configuration library", "--main", "README.md"]

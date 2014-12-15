@@ -35,6 +35,13 @@ class ComplexConfig::Settings < JSON::GenericObject
 
   alias inspect to_s
 
+  def deep_freeze
+    each do |_, v|
+      v.ask_and_send(:deep_freeze) || (v.freeze rescue v)
+    end
+    freeze
+  end
+
   private
 
   def respond_to_missing?(id, include_private = false)

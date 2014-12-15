@@ -5,6 +5,10 @@ RSpec.describe ComplexConfig::Provider do
     ComplexConfig::Provider
   end
 
+  after do
+    provider.flush_cache
+  end
+
   context 'plugin' do
     let :plugin do
       -> id { __send__ id }
@@ -62,6 +66,21 @@ RSpec.describe ComplexConfig::Provider do
       ).to be_a ComplexConfig::Settings
     end
 
+    it 'has deep frozen settings' do
+      settings = provider.config(asset('config.yml'))
+      expect(settings).to be_frozen
+    end
+
+    it 'deep freezing can be disabled' do
+      begin
+        provider.deep_freeze = false
+        settings = provider.config(asset('config.yml'))
+        expect(settings).not_to be_frozen
+      ensure
+        provider.deep_freeze = true
+      end
+    end
+
     it 'handles missing configuration files' do
       expect { provider.config(asset('nix_config.yml')) }.to\
         raise_error(ComplexConfig::ConfigurationFileMissing)
@@ -76,10 +95,6 @@ RSpec.describe ComplexConfig::Provider do
   context 'handling configuration files with []' do
     before do
       provider.root = Pathname.new(__FILE__).dirname.dirname
-    end
-
-    after do
-      provider.flush_cache
     end
 
     it 'returns the correct configuration' do
