@@ -113,11 +113,13 @@ RSpec.describe ComplexConfig::Provider do
 
     it 'can flush loaded configurations' do
       expect(provider['config']).to be_a ComplexConfig::Settings
+      result = nil
       expect {
-        provider.flush_cache
+        result = provider.flush_cache
       }.to change {
         provider.instance.__send__(:__memoize_cache__).size
       }.by(-1)
+      expect(result).to be_a ComplexConfig::Provider
     end
   end
 

@@ -53,7 +53,10 @@ class ComplexConfig::Provider
   end
   memoize_method :[]
 
-  alias flush_cache memoize_cache_clear
+  def flush_cache
+    memoize_cache_clear
+    self
+  end
 
   def evaluate(pathname)
     data = File.read pathname
