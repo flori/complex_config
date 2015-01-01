@@ -25,7 +25,13 @@ class ComplexConfig::Settings < JSON::GenericObject
 
   def to_h
     each_with_object({}) do |(k, v), h|
-      h[k] = v.ask_and_send(:to_h) || v
+      h[k] = if Array === v
+               v.to_ary.map { |x| (x.ask_and_send(:to_h) rescue x) || x }
+             elsif v.respond_to?(:to_h)
+               v.ask_and_send(:to_h) rescue v
+             else
+               v
+             end
     end
   end
 

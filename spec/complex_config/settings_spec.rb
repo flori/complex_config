@@ -56,5 +56,10 @@ EOT
     expect(settings.foo.attribute_set?(:baz)).to eq false
     #expect(settings.foo.baz?).to be_falsy
   end
+
+  it 'handles arrays correctly' do
+    settings = ComplexConfig::Settings[ary: [ 1, { hsh: 2 }, 3 ]]
+    expect(settings.to_h).to eq(ary: [ 1, { hsh: 2 }, 3 ])
+  end
 end
 

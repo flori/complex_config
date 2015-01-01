@@ -114,6 +114,8 @@ Here is the `ComplexConfig::Plugins::MONEY` plugin for example:
 
 ## Changes
 
+* 2015-01-01 Release 0.1.1
+  * Some small fixes for handling of arrays
 * 2014-12-15 Release 0.1.0
   * Freeze configuration by default.
 

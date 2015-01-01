@@ -1,9 +1,9 @@
 # -*- encoding: utf-8 -*-
-# stub: complex_config 0.1.0 ruby lib
+# stub: complex_config 0.1.1 ruby lib
 
 Gem::Specification.new do |s|
   s.name = "complex_config"
-  s.version = "0.1.0"
+  s.version = "0.1.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib"]
