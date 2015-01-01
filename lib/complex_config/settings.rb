@@ -33,6 +33,8 @@ class ComplexConfig::Settings < JSON::GenericObject
     to_h.to_yaml
   end
 
+  alias to_ary to_a
+
   alias inspect to_s
 
   def deep_freeze

@@ -39,6 +39,12 @@ RSpec.describe ComplexConfig::Settings do
   :qux: quux
 EOT
   end
+
+  it 'can be array like (first level only), so puts still works' do
+    expect(settings).to respond_to :to_ary
+    expect(settings.to_ary).to eq [[:foo, settings.foo]]
+  end
+
   it 'raises exception if expected attribute is missing' do
     pending "still doesn't work"
     expect { settings.nix }.to raise_error(ComplexConfig::AttributeMissing)
