@@ -22,7 +22,7 @@ RSpec.describe ComplexConfig::Settings do
   end
 
   it 'can display its attribute_names' do
-    expect(settings.foo.attribute_names).to eq %i[ bar qux ]
+    expect(settings.foo.attribute_names).to eq [ :bar, :qux ]
   end
 
   it 'can display its attribute_values' do

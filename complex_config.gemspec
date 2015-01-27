@@ -6,7 +6,6 @@ Gem::Specification.new do |s|
   s.version = "0.1.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.require_paths = ["lib"]
   s.authors = ["Florian Frank"]
   s.date = "2015-01-27"
   s.description = "This library allows you to access configuration files via a simple interface"
@@ -16,7 +15,8 @@ Gem::Specification.new do |s|
   s.homepage = "https://github.com/flori/complex_config"
   s.licenses = ["Apache-2.0"]
   s.rdoc_options = ["--title", "ComplexConfig -- configuration library", "--main", "README.md"]
-  s.rubygems_version = "2.4.5"
+  s.require_paths = ["lib"]
+  s.rubygems_version = "2.1.9"
   s.summary = "configuration library"
   s.test_files = ["spec/complex_config/plugins_spec.rb", "spec/complex_config/provider_spec.rb", "spec/complex_config/settings_spec.rb", "spec/complex_config/shortcuts_spec.rb", "spec/spec_helper.rb"]
 
@@ -28,7 +28,6 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<rake>, [">= 0"])
       s.add_development_dependency(%q<simplecov>, [">= 0"])
       s.add_development_dependency(%q<rspec>, [">= 0"])
-      s.add_development_dependency(%q<byebug>, [">= 0"])
       s.add_runtime_dependency(%q<json>, [">= 0"])
       s.add_runtime_dependency(%q<monetize>, [">= 0"])
     else
@@ -36,7 +35,6 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<rake>, [">= 0"])
       s.add_dependency(%q<simplecov>, [">= 0"])
       s.add_dependency(%q<rspec>, [">= 0"])
-      s.add_dependency(%q<byebug>, [">= 0"])
       s.add_dependency(%q<json>, [">= 0"])
       s.add_dependency(%q<monetize>, [">= 0"])
     end
@@ -45,7 +43,6 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<rake>, [">= 0"])
     s.add_dependency(%q<simplecov>, [">= 0"])
     s.add_dependency(%q<rspec>, [">= 0"])
-    s.add_dependency(%q<byebug>, [">= 0"])
     s.add_dependency(%q<json>, [">= 0"])
     s.add_dependency(%q<monetize>, [">= 0"])
   end

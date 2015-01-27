@@ -4,4 +4,5 @@ source 'https://rubygems.org'
 
 gemspec
 
+gem "byebug", group: :development, platform: :mri
 gem "codeclimate-test-reporter", group: :development, require: nil

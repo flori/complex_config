@@ -16,7 +16,10 @@ if ENV.key?('CODECLIMATE_REPO_TOKEN')
 end
 
 require 'rspec'
-require 'byebug'
+begin
+  require 'byebug'
+rescue LoadError
+end
 require 'complex_config'
 
 def config_dir
