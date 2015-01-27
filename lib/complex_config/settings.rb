@@ -6,11 +6,6 @@ class ComplexConfig::Settings < JSON::GenericObject
     from_hash *a
   end
 
-  def each(&block)
-    table.each(&block)
-  end
-  include Enumerable
-
   def attribute_set?(name)
     table.key?(name.to_sym)
   end
@@ -24,14 +19,15 @@ class ComplexConfig::Settings < JSON::GenericObject
   end
 
   def to_h
-    each_with_object({}) do |(k, v), h|
-      h[k] = if Array === v
-               v.to_ary.map { |x| (x.ask_and_send(:to_h) rescue x) || x }
-             elsif v.respond_to?(:to_h)
-               v.ask_and_send(:to_h) rescue v
-             else
-               v
-             end
+    table_enumerator.each_with_object({}) do |(k, v), h|
+      h[k] =
+        if Array === v
+          v.to_ary.map { |x| (x.ask_and_send(:to_h) rescue x) || x }
+        elsif v.respond_to?(:to_h)
+          v.ask_and_send(:to_h) rescue v
+        else
+          v
+        end
     end
   end
 
@@ -39,18 +35,24 @@ class ComplexConfig::Settings < JSON::GenericObject
     to_h.to_yaml
   end
 
-  alias to_ary to_a
+  def to_ary(*a, &b)
+    table_enumerator.__send__(:to_a, *a, &b)
+  end
 
   alias inspect to_s
 
   def deep_freeze
-    each do |_, v|
+    table_enumerator.each do |_, v|
       v.ask_and_send(:deep_freeze) || (v.freeze rescue v)
     end
     freeze
   end
 
   private
+
+  def table_enumerator
+    table.enum_for(:each)
+  end
 
   def respond_to_missing?(id, include_private = false)
     id =~ /\?\z/ || super
@@ -75,6 +77,8 @@ class ComplexConfig::Settings < JSON::GenericObject
     else
       if attribute_set?(id)
         super
+      elsif table.respond_to?(id)
+        table.__send__(id, *a, &b)
       else
         raise ComplexConfig::AttributeMissing, "no attribute named #{id.inspect}"
       end

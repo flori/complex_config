@@ -1,6 +1,11 @@
 require 'spec_helper'
 
 RSpec.describe ComplexConfig::Settings do
+  before do
+    # Disable all plugins for this spec b/c they interfere with how rspec works
+    allow(ComplexConfig::Provider.instance).to receive(:plugins).and_return([])
+  end
+
   let :settings do
     ComplexConfig::Settings[
       foo: {
@@ -10,6 +15,10 @@ RSpec.describe ComplexConfig::Settings do
         qux: 'quux'
       }
     ]
+  end
+
+  it "can return an attribute's value" do
+    expect(settings.foo.bar.baz).to eq true
   end
 
   it 'can display its attribute_names' do
@@ -46,7 +55,6 @@ EOT
   end
 
   it 'raises exception if expected attribute is missing' do
-    pending "still doesn't work"
     expect { settings.nix }.to raise_error(ComplexConfig::AttributeMissing)
   end
 
@@ -54,12 +62,21 @@ EOT
     expect(settings.foo.attribute_set?(:bar)).to eq true
     expect(settings.foo.bar?).to be_truthy
     expect(settings.foo.attribute_set?(:baz)).to eq false
-    #expect(settings.foo.baz?).to be_falsy
+    expect(settings.foo.baz?).to be_falsy
   end
 
   it 'handles arrays correctly' do
     settings = ComplexConfig::Settings[ary: [ 1, { hsh: 2 }, 3 ]]
     expect(settings.to_h).to eq(ary: [ 1, { hsh: 2 }, 3 ])
   end
-end
 
+  it 'returns zip if it was set' do
+    settings = ComplexConfig::Settings[zip: 'a string']
+    expect(settings.zip).to eq 'a string'
+  end
+
+  it 'zips the hash if zip was not set' do
+    settings = ComplexConfig::Settings[not_zip: 'a string']
+    expect(settings.zip([1])).to eq [ [ [ :not_zip, 'a string' ], 1 ] ]
+  end
+end

@@ -14,7 +14,7 @@ class ComplexConfig::Provider
   attr_reader :plugins
 
   def add_plugin(plugin)
-    @plugins.add plugin
+    plugins.add plugin
     self
   end
 
@@ -25,7 +25,7 @@ class ComplexConfig::Provider
   end
 
   def apply_plugins(setting, id)
-    @plugins.find do |plugin|
+    plugins.find do |plugin|
       catch :skip do
         value = setting.instance_exec(id, &plugin) and return value
       end
