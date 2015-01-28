@@ -10,3 +10,4 @@ module ComplexConfig::Plugins
   end
 end
 
+ComplexConfig::Provider.add_plugin ComplexConfig::Plugins::URI
