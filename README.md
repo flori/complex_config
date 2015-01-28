@@ -114,6 +114,8 @@ Here is the `ComplexConfig::Plugins::MONEY` plugin for example:
 
 ## Changes
 
+* 2015-01-28 Release 0.2.1
+  * Turn monetize into a runtime dependency for the plugin.
 * 2015-01-27 Release 0.2.0
   * Fix for attributes named like Enumerable methods
   * Make tests run on JRuby
