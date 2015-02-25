@@ -113,7 +113,8 @@ Here is the `ComplexConfig::Plugins::MONEY` plugin for example:
     end
 
 ## Changes
-
+* 2015-02-25 Release 0.2.2
+  * Fix an issue with path interpolation.
 * 2015-01-28 Release 0.2.1
   * Turn monetize into a runtime dependency for the plugin.
 * 2015-01-27 Release 0.2.0

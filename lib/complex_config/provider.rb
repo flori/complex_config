@@ -34,7 +34,7 @@ class ComplexConfig::Provider
   end
 
   def pathname(name)
-    root + "config/#{name}.yml" % name
+    root + "config/#{name}.yml"
   end
 
   def config(pathname)
