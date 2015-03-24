@@ -1,14 +1,14 @@
 # -*- encoding: utf-8 -*-
-# stub: complex_config 0.2.2 ruby lib
+# stub: complex_config 0.2.3 ruby lib
 
 Gem::Specification.new do |s|
   s.name = "complex_config"
-  s.version = "0.2.2"
+  s.version = "0.2.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib"]
   s.authors = ["Florian Frank"]
-  s.date = "2015-02-25"
+  s.date = "2015-03-24"
   s.description = "This library allows you to access configuration files via a simple interface"
   s.email = "flori@ping.de"
   s.extra_rdoc_files = ["README.md", "lib/complex_config.rb", "lib/complex_config/errors.rb", "lib/complex_config/plugins.rb", "lib/complex_config/plugins/enable.rb", "lib/complex_config/plugins/money.rb", "lib/complex_config/plugins/uri.rb", "lib/complex_config/provider.rb", "lib/complex_config/rude.rb", "lib/complex_config/settings.rb", "lib/complex_config/shortcuts.rb", "lib/complex_config/version.rb"]

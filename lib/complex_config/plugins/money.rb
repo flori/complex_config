@@ -1,6 +1,6 @@
 begin
   require 'monetize'
-rescue LoadErro
+rescue LoadError
   if $DEBUG
     warn 'Cannot load runtime dependency "monetize":"\
     " Skipping plugin ComplexConfig::Plugins::MONEY.'

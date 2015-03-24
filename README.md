@@ -113,6 +113,8 @@ Here is the `ComplexConfig::Plugins::MONEY` plugin for example:
     end
 
 ## Changes
+* 2015-03-24 Release 0.2.3
+  * Fix typo in load error case of money.
 * 2015-02-25 Release 0.2.2
   * Fix an issue with path interpolation.
 * 2015-01-28 Release 0.2.1
