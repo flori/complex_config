@@ -39,13 +39,28 @@ RSpec.describe ComplexConfig::Settings do
     expect(settings.foo.to_h).to eq(bar: { baz: true }, qux: 'quux')
   end
 
+  it 'can return a hash with pathes as keys' do
+    expect(settings.pathes(path_sep: ?:)).to eq(
+      'foo:bar:baz' => true,
+      'foo:qux'     => "quux"
+    )
+  end
+
   it 'can be represented as a string' do
+    expect(settings.to_s(pair_sep: ' → ', path_sep: ?/)).to eq <<EOT
+foo/bar/baz → true
+foo/qux → "quux"
+EOT
+  end
+
+  it 'can be represented as a string if it has arrays' do
+    settings[:ary] = ComplexConfig::Settings[ [ 1, { nested: 2 }, 3 ] ]
     expect(settings.to_s).to eq <<EOT
----
-:foo:
-  :bar:
-    :baz: true
-  :qux: quux
+foo.bar.baz = true
+foo.qux = "quux"
+ary[0] = 1
+ary[1].nested = 2
+ary[2] = 3
 EOT
   end
 

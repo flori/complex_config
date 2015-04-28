@@ -31,9 +31,44 @@ class ComplexConfig::Settings < JSON::GenericObject
     end
   end
 
-  def to_s
-    to_h.to_yaml
+  def to_s(pair_sep: ' = ', path_sep: ?.)
+    pathes(path_sep: path_sep).inject('') do |result, (path, value)|
+      result << "#{path}#{pair_sep}#{value.inspect}\n"
+    end
   end
+
+  def pathes(hash = table, path_sep: ?., prefix: '', result: {})
+    hash.each do |key, value|
+      path = prefix.empty? ? key.to_s : "#{prefix}#{path_sep}#{key}"
+      case value
+      when ComplexConfig::Settings
+        pathes(
+          value,
+          path_sep: path_sep,
+          prefix:   path,
+          result:   result
+        )
+      when Array
+        value.each_with_index do |v, i|
+          sub_path = path + "[#{i}]"
+          if ComplexConfig::Settings === v
+            pathes(
+              v,
+              path_sep: path_sep,
+              prefix:   sub_path,
+              result:   result
+            )
+          else
+            result[sub_path] = v
+          end
+        end
+      else
+        result[path] = value
+      end
+    end
+    result
+  end
+
 
   def to_ary(*a, &b)
     table_enumerator.__send__(:to_a, *a, &b)

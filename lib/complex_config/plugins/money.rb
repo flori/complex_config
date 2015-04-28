@@ -1,4 +1,5 @@
 begin
+  require 'forwardable' # XXX monetize forgets to require this
   require 'monetize'
 rescue LoadError
   if $DEBUG
