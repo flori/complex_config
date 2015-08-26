@@ -23,7 +23,7 @@ and `complex_config` shortcuts available.
 
 Given a config file like this and named `config/products.yml`
 
-    evelopment:
+    development:
       flux_capacitor:
         version_20:
           name: Flux Capacitor Version 2.0
@@ -74,11 +74,10 @@ plugin return an URI instance:
 
 You can also fetch config settings from a different environment:
 
-    > cc(:products, :test).flux_capacitor => ---
-    :test_version:
-      :name: Yadayada
-      :price_in_cents: 666
-      :manual_pdf_url: http://staging.brown-inc.com/manuals/fc_10.pdf
+    >> pp cc(:products, :test); nil
+    flux_capacitor.test_version.name = "Yadayada"
+    flux_capacitor.test_version.price_in_cents = 666
+    flux_capacitor.test_version.manual_pdf_url = "http://staging.brown-inc.com/manuals/fc_10.pdf"
 
 Calling `complex_config(:products)` instead of `cc(…)` would skip the implicite
 namespacing via the `RAILS_ENV` environment, so
