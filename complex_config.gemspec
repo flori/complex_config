@@ -28,12 +28,16 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<rake>, [">= 0"])
       s.add_development_dependency(%q<simplecov>, [">= 0"])
       s.add_development_dependency(%q<rspec>, [">= 0"])
+      s.add_development_dependency(%q<monetize>, [">= 0"])
+      s.add_development_dependency(%q<codeclimate-test-reporter>, [">= 0"])
       s.add_runtime_dependency(%q<json>, [">= 0"])
     else
       s.add_dependency(%q<gem_hadar>, ["~> 1.2.1"])
       s.add_dependency(%q<rake>, [">= 0"])
       s.add_dependency(%q<simplecov>, [">= 0"])
       s.add_dependency(%q<rspec>, [">= 0"])
+      s.add_dependency(%q<monetize>, [">= 0"])
+      s.add_dependency(%q<codeclimate-test-reporter>, [">= 0"])
       s.add_dependency(%q<json>, [">= 0"])
     end
   else
@@ -41,6 +45,8 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<rake>, [">= 0"])
     s.add_dependency(%q<simplecov>, [">= 0"])
     s.add_dependency(%q<rspec>, [">= 0"])
+    s.add_dependency(%q<monetize>, [">= 0"])
+    s.add_dependency(%q<codeclimate-test-reporter>, [">= 0"])
     s.add_dependency(%q<json>, [">= 0"])
   end
 end
