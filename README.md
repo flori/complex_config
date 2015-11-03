@@ -112,6 +112,10 @@ Here is the `ComplexConfig::Plugins::MONEY` plugin for example:
     end
 
 ## Changes
+* 2015-11-03 Release 0.3.1
+  * Add missing dependency to tins.
+* 2015-11-03 Release 0.3.0
+  * Add nicer default output for settings.
 * 2015-03-24 Release 0.2.3
   * Fix typo in load error case of money.
 * 2015-02-25 Release 0.2.2
