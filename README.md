@@ -17,7 +17,8 @@ You can also put this line into your Gemfile
     gem 'complex_config', require: 'complex_config/rude'
 
 and bundle. This command will enable all the default plugins and make the `cc`
-and `complex_config` shortcuts available.
+and `complex_config` shortcuts available. The configurations are expected to be
+in the `config` subdirectory according to the rails convention.
 
 ## Usage
 
@@ -52,34 +53,37 @@ can now access the configuration.
 
 Fetching the name of a product:
 
-    > cc(:products).flux_capacitor.enterprise_version.name => "Flux Capacitor Enterpise"
+    > cc.products.flux_capacitor.enterprise_version.name => "Flux Capacitor Enterpise"
+
+If the name of configuration file isn't valid ruby method name syntax you can also
+use `cc(:products).flux_capacitor…` to avoid this problem.
 
 Fetching the price of a product in cents:
 
-    > cc(:products).flux_capacitor.enterprise_version.price_in_cents => 160000000
+    > c.products.flux_capacitor.enterprise_version.price_in_cents => 160000000
 
 Fetching the price of a product and using the ComplexConfig::Plugins::MONEY
 plugin to format it:
 
-    > cc(:products).flux_capacitor.enterprise_version.price.format => "€1,600,000.00"
+    > c.products.flux_capacitor.enterprise_version.price.format => "€1,600,000.00"
 
 Fetching the URL of a product manual as a string:
 
-    > cc(:products).flux_capacitor.enterprise_version.manual_pdf_url => "http://brown-inc.com/manuals/fc_enterprise.pdf"
+    > c.products.flux_capacitor.enterprise_version.manual_pdf_url => "http://brown-inc.com/manuals/fc_enterprise.pdf"
 
 Fetching the URL of a product manual and using the ComplexConfig::Plugins::URI
 plugin return an URI instance:
 
-    > cc(:products).flux_capacitor.enterprise_version.manual_pdf_uri => #<URI::HTTP:0x007ff626d2a2e8 URL:http://brown-inc.com/manuals/fc_enterprise.pdf>
+    > c.products.flux_capacitor.enterprise_version.manual_pdf_uri => #<URI::HTTP:0x007ff626d2a2e8 URL:http://brown-inc.com/manuals/fc_enterprise.pdf>
 
 You can also fetch config settings from a different environment:
 
-    >> pp cc(:products, :test); nil
-    flux_capacitor.test_version.name = "Yadayada"
-    flux_capacitor.test_version.price_in_cents = 666
-    flux_capacitor.test_version.manual_pdf_url = "http://staging.brown-inc.com/manuals/fc_10.pdf"
+    >> pp cc.products(:test); nil
+    products.flux_capacitor.test_version.name = "Yadayada"
+    products.flux_capacitor.test_version.price_in_cents = 666
+    products.flux_capacitor.test_version.manual_pdf_url = "http://staging.brown-inc.com/manuals/fc_10.pdf"
 
-Calling `complex_config(:products)` instead of `cc(…)` would skip the implicite
+Calling `complex_config.products.` instead of `cc(…)` would skip the implicite
 namespacing via the `RAILS_ENV` environment, so
 `complex_config(:products).test.flux_capacitor` returns the same settings
 object.
@@ -112,6 +116,8 @@ Here is the `ComplexConfig::Plugins::MONEY` plugin for example:
     end
 
 ## Changes
+* 2015-11-17 Release 0.4.0
+  * Add root object for configuration, e. g. cc.name instead of cc(name).
 * 2015-11-03 Release 0.3.1
   * Add missing dependency to tins.
 * 2015-11-03 Release 0.3.0

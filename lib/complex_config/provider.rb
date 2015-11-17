@@ -37,9 +37,10 @@ class ComplexConfig::Provider
     root + "config/#{name}.yml"
   end
 
-  def config(pathname)
+  def config(pathname, name = nil)
     result = evaluate(pathname)
-    ComplexConfig::Settings[::YAML.load(result, pathname)].tap do |settings|
+    hash = ::YAML.load(result, pathname)
+    ComplexConfig::Settings.build(name, hash).tap do |settings|
       deep_freeze? and settings.deep_freeze
     end
   rescue ::Errno::ENOENT => e
@@ -49,9 +50,13 @@ class ComplexConfig::Provider
   end
 
   def [](name)
-    config pathname(name)
+    config pathname(name), name
   end
   memoize_method :[]
+
+  def proxy(env = nil)
+    ComplexConfig::Proxy.new(env)
+  end
 
   def flush_cache
     memoize_cache_clear

@@ -1,10 +1,18 @@
 require 'complex_config'
 
-def complex_config_with_env(name, env = ComplexConfig::Provider.env)
-  ComplexConfig::Provider[name][env.to_s]
+def complex_config_with_env(name = nil, env = ComplexConfig::Provider.env)
+  if name
+    ComplexConfig::Provider[name][env.to_s]
+  else
+    ComplexConfig::Provider.proxy(env.to_s)
+  end
 end
 alias cc complex_config_with_env
 
-def complex_config(name)
-  ComplexConfig::Provider[name]
+def complex_config(name = nil)
+  if name
+    ComplexConfig::Provider[name]
+  else
+    ComplexConfig::Provider.proxy
+  end
 end

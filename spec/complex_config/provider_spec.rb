@@ -107,8 +107,8 @@ RSpec.describe ComplexConfig::Provider do
       }.to change {
         provider.instance.__send__(:__memoize_cache__).size
       }.by(1)
-      expect(provider['config']).to be_a ComplexConfig::Settings
       expect(provider).not_to receive(:config)
+      expect(provider['config']).to be_a ComplexConfig::Settings
     end
 
     it 'can flush loaded configurations' do

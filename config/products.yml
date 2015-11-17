@@ -1,0 +1,21 @@
+development:
+  flux_capacitor:
+    version_20:
+      name: Flux Capacitor Version 2.0
+      price_in_cents: 12_000_00
+      manual_pdf_url: "http://brown-inc.com/manuals/fc_20.pdf"
+    pro_version:
+      name: Flux Capacitor Professional
+      price_in_cents: 23_000_00
+      manual_pdf_url: "http://brown-inc.com/manuals/fc_pro.pdf"
+    enterprise_version:
+      name: Flux Capacitor Enterpise
+      price_in_cents: 1_600_000_00
+      manual_pdf_url: "http://brown-inc.com/manuals/fc_enterprise.pdf"
+
+test:
+  flux_capacitor:
+    test_version:
+      name: Yadayada
+      price_in_cents: 6_66
+      manual_pdf_url: "http://staging.brown-inc.com/manuals/fc_10.pdf"

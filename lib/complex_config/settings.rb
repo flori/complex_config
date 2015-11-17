@@ -1,9 +1,30 @@
 require 'json'
 require 'tins/xt/ask_and_send'
+require 'tins/thread_local'
 
 class ComplexConfig::Settings < JSON::GenericObject
   def self.[](*a)
     from_hash *a
+  end
+
+  class << self
+    extend Tins::ThreadLocal
+
+    thread_local :name_prefix
+  end
+
+  attr_accessor :name_prefix
+
+  def self.build(name, hash)
+    name.nil? or self.name_prefix = name.to_sym
+    self[hash]
+  ensure
+    self.name_prefix = nil
+  end
+
+  def initialize(*)
+    self.name_prefix = self.class.name_prefix
+    super
   end
 
   def attribute_set?(name)
@@ -37,7 +58,7 @@ class ComplexConfig::Settings < JSON::GenericObject
     end
   end
 
-  def pathes(hash = table, path_sep: ?., prefix: '', result: {})
+  def pathes(hash = table, path_sep: ?., prefix: name_prefix.to_s, result: {})
     hash.each do |key, value|
       path = prefix.empty? ? key.to_s : "#{prefix}#{path_sep}#{key}"
       case value
