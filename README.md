@@ -143,6 +143,9 @@ Here is the `ComplexConfig::Plugins::MONEY` plugin for example:
     end
 
 ## Changes
+* 2015-11-19 Release 0.5.0
+  * Support rails reloading behaviour.
+  * Allow configuration via ComplexConfig.configure(&block) method.
 * 2015-11-17 Release 0.4.0
   * Add root object for configuration, e. g. cc.name instead of cc(name).
 * 2015-11-03 Release 0.3.1
