@@ -88,11 +88,38 @@ namespacing via the `RAILS_ENV` environment, so
 `complex_config(:products).test.flux_capacitor` returns the same settings
 object.
 
+### Configuration
+
+You can complex\_config by passing a block to its configure method, which you
+can for example do in a rails config/initializers file:
+
+    ComplexConfig.configure do |config|
+      config.deep_freeze = !Rails.env.test? # allow modification during tests b/c of stubs etc.
+      
+      # config.env = 'some_environment'
+
+      # config.config_dir = Rails.root + 'config'
+
+      config.add_plugin -> id do
+        if base64_string = ask_and_send("#{id}_base64")
+          Base64.decode64 base64_string
+        else
+          skip
+        end
+      end
+    end
+
 ### Adding plugins
 
 You can add your own plugins by calling
 
     ComplexConfig::Provider.add_plugin SomeNamespace::PLUGIN
+
+or in the configuration block by calling
+
+    ComplexConfig.configure do |config|
+      config.add_plugin SomeNamespace::PLUGIN
+    end
 
 ### Implementing your own plugins
 
