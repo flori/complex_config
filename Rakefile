@@ -10,7 +10,9 @@ GemHadar do
   summary     'configuration library'
   description 'This library allows you to access configuration files via a simple interface'
   test_dir    'spec'
-  ignore      '.*.sw[pon]', 'pkg', 'Gemfile.lock', 'coverage', '.rvmrc', '.AppleDouble', '.DS_Store'
+  ignore      '.*.sw[pon]', 'pkg', 'Gemfile.lock', 'coverage', '.rvmrc',
+    '.AppleDouble', '.DS_Store', '.byebug_history', 'errors.lst'
+
   readme      'README.md'
   title       "#{name.camelize} -- configuration library"
   licenses    << 'Apache-2.0'

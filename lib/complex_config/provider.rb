@@ -11,6 +11,11 @@ class ComplexConfig::Provider
     @deep_freeze = true
   end
 
+  def configure_with(config)
+    config.configure(self)
+    flush_cache
+  end
+
   attr_reader :plugins
 
   def add_plugin(plugin)
@@ -33,8 +38,20 @@ class ComplexConfig::Provider
     end
   end
 
+  def config_dir=(dir)
+    if dir.nil?
+      @config_dir = nil
+    else
+      @config_dir = Pathname.new(dir)
+    end
+  end
+
+  def config_dir
+    @config_dir || (defined?(Rails) && Rails.root || Pathname.pwd) + 'config'
+  end
+
   def pathname(name)
-    root + "config/#{name}.yml"
+    config_dir + "#{name}.yml"
   end
 
   def config(pathname, name = nil)
@@ -70,15 +87,9 @@ class ComplexConfig::Provider
     erb.result
   end
 
-  attr_writer :root
-
-  def root
-    @root || defined?(Rails) && Rails.root || Pathname.pwd
-  end
-
-  attr_writer :env
-
   def env
     @env || defined?(Rails) && Rails.env || ENV['RAILS_ENV'] || 'development'
   end
+
+  attr_writer :env
 end

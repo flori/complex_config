@@ -34,28 +34,22 @@ RSpec.describe ComplexConfig::Provider do
   end
 
   context 'pathnames' do
-    module ::Rails
-      def self.root
-      end unless respond_to?(:root)
-    end
-
-    after do
-      provider.root = nil
-    end
-
-    it 'can compute default pathname' do
-      provider.root = Pathname.new('bar')
-      expect(provider.pathname('foo')).to eq Pathname.new('bar/config/foo.yml')
+    before do
+      module ::Rails
+        def self.root
+        end
+      end
+      provider.config_dir = nil
     end
 
     it 'can derive rails root from Rails.root if present' do
-      dir = Pathname.new('bar')
-      expect(Rails).to receive(:root).and_return(dir)
-      expect(provider.root).to eq dir
+      allow(::Rails).to receive(:root).and_return Pathname.new('bar')
+      dir = Pathname.new('bar/config')
+      expect(provider.config_dir).to eq dir
     end
 
     it 'falls back to current working directory by default' do
-      expect(provider.root).to eq Pathname.pwd
+      expect(provider.config_dir).to eq Pathname.pwd + 'config'
     end
   end
 
@@ -94,7 +88,7 @@ RSpec.describe ComplexConfig::Provider do
 
   context 'handling configuration files with []' do
     before do
-      provider.root = Pathname.new(__FILE__).dirname.dirname
+      provider.config_dir = Pathname.new(__FILE__).dirname.dirname + 'config'
     end
 
     it 'returns the correct configuration' do

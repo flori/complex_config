@@ -7,7 +7,7 @@ RSpec.describe 'shortcuts' do
   end
 
   before do
-    provider.root = Pathname.new(__FILE__).dirname.dirname
+    provider.config_dir = Pathname.new(__FILE__).dirname.dirname + 'config'
   end
 
   it 'returns a proxy object for the shortcuts' do
