@@ -2,11 +2,7 @@ require 'spec_helper'
 
 RSpec.describe ComplexConfig::Config do
   let :plugin_code do
-    -> id { id }
-  end
-
-  after do
-    ComplexConfig::Provider.plugins.delete plugin_code
+    -> id { skip }
   end
 
   it 'configures' do
