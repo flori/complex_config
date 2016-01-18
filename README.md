@@ -60,21 +60,21 @@ use `cc(:products).flux_capacitor…` to avoid this problem.
 
 Fetching the price of a product in cents:
 
-    > c.products.flux_capacitor.enterprise_version.price_in_cents => 160000000
+    > cc.products.flux_capacitor.enterprise_version.price_in_cents => 160000000
 
 Fetching the price of a product and using the ComplexConfig::Plugins::MONEY
 plugin to format it:
 
-    > c.products.flux_capacitor.enterprise_version.price.format => "€1,600,000.00"
+    > cc.products.flux_capacitor.enterprise_version.price.format => "€1,600,000.00"
 
 Fetching the URL of a product manual as a string:
 
-    > c.products.flux_capacitor.enterprise_version.manual_pdf_url => "http://brown-inc.com/manuals/fc_enterprise.pdf"
+    > cc.products.flux_capacitor.enterprise_version.manual_pdf_url => "http://brown-inc.com/manuals/fc_enterprise.pdf"
 
 Fetching the URL of a product manual and using the ComplexConfig::Plugins::URI
 plugin return an URI instance:
 
-    > c.products.flux_capacitor.enterprise_version.manual_pdf_uri => #<URI::HTTP:0x007ff626d2a2e8 URL:http://brown-inc.com/manuals/fc_enterprise.pdf>
+    > cc.products.flux_capacitor.enterprise_version.manual_pdf_uri => #<URI::HTTP:0x007ff626d2a2e8 URL:http://brown-inc.com/manuals/fc_enterprise.pdf>
 
 You can also fetch config settings from a different environment:
 
