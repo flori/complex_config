@@ -104,6 +104,10 @@ class ComplexConfig::Settings < JSON::GenericObject
     freeze
   end
 
+  def [](name)
+    public_send(name)
+  end
+
   private
 
   def table_enumerator

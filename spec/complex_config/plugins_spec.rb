@@ -24,6 +24,10 @@ RSpec.describe ComplexConfig::Settings do
       expect(settings.foo.test_uri).to eq URI.parse('http://www.ping.de')
     end
 
+    it 'can return an URI' do
+      expect(settings.foo[:test_uri]).to eq URI.parse('http://www.ping.de')
+    end
+
     it 'can skips if blub' do
       expect { settings.foo.nix_uri }.to raise_error(ComplexConfig::AttributeMissing)
     end
