@@ -104,8 +104,16 @@ class ComplexConfig::Settings < JSON::GenericObject
     freeze
   end
 
+  alias index []
+
   def [](name)
-    public_send(name)
+    if !attribute_set?(name) and
+      value = ComplexConfig::Provider.apply_plugins(self, name)
+    then
+      value
+    else
+      index(name)
+    end
   end
 
   private

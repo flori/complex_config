@@ -143,8 +143,7 @@ Here is the `ComplexConfig::Plugins::MONEY` plugin for example:
     end
 
 ## Changes
-
-* 2016-06-23 Release 0.5.1
+* 2016-06-23 Release 0.5.2
   * Resolve index access via the plugin code path, so foo.bar and foo[:bar]
     have the same result for a plugin key.
 * 2015-11-19 Release 0.5.0
