@@ -143,6 +143,12 @@ Here is the `ComplexConfig::Plugins::MONEY` plugin for example:
     end
 
 ## Changes
+
+* 2016-07-15 Release 0.7.0
+  * Slim down `ComplexConfig::Settings` interface to avoid clashes with methods
+    mixed into `Object` class or `Enumerable#instance_methods`
+* 2016-07-15 Release 0.6.0
+  * Depend on mize gem for caching.
 * 2016-06-23 Release 0.5.2
   * Resolve index access via the plugin code path, so foo.bar and foo[:bar]
     have the same result for a plugin key.
