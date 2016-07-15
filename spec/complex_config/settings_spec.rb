@@ -17,6 +17,40 @@ RSpec.describe ComplexConfig::Settings do
     ]
   end
 
+  it 'can be initialized with a hash' do
+    s = ComplexConfig::Settings.new(foo: 'bar')
+    expect(s.foo).to eq 'bar'
+  end
+
+  it 'can be duped and changed' do
+    s = ComplexConfig::Settings.new(foo: 'bar')
+    t = s.dup
+    expect(s.foo).to eq 'bar'
+    t.foo = 'baz'
+    expect(s.foo).to eq 'bar'
+    expect(t.foo).to eq 'baz'
+  end
+
+  it 'can set its attributes' do
+    expect {
+      settings.blub = 'blub'
+    }.to change {
+      settings.blub?
+    }.from(nil).to('blub')
+  end
+
+  it 'has a size' do
+    expect(settings.size).to eq 1
+  end
+
+  it 'can set its attributes via index method' do
+    expect {
+      settings['blub'] = 'blub'
+    }.to change {
+      settings.blub?
+    }.from(nil).to('blub')
+  end
+
   it "can return an attribute's value" do
     expect(settings.foo.bar.baz).to eq true
   end
@@ -64,9 +98,10 @@ ary[2] = 3
 EOT
   end
 
-  it 'can be array like (first level only), so puts still works' do
-    expect(settings).to respond_to :to_ary
-    expect(settings.to_ary).to eq [[:foo, settings.foo]]
+  it 'can be pretty printed' do
+    q = double
+    expect(q).to receive(:text).with("foo.bar.baz = true\nfoo.qux = \"quux\"\n")
+    settings.pretty_print(q)
   end
 
   it 'raises exception if expected attribute is missing' do
@@ -88,10 +123,5 @@ EOT
   it 'returns zip if it was set' do
     settings = ComplexConfig::Settings[zip: 'a string']
     expect(settings.zip).to eq 'a string'
-  end
-
-  it 'zips the hash if zip was not set' do
-    settings = ComplexConfig::Settings[not_zip: 'a string']
-    expect(settings.zip([1])).to eq [ [ [ :not_zip, 'a string' ], 1 ] ]
   end
 end

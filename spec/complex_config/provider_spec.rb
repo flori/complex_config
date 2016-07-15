@@ -11,7 +11,13 @@ RSpec.describe ComplexConfig::Provider do
 
   context 'plugin' do
     let :plugin do
-      -> id { __send__ id }
+      -> id {
+        if id == :evaluate_plugin
+          :evaluated
+        else
+          skip
+        end
+      }
     end
 
     let :setting do
@@ -28,8 +34,8 @@ RSpec.describe ComplexConfig::Provider do
 
     it 'can apply plugins' do
       provider.add_plugin plugin
-      expect(setting).to receive(:foo).and_return :bar
-      expect(provider.apply_plugins(setting, :foo)).to eq :bar
+      allow(setting).to receive(:skip).and_throw :skip
+      expect(provider.apply_plugins(setting, :evaluate_plugin)).to eq :evaluated
     end
   end
 
