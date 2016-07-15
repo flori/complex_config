@@ -2,6 +2,7 @@ require 'set'
 require 'erb'
 require 'pathname'
 require 'yaml'
+require 'mize'
 
 class ComplexConfig::Provider
   include Tins::SexySingleton
@@ -69,14 +70,14 @@ class ComplexConfig::Provider
   def [](name)
     config pathname(name), name
   end
-  memoize_method :[]
+  memoize method: :[]
 
   def proxy(env = nil)
     ComplexConfig::Proxy.new(env)
   end
 
   def flush_cache
-    memoize_cache_clear
+    mize_cache_clear
     self
   end
 

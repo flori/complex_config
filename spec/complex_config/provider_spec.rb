@@ -99,7 +99,7 @@ RSpec.describe ComplexConfig::Provider do
       expect {
         expect(provider['config']).to be_a ComplexConfig::Settings
       }.to change {
-        provider.instance.__send__(:__memoize_cache__).size
+        provider.instance.__send__(:__mize_cache__).__send__(:size)
       }.by(1)
       expect(provider).not_to receive(:config)
       expect(provider['config']).to be_a ComplexConfig::Settings
@@ -111,7 +111,7 @@ RSpec.describe ComplexConfig::Provider do
       expect {
         result = provider.flush_cache
       }.to change {
-        provider.instance.__send__(:__memoize_cache__).size
+        provider.instance.__send__(:__mize_cache__).__send__(:size)
       }.by(-1)
       expect(result).to be_a ComplexConfig::Provider
     end

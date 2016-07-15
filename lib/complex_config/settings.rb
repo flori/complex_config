@@ -4,7 +4,7 @@ require 'tins/thread_local'
 
 class ComplexConfig::Settings < JSON::GenericObject
   def self.[](*a)
-    from_hash *a
+    from_hash(*a)
   end
 
   class << self
