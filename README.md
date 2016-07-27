@@ -144,6 +144,10 @@ Here is the `ComplexConfig::Plugins::MONEY` plugin for example:
 
 ## Changes
 
+* 2016-07-21 Release 0.8.0
+  * `ComplexConfig::Settings` can be replaced with `replace_attributes` which
+    allows for easier testing by calling:
+    `cc.foo.replace_attributes(new: 'settings')`.
 * 2016-07-15 Release 0.7.0
   * Slim down `ComplexConfig::Settings` interface to avoid clashes with methods
     mixed into `Object` class or `Enumerable#instance_methods`

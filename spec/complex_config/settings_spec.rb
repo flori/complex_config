@@ -124,4 +124,10 @@ EOT
     settings = ComplexConfig::Settings[zip: 'a string']
     expect(settings.zip).to eq 'a string'
   end
+
+  it 'can be replaced for testing' do
+    result = settings.foo.replace_attributes(replaced: true)
+    expect(settings.foo.replaced).to eq true
+    expect(settings.foo).to eq result
+  end
 end

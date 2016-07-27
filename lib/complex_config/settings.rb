@@ -69,6 +69,11 @@ class ComplexConfig::Settings < BasicObject
     @table.values
   end
 
+  def replace_attributes(hash)
+    @table = self.class.from_hash(hash).table
+    self
+  end
+
   def to_h
     table_enumerator.each_with_object({}) do |(k, v), h|
       h[k] =
@@ -160,9 +165,11 @@ class ComplexConfig::Settings < BasicObject
     table_enumerator.each(&block)
   end
 
-  private
+  protected
 
   attr_reader :table
+
+  private
 
   def table_enumerator
     @table.enum_for(:each)
