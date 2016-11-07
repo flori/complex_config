@@ -6,6 +6,7 @@ require 'mize'
 
 class ComplexConfig::Provider
   include Tins::SexySingleton
+  include ComplexConfig::Provider::Shortcuts
 
   def initialize
     @plugins     = Set.new
