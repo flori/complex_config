@@ -6,6 +6,8 @@ rvm:
   - 2.4.0-preview1
   - ruby-head
   - jruby-head
+after_sucess:
+  - codeclimate-test-reporter
 sudo: false
 matrix:
   allow_failures:
@@ -13,4 +15,4 @@ matrix:
     - rvm: jruby-head
     - rvm: 2.4.0-preview1
 env:
-  - RAILS_ENV=development CODECLIMATE_REPO_TOKEN=b2d573b4ad139331f307e536679084a8ec269d721e31b0afe81c503a7ab0c683
+  - RAILS_ENV=development START_SIMPLECOV=1 CODECLIMATE_REPO_TOKEN=b2d573b4ad139331f307e536679084a8ec269d721e31b0afe81c503a7ab0c683
