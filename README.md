@@ -143,7 +143,8 @@ Here is the `ComplexConfig::Plugins::MONEY` plugin for example:
     end
 
 ## Changes
-
+* 2016-11-22 Release 0.9.0
+  * Extract ComplexConfig::Provider::Shortcuts into its own module
 * 2016-07-21 Release 0.8.0
   * `ComplexConfig::Settings` can be replaced with `replace_attributes` which
     allows for easier testing by calling:
