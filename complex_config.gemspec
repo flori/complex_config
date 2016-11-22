@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
   s.homepage = "https://github.com/flori/complex_config".freeze
   s.licenses = ["Apache-2.0".freeze]
   s.rdoc_options = ["--title".freeze, "ComplexConfig -- configuration library".freeze, "--main".freeze, "README.md".freeze]
-  s.rubygems_version = "2.6.7".freeze
+  s.rubygems_version = "2.6.8".freeze
   s.summary = "configuration library".freeze
   s.test_files = ["spec/complex_config/config_spec.rb".freeze, "spec/complex_config/plugins_spec.rb".freeze, "spec/complex_config/provider_spec.rb".freeze, "spec/complex_config/settings_spec.rb".freeze, "spec/complex_config/shortcuts_spec.rb".freeze, "spec/spec_helper.rb".freeze]
 
