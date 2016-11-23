@@ -3,7 +3,7 @@ rvm:
   - 2.1
   - 2.2
   - 2.3.3
-  - 2.4.0-preview1
+  - 2.4.0-preview3
   - ruby-head
   - jruby-head
 script:
@@ -14,5 +14,8 @@ matrix:
     - rvm: ruby-head
     - rvm: jruby-head
     - rvm: 2.4.0-preview1
+addons:
+  code_climate:
+    repo_token: b2d573b4ad139331f307e536679084a8ec269d721e31b0afe81c503a7ab0c683
 env:
-  - RAILS_ENV=development START_SIMPLECOV=1 CODECLIMATE_REPO_TOKEN=b2d573b4ad139331f307e536679084a8ec269d721e31b0afe81c503a7ab0c683
+  - START_SIMPLECOV=1
