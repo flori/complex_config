@@ -8,6 +8,7 @@ RSpec.describe 'shortcuts' do
 
   before do
     provider.config_dir = Pathname.new(__FILE__).dirname.dirname + 'config'
+    allow(ENV).to receive(:[]).with('RAILS_ENV').and_return('development')
   end
 
   it 'returns a proxy object for the shortcuts' do

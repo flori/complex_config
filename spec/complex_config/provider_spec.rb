@@ -137,6 +137,10 @@ RSpec.describe ComplexConfig::Provider do
       end unless respond_to?(:env)
     end
 
+    before do
+      allow(ENV).to receive(:[]).with('RAILS_ENV').and_return('development')
+    end
+
     after do
       provider.env = nil
     end
