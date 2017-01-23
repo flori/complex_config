@@ -24,7 +24,6 @@ GemHadar do
   development_dependency 'simplecov'
   development_dependency 'rspec'
   development_dependency 'monetize'
-  development_dependency "codeclimate-test-reporter"
 end
 
 task :default => :spec

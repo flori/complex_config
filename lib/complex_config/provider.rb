@@ -76,6 +76,7 @@ class ComplexConfig::Provider
   def proxy(env = nil)
     ComplexConfig::Proxy.new(env)
   end
+  memoize method: :proxy
 
   def flush_cache
     mize_cache_clear

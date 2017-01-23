@@ -19,14 +19,18 @@ module ComplexConfig
 
     def method_missing(name, *args)
       config = ::ComplexConfig::Provider[name]
-      env, = args
-      if env
-        config[env]
-      elsif @env
-        config[@env]
-      else
-        config
+      (class << self; self; end).class_eval do
+        define_method(name) do |env = nil|
+          if env
+            config[env]
+          elsif @env
+            config[@env]
+          else
+            config
+          end
+        end
       end
+      __send__(name, *args)
     end
   end
 end

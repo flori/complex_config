@@ -3,19 +3,11 @@ rvm:
   - 2.1
   - 2.2
   - 2.3.3
-  - 2.4.0-preview3
+  - 2.4.0
   - ruby-head
   - jruby-head
-script:
-  - rake && codeclimate-test-reporter --file coverage
 sudo: false
 matrix:
   allow_failures:
     - rvm: ruby-head
     - rvm: jruby-head
-    - rvm: 2.4.0-preview1
-addons:
-  code_climate:
-    repo_token: b2d573b4ad139331f307e536679084a8ec269d721e31b0afe81c503a7ab0c683
-env:
-  - START_SIMPLECOV=1
