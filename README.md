@@ -143,6 +143,11 @@ Here is the `ComplexConfig::Plugins::MONEY` plugin for example:
     end
 
 ## Changes
+
+* 2017-01-23 Release 0.9.2
+  * Improve performance for proxy objects
+* 2016-11-22 Release 0.9.1
+  * Fix travis builds
 * 2016-11-22 Release 0.9.0
   * Extract ComplexConfig::Provider::Shortcuts into its own module
 * 2016-07-21 Release 0.8.0
