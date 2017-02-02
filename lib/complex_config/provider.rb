@@ -73,6 +73,12 @@ class ComplexConfig::Provider
   end
   memoize method: :[]
 
+  def exist?(name)
+    !!config(pathname(name), name)
+  rescue ComplexConfig::ConfigurationFileMissing
+    false
+  end
+
   def proxy(env = nil)
     ComplexConfig::Proxy.new(env)
   end

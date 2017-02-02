@@ -144,6 +144,8 @@ Here is the `ComplexConfig::Plugins::MONEY` plugin for example:
 
 ## Changes
 
+* 2017-02-02 Release 0.10.0
+  * `cc.foo?`/`complex_config.foo?` returns config or nil (when not existant)
 * 2017-01-23 Release 0.9.2
   * Improve performance for proxy objects
 * 2016-11-22 Release 0.9.1

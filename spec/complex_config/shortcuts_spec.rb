@@ -18,6 +18,11 @@ RSpec.describe 'shortcuts' do
     expect(cc.config.name_prefix).to eq :config
   end
 
+  it 'returns config or nil for ?-methods' do
+    expect(cc.config?).to eq cc.config
+    expect(cc.foo?).to be_nil
+  end
+
   it 'can be reloaded via shortcut' do
     expect(ComplexConfig::Provider).to receive(:flush_cache)
     complex_config.reload
