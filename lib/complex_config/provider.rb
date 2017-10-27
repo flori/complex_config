@@ -57,22 +57,31 @@ class ComplexConfig::Provider
   end
 
   def config(pathname, name = nil)
-    data =
-      if enc_pathname = pathname.to_s + '.enc' and File.exist?(enc_pathname)
-        key = key(pathname)
-        text = IO.binread(enc_pathname)
-        # TODO merge with pathname w/o .enc
-        ComplexConfig::Encryption.new(key).decrypt(text)
-      else
-        IO.binread(pathname)
-      end
-    result = evaluate(pathname, data)
-    hash = ::YAML.load(result, pathname)
-    ComplexConfig::Settings.build(name, hash).tap do |settings|
-      deep_freeze? and settings.deep_freeze
+    datas = []
+    if File.exist?(pathname)
+      datas << IO.binread(pathname)
     end
-  rescue ::Errno::ENOENT => e
-    raise ComplexConfig::ComplexConfigError.wrap(:ConfigurationFileMissing, e)
+    if enc_pathname = pathname.to_s + '.enc' and File.exist?(enc_pathname)
+      key = key(pathname)
+      text = IO.binread(enc_pathname)
+      datas << ComplexConfig::Encryption.new(key).decrypt(text)
+    end
+    datas.empty? and raise ComplexConfig::ConfigurationFileMissing,
+      "configuration file #{pathname.inspect} is missing"
+    results = datas.map { |d| evaluate(pathname, d) }
+    hashes = results.map { |r| ::YAML.load(r, pathname) }
+    settings = ComplexConfig::Settings.build(name, hashes.first)
+    hashes[1..-1]&.each { |h| settings.attributes_update(h) }
+    if shared = settings.shared?
+      shared = shared.to_h
+      settings.each do |key, value|
+        if value.is_a? ComplexConfig::Settings
+          value.attributes_update(shared)
+        end
+      end
+    end
+    deep_freeze? and settings.deep_freeze
+    settings
   rescue ::Psych::SyntaxError => e
     raise ComplexConfig::ComplexConfigError.wrap(:ConfigurationSyntaxError, e)
   end

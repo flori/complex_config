@@ -69,6 +69,13 @@ class ComplexConfig::Settings < BasicObject
     @table.values
   end
 
+  def attributes_update(other)
+    unless other.is_a? self.class
+      other = self.class.from_hash(other)
+    end
+    @table.update(other.table)
+  end
+
   def replace_attributes(hash)
     @table = self.class.from_hash(hash).table
     self
