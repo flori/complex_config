@@ -57,7 +57,16 @@ class ComplexConfig::Provider
   end
 
   def config(pathname, name = nil)
-    result = evaluate(pathname)
+    data =
+      if enc_pathname = pathname.to_s + '.enc' and File.exist?(enc_pathname)
+        key = key(pathname)
+        text = IO.binread(enc_pathname)
+        # TODO merge with pathname w/o .enc
+        ComplexConfig::Encryption.new(key).decrypt(text)
+      else
+        IO.binread(pathname)
+      end
+    result = evaluate(pathname, data)
     hash = ::YAML.load(result, pathname)
     ComplexConfig::Settings.build(name, hash).tap do |settings|
       deep_freeze? and settings.deep_freeze
@@ -89,8 +98,7 @@ class ComplexConfig::Provider
     self
   end
 
-  def evaluate(pathname)
-    data = File.read pathname
+  def evaluate(pathname, data)
     erb = ::ERB.new(data)
     erb.filename = pathname.to_s
     erb.result
@@ -101,4 +109,27 @@ class ComplexConfig::Provider
   end
 
   attr_writer :env
+
+  def key(pathname = nil)
+    key = [
+      @key,
+      read_key_from_file(pathname),
+      ENV['RAILS_MASTER_KEY']
+    ].compact[0, 1]
+    unless key.empty?
+      key.pack('H*')
+    end
+  end
+
+  attr_writer :key
+
+  private
+
+  def read_key_from_file(pathname)
+    if pathname
+      IO.binread(pathname.to_s + '.key')
+    end
+  rescue Errno::ENOENT
+  end
 end
+
