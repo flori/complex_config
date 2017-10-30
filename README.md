@@ -143,7 +143,12 @@ Here is the `ComplexConfig::Plugins::MONEY` plugin for example:
     end
 
 ## Changes
-
+* 2017-10-30 Release 0.11.2
+  * Small bugfix
+* 2017-10-27 Release 0.11.1
+  * Small bugfix
+* 2017-10-27 Release 0.11.0
+  * Support encrypted config files a la rails
 * 2017-02-02 Release 0.10.0
   * `cc.foo?`/`complex_config.foo?` returns config or nil (when not existant)
 * 2017-01-23 Release 0.9.2

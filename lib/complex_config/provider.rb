@@ -61,10 +61,12 @@ class ComplexConfig::Provider
     if File.exist?(pathname)
       datas << IO.binread(pathname)
     end
-    if enc_pathname = pathname.to_s + '.enc' and File.exist?(enc_pathname)
-      key = key(pathname)
+    if enc_pathname = pathname.to_s + '.enc' and
+      File.exist?(enc_pathname) and
+      my_key = key(pathname)
+    then
       text = IO.binread(enc_pathname)
-      datas << ComplexConfig::Encryption.new(key).decrypt(text)
+      datas << ComplexConfig::Encryption.new(my_key).decrypt(text)
     end
     datas.empty? and raise ComplexConfig::ConfigurationFileMissing,
       "configuration file #{pathname.inspect} is missing"
