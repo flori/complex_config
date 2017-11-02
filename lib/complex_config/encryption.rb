@@ -53,6 +53,6 @@ class ComplexConfig::Encryption
   end
 
   def base64_decode(x)
-    ::Base64.strict_decode64(x)
+    ::Base64.strict_decode64(x.strip)
   end
 end

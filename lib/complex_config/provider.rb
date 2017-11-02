@@ -25,7 +25,12 @@ class ComplexConfig::Provider
     self
   end
 
-  attr_writer :deep_freeze
+  def deep_freeze=(flag)
+    if @deep_freeze && !flag
+      mize_cache_clear
+    end
+    @deep_freeze = flag
+  end
 
   def deep_freeze?
     !!@deep_freeze
@@ -72,8 +77,8 @@ class ComplexConfig::Provider
       "configuration file #{pathname.inspect} is missing"
     results = datas.map { |d| evaluate(pathname, d) }
     hashes = results.map { |r| ::YAML.load(r, pathname) }
-    settings = ComplexConfig::Settings.build(name, hashes.first)
-    hashes[1..-1]&.each { |h| settings.attributes_update(h) }
+    settings = ComplexConfig::Settings.build(name, hashes.shift)
+    hashes.each { |h| settings.attributes_update(h) }
     if shared = settings.shared?
       shared = shared.to_h
       settings.each do |key, value|
@@ -138,7 +143,7 @@ class ComplexConfig::Provider
 
   def read_key_from_file(pathname)
     if pathname
-      IO.binread(pathname.to_s + '.key')
+      IO.binread(pathname.to_s + '.key').strip
     end
   rescue Errno::ENOENT
   end

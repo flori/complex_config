@@ -1,14 +1,14 @@
 # -*- encoding: utf-8 -*-
-# stub: complex_config 0.11.2 ruby lib
+# stub: complex_config 0.11.3 ruby lib
 
 Gem::Specification.new do |s|
   s.name = "complex_config".freeze
-  s.version = "0.11.2"
+  s.version = "0.11.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0".freeze) if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib".freeze]
   s.authors = ["Florian Frank".freeze]
-  s.date = "2017-10-30"
+  s.date = "2017-11-02"
   s.description = "This library allows you to access configuration files via a simple interface".freeze
   s.email = "flori@ping.de".freeze
   s.extra_rdoc_files = ["README.md".freeze, "lib/complex_config.rb".freeze, "lib/complex_config/config.rb".freeze, "lib/complex_config/encryption.rb".freeze, "lib/complex_config/errors.rb".freeze, "lib/complex_config/plugins.rb".freeze, "lib/complex_config/plugins/enable.rb".freeze, "lib/complex_config/plugins/money.rb".freeze, "lib/complex_config/plugins/uri.rb".freeze, "lib/complex_config/provider.rb".freeze, "lib/complex_config/provider/shortcuts.rb".freeze, "lib/complex_config/proxy.rb".freeze, "lib/complex_config/railtie.rb".freeze, "lib/complex_config/rude.rb".freeze, "lib/complex_config/settings.rb".freeze, "lib/complex_config/shortcuts.rb".freeze, "lib/complex_config/version.rb".freeze]
@@ -31,7 +31,7 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<monetize>.freeze, [">= 0"])
       s.add_runtime_dependency(%q<json>.freeze, [">= 0"])
       s.add_runtime_dependency(%q<tins>.freeze, [">= 0"])
-      s.add_runtime_dependency(%q<mize>.freeze, [">= 0"])
+      s.add_runtime_dependency(%q<mize>.freeze, [">= 0.3.4", "~> 0.3"])
     else
       s.add_dependency(%q<gem_hadar>.freeze, ["~> 1.9.1"])
       s.add_dependency(%q<rake>.freeze, [">= 0"])
@@ -40,7 +40,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<monetize>.freeze, [">= 0"])
       s.add_dependency(%q<json>.freeze, [">= 0"])
       s.add_dependency(%q<tins>.freeze, [">= 0"])
-      s.add_dependency(%q<mize>.freeze, [">= 0"])
+      s.add_dependency(%q<mize>.freeze, [">= 0.3.4", "~> 0.3"])
     end
   else
     s.add_dependency(%q<gem_hadar>.freeze, ["~> 1.9.1"])
@@ -50,6 +50,6 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<monetize>.freeze, [">= 0"])
     s.add_dependency(%q<json>.freeze, [">= 0"])
     s.add_dependency(%q<tins>.freeze, [">= 0"])
-    s.add_dependency(%q<mize>.freeze, [">= 0"])
+    s.add_dependency(%q<mize>.freeze, [">= 0.3.4", "~> 0.3"])
   end
 end
