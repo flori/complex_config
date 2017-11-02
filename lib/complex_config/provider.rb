@@ -3,6 +3,7 @@ require 'erb'
 require 'pathname'
 require 'yaml'
 require 'mize'
+require 'tins/xt/secure_write'
 
 class ComplexConfig::Provider
   include Tins::SexySingleton
@@ -68,7 +69,7 @@ class ComplexConfig::Provider
     end
     if enc_pathname = pathname.to_s + '.enc' and
       File.exist?(enc_pathname) and
-      my_key = key(pathname)
+        my_key = key(pathname)
     then
       text = IO.binread(enc_pathname)
       datas << ComplexConfig::Encryption.new(my_key).decrypt(text)
@@ -97,6 +98,39 @@ class ComplexConfig::Provider
     config pathname(name), name
   end
   memoize method: :[]
+
+  def write_config(name, value, encrypt: false, store_key: false)
+    config_pathname = pathname(name).to_s
+    key = case encrypt
+          when :random
+            SecureRandom.bytes(16)
+          when true
+            key(config_pathname)
+          when String
+            encrypt
+          end
+    settings = ComplexConfig::Settings[value]
+    if encrypt
+      key or raise ComplexConfig::EncryptionKeyInvalid,
+        "encryption key is missing"
+      key.size != 16 and raise ComplexConfig::EncryptionKeyInvalid,
+        "encryption keys has to be of 16 bytes lenght"
+      File.secure_write(config_pathname + '.enc') do |out|
+        out.puts ComplexConfig::Encryption.new(key).encrypt(settings.to_yaml)
+      end
+      if store_key
+        File.secure_write(config_pathname + '.key') do |out|
+          out.puts key.unpack('H*').first
+        end
+      end
+    else
+      File.secure_write(config_pathname) do |out|
+        out.puts settings.to_yaml
+      end
+    end
+    flush_cache
+    self
+  end
 
   def exist?(name)
     !!config(pathname(name), name)
@@ -130,8 +164,9 @@ class ComplexConfig::Provider
     key = [
       @key,
       read_key_from_file(pathname),
-      ENV['RAILS_MASTER_KEY']
-    ].compact[0, 1]
+      ENV['COMPLEX_CONFIG_KEY'],
+      ENV['RAILS_MASTER_KEY'],
+    ].compact[0, 1].map(&:strip)
     unless key.empty?
       key.pack('H*')
     end
@@ -143,7 +178,7 @@ class ComplexConfig::Provider
 
   def read_key_from_file(pathname)
     if pathname
-      IO.binread(pathname.to_s + '.key').strip
+      IO.binread(pathname.to_s + '.key')
     end
   rescue Errno::ENOENT
   end

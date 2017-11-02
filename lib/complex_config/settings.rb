@@ -81,6 +81,13 @@ class ComplexConfig::Settings < BasicObject
     self
   end
 
+  #def write_config(encrypt: false, store_key: false)
+  #  ::ComplexConfig::Provider.write_config(
+  #    name_prefix, self, encrypt: encrypt, store_key: store_key
+  #  )
+  #  self
+  #end
+
   def to_h
     table_enumerator.each_with_object({}) do |(k, v), h|
       h[k] =
@@ -92,6 +99,10 @@ class ComplexConfig::Settings < BasicObject
           v
         end
     end
+  end
+
+  def to_yaml
+    to_h.to_yaml
   end
 
   def size

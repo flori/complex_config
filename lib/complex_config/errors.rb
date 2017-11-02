@@ -16,4 +16,13 @@ module ComplexConfig
 
   class ConfigurationSyntaxError < ComplexConfigError
   end
+
+  class EncryptionError < ComplexConfigError
+  end
+
+  class EncryptionKeyInvalid < EncryptionError
+  end
+
+  class DecryptionFailed < EncryptionError
+  end
 end

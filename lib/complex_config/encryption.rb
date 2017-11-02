@@ -2,12 +2,10 @@ require "openssl"
 require "base64"
 
 class ComplexConfig::Encryption
-  class EncryptionError < StandardError; end
-
-  class DecryptionFailed < EncryptionError; end
-
   def initialize(secret)
     @secret = secret
+    @secret.size != 16 and raise ComplexConfig::EncryptionKeyInvalid,
+      "encryption key #{@secret.inspect} must be 16 bytes"
     @cipher = OpenSSL::Cipher.new('aes-128-gcm')
   end
 
@@ -32,7 +30,7 @@ class ComplexConfig::Encryption
     encrypted, iv, auth_tag = text.split('--').map { |v| base64_decode(v) }
 
     auth_tag.nil? || auth_tag.bytes.length != 16 and
-      raise DecryptionFailed, "auth_tag #{auth_tag.inspect} invalid"
+      raise ComplexConfig::DecryptionFailed, "auth_tag #{auth_tag.inspect} invalid"
 
     @cipher.decrypt
     @cipher.key = @secret

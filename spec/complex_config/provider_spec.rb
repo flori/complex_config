@@ -92,6 +92,38 @@ RSpec.describe ComplexConfig::Provider do
     end
   end
 
+  pending 'writing configurations'
+
+  context 'reading encrypted configurations' do
+    before do
+      provider.config_dir = Pathname.new(__FILE__).dirname.dirname + 'config'
+    end
+
+    let :key do
+      IO.binread(provider.config_dir + 'with-key-file.yml.key')
+    end
+
+    it 'can read when key is set by accessor' do
+      provider.key = key
+      expect(provider['without-key-file'].development.foo.bar).to eq 'baz'
+    end
+
+    it 'can read when key is in ENV var' do
+      ENV['RAILS_MASTER_KEY'] = key
+      expect(provider['without-key-file'].development.foo.bar).to eq 'baz'
+    end
+
+    it 'can read when key is stored in file' do
+      expect(provider['with-key-file'].development.foo.bar).to eq 'baz'
+    end
+
+    it 'can read when key is obtained by calling shell script' do
+      expect(provider['with-shell-script'].development.foo.bar).to eq 'baz'
+    end
+  end
+
+  pending 'writing encrypted configurations'
+
   context 'handling configuration files with []' do
     before do
       provider.config_dir = Pathname.new(__FILE__).dirname.dirname + 'config'
