@@ -1,11 +1,21 @@
 require 'spec_helper'
+require 'fileutils'
 
 RSpec.describe ComplexConfig::Provider do
   let :provider do
     ComplexConfig::Provider
   end
 
+  reset_new_config = -> * {
+    provider.config_dir = Pathname.new(__FILE__).dirname.dirname + 'config'
+    provider.key = nil
+    FileUtils.rm_f(provider.config_dir + 'new_config.yml')
+    FileUtils.rm_f(provider.config_dir + 'new_config.yml.enc')
+    FileUtils.rm_f(provider.config_dir + 'new_config.yml.key')
+  }
+
   after do
+    instance_eval(&reset_new_config)
     provider.flush_cache
   end
 
@@ -92,7 +102,27 @@ RSpec.describe ComplexConfig::Provider do
     end
   end
 
-  pending 'writing configurations'
+  context 'writing configurations' do
+    before do
+      provider.config_dir = Pathname.new(__FILE__).dirname.dirname + 'config'
+    end
+
+    let :config do
+      provider.config(asset('config.yml'))
+    end
+
+    it 'can be written' do
+      provider.write_config('new_config', config)
+      expect(provider.config(asset('new_config.yml'))).to eq config
+    end
+
+    it 'can be changed and written' do
+      provider.deep_freeze = false
+      config.development.config.baz = 'something else'
+      provider.write_config('new_config', config)
+      expect(provider.config(asset('new_config.yml')).development.config.baz).to eq 'something else'
+    end
+  end
 
   context 'reading encrypted configurations' do
     before do
@@ -122,7 +152,44 @@ RSpec.describe ComplexConfig::Provider do
     end
   end
 
-  pending 'writing encrypted configurations'
+  context 'writing encrypted configurations' do
+    before do
+      provider.config_dir = Pathname.new(__FILE__).dirname.dirname + 'config'
+      instance_eval(&reset_new_config)
+    end
+
+    let :config do
+      provider.config(asset('config.yml'))
+    end
+
+    it 'can be written with random key' do
+      key = provider.write_config('new_config', config, encrypt: :random, store_key: false)
+      provider.key = key
+      expect(provider.config(asset('new_config.yml'))).to eq config
+    end
+
+    it 'can be written with random key and store key' do
+      provider.write_config('new_config', config, encrypt: :random, store_key: true)
+      expect(provider.config(asset('new_config.yml'))).to eq config
+    end
+
+    it 'can be written with passed key' do
+      provider.write_config('new_config', config)
+      expect(provider.config(asset('new_config.yml'))).to eq config
+    end
+
+    it 'can be written with configured key' do
+      provider.write_config('new_config', config)
+      expect(provider.config(asset('new_config.yml'))).to eq config
+    end
+
+    it 'can be changed and written' do
+      provider.deep_freeze = false
+      config.development.config.baz = 'something else'
+      provider.write_config('new_config', config)
+      expect(provider.config(asset('new_config.yml')).development.config.baz).to eq 'something else'
+    end
+  end
 
   context 'handling configuration files with []' do
     before do

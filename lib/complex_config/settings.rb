@@ -101,6 +101,10 @@ class ComplexConfig::Settings < BasicObject
     end
   end
 
+  def ==(other)
+    to_h == other.to_h
+  end
+
   def to_yaml
     to_h.to_yaml
   end

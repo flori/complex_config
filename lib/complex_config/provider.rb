@@ -68,8 +68,7 @@ class ComplexConfig::Provider
       datas << IO.binread(pathname)
     end
     if enc_pathname = pathname.to_s + '.enc' and
-      File.exist?(enc_pathname) and
-        my_key = key(pathname)
+      File.exist?(enc_pathname) and my_key = key(pathname)
     then
       text = IO.binread(enc_pathname)
       datas << ComplexConfig::Encryption.new(my_key).decrypt(text)
@@ -109,6 +108,7 @@ class ComplexConfig::Provider
           when String
             encrypt
           end
+    hex_key = nil
     settings = ComplexConfig::Settings[value]
     if encrypt
       key or raise ComplexConfig::EncryptionKeyInvalid,
@@ -118,9 +118,10 @@ class ComplexConfig::Provider
       File.secure_write(config_pathname + '.enc') do |out|
         out.puts ComplexConfig::Encryption.new(key).encrypt(settings.to_yaml)
       end
+      hex_key = key.unpack('H*').first
       if store_key
         File.secure_write(config_pathname + '.key') do |out|
-          out.puts key.unpack('H*').first
+          out.puts hex_key
         end
       end
     else
@@ -129,7 +130,7 @@ class ComplexConfig::Provider
       end
     end
     flush_cache
-    self
+    hex_key
   end
 
   def exist?(name)
