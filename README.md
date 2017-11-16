@@ -143,6 +143,11 @@ Here is the `ComplexConfig::Plugins::MONEY` plugin for example:
     end
 
 ## Changes
+
+* 2017-11-16 Release 0.12.0
+  * Supports writing of configurations (encrypted or unencrypted)
+* 2017-11-16 Release 0.11.3
+  * Small bugfix
 * 2017-10-30 Release 0.11.2
   * Small bugfix
 * 2017-10-27 Release 0.11.1
@@ -191,7 +196,6 @@ Here is the `ComplexConfig::Plugins::MONEY` plugin for example:
   * Some small fixes for handling of arrays
 * 2014-12-15 Release 0.1.0
   * Freeze configuration by default.
-
 * 2014-12-12 Release 0.0.0
 
 ## Download
