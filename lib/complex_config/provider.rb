@@ -102,7 +102,7 @@ class ComplexConfig::Provider
     config_pathname = pathname(name).to_s
     key = case encrypt
           when :random
-            SecureRandom.bytes(16)
+            SecureRandom.random_bytes(16)
           when true
             key(config_pathname)
           when String
