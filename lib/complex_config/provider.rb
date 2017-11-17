@@ -109,14 +109,14 @@ class ComplexConfig::Provider
             encrypt
           end
     hex_key = nil
-    settings = ComplexConfig::Settings[value]
+    value = value.to_h
     if encrypt
       key or raise ComplexConfig::EncryptionKeyInvalid,
         "encryption key is missing"
       key.size != 16 and raise ComplexConfig::EncryptionKeyInvalid,
         "encryption keys has to be of 16 bytes lenght"
       File.secure_write(config_pathname + '.enc') do |out|
-        out.write ComplexConfig::Encryption.new(key).encrypt(settings.to_yaml)
+        out.write ComplexConfig::Encryption.new(key).encrypt(prepare_output(value))
       end
       hex_key = key.unpack('H*').first
       if store_key
@@ -126,11 +126,17 @@ class ComplexConfig::Provider
       end
     else
       File.secure_write(config_pathname) do |out|
-        out.puts settings.to_yaml
+        out.puts prepare_output(value)
       end
     end
     flush_cache
     hex_key
+  end
+
+  def prepare_output(value)
+    value.each_with_object({}) do |(k, v), h|
+      h[k.to_s] = v
+    end.to_yaml
   end
 
   def exist?(name)
