@@ -116,12 +116,12 @@ class ComplexConfig::Provider
       key.size != 16 and raise ComplexConfig::EncryptionKeyInvalid,
         "encryption keys has to be of 16 bytes lenght"
       File.secure_write(config_pathname + '.enc') do |out|
-        out.puts ComplexConfig::Encryption.new(key).encrypt(settings.to_yaml)
+        out.write ComplexConfig::Encryption.new(key).encrypt(settings.to_yaml)
       end
       hex_key = key.unpack('H*').first
       if store_key
         File.secure_write(config_pathname + '.key') do |out|
-          out.puts hex_key
+          out.write hex_key
         end
       end
     else

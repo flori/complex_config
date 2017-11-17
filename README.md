@@ -144,6 +144,8 @@ Here is the `ComplexConfig::Plugins::MONEY` plugin for example:
 
 ## Changes
 
+* 2017-11-17 Release 0.12.1
+  Do not output newlines when writing encrypted configs, Rails don't like it.
 * 2017-11-16 Release 0.12.0
   * Supports writing of configurations (encrypted or unencrypted)
 * 2017-11-16 Release 0.11.3
