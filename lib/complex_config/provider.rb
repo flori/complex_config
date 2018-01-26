@@ -68,7 +68,7 @@ class ComplexConfig::Provider
       datas << IO.binread(pathname)
     end
     if enc_pathname = pathname.to_s + '.enc' and
-      File.exist?(enc_pathname) and my_key = key(pathname)
+      File.exist?(enc_pathname) and my_key = key_as_bytes(pathname)
     then
       text = IO.binread(enc_pathname)
       datas << ComplexConfig::Encryption.new(my_key).decrypt(text)
@@ -98,39 +98,29 @@ class ComplexConfig::Provider
   end
   memoize method: :[]
 
-  def write_config(name, value, encrypt: false, store_key: false)
+  def write_config(name, value: nil, encrypt: false, store_key: false)
+    name, value = interpret_name_value(name, value)
     config_pathname = pathname(name).to_s
-    key = case encrypt
-          when :random
-            SecureRandom.random_bytes(16)
-          when true
-            key(config_pathname)
-          when String
-            encrypt
-          end
-    hex_key = nil
-    value = value.to_h
     if encrypt
-      key or raise ComplexConfig::EncryptionKeyInvalid,
-        "encryption key is missing"
-      key.size != 16 and raise ComplexConfig::EncryptionKeyInvalid,
-        "encryption keys has to be of 16 bytes lenght"
+      key = provide_key(config_pathname, encrypt)
+      kb = key_to_bytes(key)
       File.secure_write(config_pathname + '.enc') do |out|
-        out.write ComplexConfig::Encryption.new(key).encrypt(prepare_output(value))
+        out.write ComplexConfig::Encryption.new(kb).encrypt(prepare_output(value))
       end
-      hex_key = key.unpack('H*').first
       if store_key
         File.secure_write(config_pathname + '.key') do |out|
-          out.write hex_key
+          out.write key
         end
       end
+      key
     else
       File.secure_write(config_pathname) do |out|
         out.puts prepare_output(value)
       end
+      true
     end
+  ensure
     flush_cache
-    hex_key
   end
 
   def prepare_output(value)
@@ -168,20 +158,61 @@ class ComplexConfig::Provider
   attr_writer :env
 
   def key(pathname = nil)
-    key = [
+    [
       @key,
       read_key_from_file(pathname),
       ENV['COMPLEX_CONFIG_KEY'],
       ENV['RAILS_MASTER_KEY'],
-    ].compact[0, 1].map(&:strip)
-    unless key.empty?
-      key.pack('H*')
-    end
+    ].compact[0, 1].map(&:strip).first
+  end
+
+  def key_as_bytes(pathname = nil)
+    k = key(pathname) or
+      raise ComplexConfig::EncryptionKeyInvalid, "encryption key is missing"
+    key_to_bytes(k)
   end
 
   attr_writer :key
 
   private
+
+  def interpret_name_value(name, value)
+    if ComplexConfig::Settings === name
+      if value
+        name = name.name_prefix
+      else
+        value = name.to_h
+        name  = name.name_prefix
+      end
+    elsif name.respond_to?(:to_sym)
+      value = value.to_h
+    else
+      raise ArgumentError, "name has to be either string/symbol or ComplexConfig::Settings"
+    end
+    return name, value
+  end
+
+  def provide_key(pathname, encrypt)
+    key = case encrypt
+    when :random
+      SecureRandom.hex(16)
+    when true
+      key(pathname)
+    when String
+      if encrypt =~ /\A\h{32}\z/
+        encrypt
+      else
+        raise ComplexConfig::EncryptionKeyInvalid,
+          "encryption key has wrong format, has to be hex number of length "\
+          "32, was #{encrypt.inspect}"
+      end
+    end
+    key or raise ComplexConfig::EncryptionKeyInvalid, "encryption key is missing"
+  end
+
+  def key_to_bytes(key)
+    [ key ].pack('H*')
+  end
 
   def read_key_from_file(pathname)
     if pathname

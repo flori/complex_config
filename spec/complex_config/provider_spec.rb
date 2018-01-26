@@ -9,6 +9,8 @@ RSpec.describe ComplexConfig::Provider do
   reset_new_config = -> * {
     provider.config_dir = Pathname.new(__FILE__).dirname.dirname + 'config'
     provider.key = nil
+    ENV['COMPLEX_CONFIG_KEY'] = nil
+    ENV['RAILS_MASTER_KEY'] = nil
     FileUtils.rm_f(provider.config_dir + 'new_config.yml')
     FileUtils.rm_f(provider.config_dir + 'new_config.yml.enc')
     FileUtils.rm_f(provider.config_dir + 'new_config.yml.key')
@@ -112,14 +114,14 @@ RSpec.describe ComplexConfig::Provider do
     end
 
     it 'can be written' do
-      provider.write_config('new_config', config)
+      provider.write_config('new_config', value: config)
       expect(provider.config(asset('new_config.yml'))).to eq config
     end
 
     it 'can be changed and written' do
       provider.deep_freeze = false
       config.development.config.baz = 'something else'
-      provider.write_config('new_config', config)
+      provider.write_config('new_config', value: config)
       expect(provider.config(asset('new_config.yml')).development.config.baz).to eq 'something else'
     end
   end
@@ -141,14 +143,11 @@ RSpec.describe ComplexConfig::Provider do
     it 'can read when key is in ENV var' do
       ENV['RAILS_MASTER_KEY'] = key
       expect(provider['without-key-file'].development.foo.bar).to eq 'baz'
+      ENV['RAILS_MASTER_KEY'] = nil
     end
 
     it 'can read when key is stored in file' do
       expect(provider['with-key-file'].development.foo.bar).to eq 'baz'
-    end
-
-    it 'can read when key is obtained by calling shell script' do
-      expect(provider['with-shell-script'].development.foo.bar).to eq 'baz'
     end
   end
 
@@ -163,31 +162,57 @@ RSpec.describe ComplexConfig::Provider do
     end
 
     it 'can be written with random key' do
-      key = provider.write_config('new_config', config, encrypt: :random, store_key: false)
+      key = provider.write_config('new_config', value: config, encrypt: :random, store_key: false)
       provider.key = key
       expect(provider.config(asset('new_config.yml'))).to eq config
     end
 
     it 'can be written with random key and store key' do
-      provider.write_config('new_config', config, encrypt: :random, store_key: true)
+      provider.write_config('new_config', value: config, encrypt: :random, store_key: true)
       expect(provider.config(asset('new_config.yml'))).to eq config
     end
 
     it 'can be written with passed key' do
-      provider.write_config('new_config', config)
+      key = SecureRandom.hex(16)
+      provider.write_config('new_config', value: config, encrypt: key)
+      provider.key = key
       expect(provider.config(asset('new_config.yml'))).to eq config
     end
 
     it 'can be written with configured key' do
-      provider.write_config('new_config', config)
+      provider.write_config('new_config', value: config)
+      expect(provider.config(asset('new_config.yml'))).to eq config
+    end
+
+    it 'can be written with COMPLEX_CONFIG_KEY key' do
+      ENV['COMPLEX_CONFIG_KEY'] = SecureRandom.hex(16)
+      k = provider.write_config('new_config', value: config, encrypt: true)
+      expect(k).to eq ENV['COMPLEX_CONFIG_KEY']
+      expect(provider.config(asset('new_config.yml'))).to eq config
+    end
+
+    it 'can be written with RAILS_MASTER_KEY key' do
+      ENV['RAILS_MASTER_KEY'] = SecureRandom.hex(16)
+      k = provider.write_config('new_config', value: config, encrypt: true)
+      expect(k).to eq ENV['RAILS_MASTER_KEY']
       expect(provider.config(asset('new_config.yml'))).to eq config
     end
 
     it 'can be changed and written' do
       provider.deep_freeze = false
+      expect(provider.config(asset('config.yml')).development.config.baz).to eq 'something'
       config.development.config.baz = 'something else'
-      provider.write_config('new_config', config)
+      provider.write_config('new_config', value: config)
       expect(provider.config(asset('new_config.yml')).development.config.baz).to eq 'something else'
+      #
+      new_config = provider.config(asset('new_config.yml'), :new_config)
+      new_config.development.config.baz = 'something else else'
+      provider.write_config new_config
+      expect(provider.config(asset('new_config.yml')).development.config.baz).to eq 'something else else'
+      #
+      new_config = provider.config(asset('new_config.yml'), :new_config)
+      provider.write_config(new_config, value: { development: { config: { baz: 'even more else' } } })
+      #expect(provider.config(asset('new_config.yml')).development.config.baz).to eq 'something else else'
     end
   end
 
