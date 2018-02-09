@@ -68,13 +68,14 @@ class ComplexConfig::Provider
       datas << IO.binread(pathname)
     end
     if enc_pathname = pathname.to_s + '.enc' and
-      File.exist?(enc_pathname) and my_key = key_as_bytes(pathname)
+      File.exist?(enc_pathname) and
+      my_key = key_as_bytes(enc_pathname)
     then
       text = IO.binread(enc_pathname)
       datas << ComplexConfig::Encryption.new(my_key).decrypt(text)
     end
     datas.empty? and raise ComplexConfig::ConfigurationFileMissing,
-      "configuration file #{pathname.inspect} is missing"
+      "configuration file #{pathname.to_s.inspect} is missing"
     results = datas.map { |d| evaluate(pathname, d) }
     hashes = results.map { |r| ::YAML.load(r, pathname) }
     settings = ComplexConfig::Settings.build(name, hashes.shift)
@@ -166,10 +167,13 @@ class ComplexConfig::Provider
     ].compact[0, 1].map(&:strip).first
   end
 
-  def key_as_bytes(pathname = nil)
-    k = key(pathname) or
-      raise ComplexConfig::EncryptionKeyInvalid, "encryption key is missing"
-    key_to_bytes(k)
+  def key_as_bytes(pathname)
+    if k = key(pathname.sub(/\.enc\z/, ''))
+      key_to_bytes(k)
+    else
+      warn "encryption key is missing for #{pathname.to_s.inspect} => Ignoring it!"
+      nil
+    end
   end
 
   attr_writer :key
