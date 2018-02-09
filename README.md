@@ -144,6 +144,8 @@ Here is the `ComplexConfig::Plugins::MONEY` plugin for example:
 
 ## Changes
 
+* 2018-02-09 Release 0.13.1
+  Improve error reporting for encrypted files (missing key)
 * 2018-01-26 Release 0.13.0
   Improve `write_config` interface and more tests
 * 2017-11-17 Release 0.12.2
