@@ -16,9 +16,9 @@ class ComplexConfig::KeySource
 
   def key
     if @var
-      @var&.chomp
+      @var.ask_and_send(:chomp)
     elsif @env_var
-      ENV[@env_var]&.chomp
+      ENV[@env_var].ask_and_send(:chomp)
     elsif master_key?
       IO.binread(@master_key_pathname).chomp
     elsif @pathname

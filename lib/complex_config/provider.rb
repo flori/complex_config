@@ -79,7 +79,7 @@ class ComplexConfig::Provider
     end
     enc_pathname = pathname.to_s + '.enc'
     my_ks        = key_source(pathname)
-    if File.exist?(enc_pathname) && my_ks&.key
+    if File.exist?(enc_pathname) && my_ks.ask_and_send(:key)
       text = IO.binread(enc_pathname)
       datas << ComplexConfig::Encryption.new(my_ks.key_bytes).decrypt(text)
     end
