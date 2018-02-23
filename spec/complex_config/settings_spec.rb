@@ -81,21 +81,21 @@ RSpec.describe ComplexConfig::Settings do
   end
 
   it 'can be represented as a string' do
-    expect(settings.to_s(pair_sep: ' → ', path_sep: ?/)).to eq <<~end
-      foo/bar/baz → true
-      foo/qux → "quux"
-     end
+    expect(settings.to_s(pair_sep: ' → ', path_sep: ?/)).to eq <<EOT
+foo/bar/baz → true
+foo/qux → "quux"
+EOT
   end
 
   it 'can be represented as a string if it has arrays' do
     settings[:ary] = ComplexConfig::Settings[ [ 1, { nested: 2 }, 3 ] ]
-    expect(settings.to_s).to eq <<~end
-      foo.bar.baz = true
-      foo.qux = "quux"
-      ary[0] = 1
-      ary[1].nested = 2
-      ary[2] = 3
-    end
+    expect(settings.to_s).to eq <<EOT
+foo.bar.baz = true
+foo.qux = "quux"
+ary[0] = 1
+ary[1].nested = 2
+ary[2] = 3
+EOT
   end
 
   it 'can be pretty printed' do
@@ -105,13 +105,13 @@ RSpec.describe ComplexConfig::Settings do
   end
 
   it 'can be converted into YAML' do
-    expect(settings.to_yaml).to eq <<~end
-      ---
-      :foo:
-        :bar:
-          :baz: true
-        :qux: quux
-    end
+    expect(settings.to_yaml).to eq <<EOT
+---
+:foo:
+  :bar:
+    :baz: true
+  :qux: quux
+EOT
   end
 
   it 'raises exception if expected attribute is missing' do
