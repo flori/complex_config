@@ -168,8 +168,8 @@ class ComplexConfig::Provider
 
   def key_source(pathname = nil)
     [
-      ComplexConfig::KeySource.new(pathname: pathname),
       ComplexConfig::KeySource.new(var: @key),
+      ComplexConfig::KeySource.new(pathname: pathname),
       ComplexConfig::KeySource.new(env_var: 'COMPLEX_CONFIG_KEY'),
       ComplexConfig::KeySource.new(env_var: 'RAILS_MASTER_KEY'),
       ComplexConfig::KeySource.new(master_key_pathname: master_key_pathname),

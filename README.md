@@ -95,7 +95,7 @@ can for example do in a rails config/initializers file:
 
     ComplexConfig.configure do |config|
       config.deep_freeze = !Rails.env.test? # allow modification during tests b/c of stubs etc.
-      
+
       # config.env = 'some_environment'
 
       # config.config_dir = Rails.root + 'config'
@@ -144,6 +144,10 @@ Here is the `ComplexConfig::Plugins::MONEY` plugin for example:
 
 ## Changes
 
+* 2018-02-23 Release 0.13.3
+  Change evaluation order of key sources
+* 2018-02-23 Release 0.13.2
+  Refactor key sources
 * 2018-02-09 Release 0.13.1
   Improve error reporting for encrypted files (missing key)
 * 2018-01-26 Release 0.13.0
