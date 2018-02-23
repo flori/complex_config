@@ -8,6 +8,8 @@ RSpec.describe 'shortcuts' do
 
   before do
     provider.config_dir = Pathname.new(__FILE__).dirname.dirname + 'config'
+    allow(ENV).to receive(:[]).with('COMPLEX_CONFIG_KEY')
+    allow(ENV).to receive(:[]).with('RAILS_MASTER_KEY')
     allow(ENV).to receive(:[]).with('RAILS_ENV').and_return('development')
   end
 
@@ -35,6 +37,11 @@ RSpec.describe 'shortcuts' do
     settings = complex_config_with_env.config('test')
     expect(settings).to be_a ComplexConfig::Settings
     expect(settings.config.baz).to eq 'something else'
+  end
+
+  it 'complex_config_with_env "shortcut" returns empty settings for non existant envs' do
+    settings = complex_config_with_env.config('nix')
+    expect(settings).to be_a ComplexConfig::Settings
   end
 
   it 'has the alias cc for complex_config_with_env' do

@@ -35,10 +35,8 @@ module ComplexConfig
         config = ::ComplexConfig::Provider[name]
         (class << self; self; end).class_eval do
           define_method(name) do |env = nil|
-            if env
-              config[env]
-            elsif @env
-              config[@env]
+            if env ||= @env
+              config[env] || ::ComplexConfig::Settings.new
             else
               config
             end

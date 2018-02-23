@@ -69,6 +69,16 @@ RSpec.describe ComplexConfig::Provider do
     it 'falls back to current working directory by default' do
       expect(provider.config_dir).to eq Pathname.pwd + 'config'
     end
+
+    it 'can derive master_key_pathname' do
+      expect(provider.master_key_pathname).to eq\
+      Pathname.pwd.join('config/master.key')
+    end
+
+    it 'can set master_key_pathname' do
+      provider.master_key_pathname = 'foo'
+      expect(provider.master_key_pathname).to eq 'foo'
+    end
   end
 
   context 'reading configurations' do
@@ -137,6 +147,7 @@ RSpec.describe ComplexConfig::Provider do
 
     it 'can read when key is set by accessor' do
       provider.key = key
+      expect(provider.key).to eq key.chomp
       expect(provider['without-key-file'].development.foo.bar).to eq 'baz'
     end
 
@@ -229,7 +240,7 @@ RSpec.describe ComplexConfig::Provider do
       expect {
         expect(provider['config']).to be_a ComplexConfig::Settings
       }.to change {
-        provider.instance.__send__(:__mize_cache__).__send__(:size)
+        provider.instance.__send__(:__mize_cache__).instance_variable_get(:@data).size
       }.by(1)
       expect(provider).not_to receive(:config)
       expect(provider['config']).to be_a ComplexConfig::Settings
@@ -241,7 +252,7 @@ RSpec.describe ComplexConfig::Provider do
       expect {
         result = provider.flush_cache
       }.to change {
-        provider.instance.__send__(:__mize_cache__).__send__(:size)
+        provider.instance.__send__(:__mize_cache__).instance_variable_get(:@data).size
       }.by(-1)
       expect(result).to be_a ComplexConfig::Provider
     end
@@ -281,6 +292,18 @@ RSpec.describe ComplexConfig::Provider do
 
     it 'falls back to "development" as a default' do
       expect(provider.env).to eq 'development'
+    end
+
+  end
+
+  context 'shared' do
+    before do
+      provider.config_dir = Pathname.new(__FILE__).dirname.dirname + 'config'
+    end
+
+    it 'can share values' do
+      expect(provider['config'].development.shared).to eq true
+      expect(provider['config'].test.shared).to eq true
     end
   end
 end

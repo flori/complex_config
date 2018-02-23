@@ -1,3 +1,6 @@
+shared:
+  shared: true
+
 development:
   config:
     foo: true

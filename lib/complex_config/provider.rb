@@ -10,8 +10,18 @@ class ComplexConfig::Provider
   include ComplexConfig::Provider::Shortcuts
 
   def initialize
-    @plugins     = Set.new
-    @deep_freeze = true
+    @plugins             = Set.new
+    @deep_freeze         = true
+  end
+
+  attr_writer :master_key_pathname
+
+  def master_key_pathname
+    if @master_key_pathname
+      @master_key_pathname
+    else
+      config_dir + 'master.key'
+    end
   end
 
   def configure_with(config)
@@ -67,12 +77,11 @@ class ComplexConfig::Provider
     if File.exist?(pathname)
       datas << IO.binread(pathname)
     end
-    if enc_pathname = pathname.to_s + '.enc' and
-      File.exist?(enc_pathname) and
-      my_key = key_as_bytes(enc_pathname)
-    then
+    enc_pathname = pathname.to_s + '.enc'
+    my_ks        = key_source(pathname)
+    if File.exist?(enc_pathname) && my_ks&.key
       text = IO.binread(enc_pathname)
-      datas << ComplexConfig::Encryption.new(my_key).decrypt(text)
+      datas << ComplexConfig::Encryption.new(my_ks.key_bytes).decrypt(text)
     end
     datas.empty? and raise ComplexConfig::ConfigurationFileMissing,
       "configuration file #{pathname.to_s.inspect} is missing"
@@ -103,17 +112,16 @@ class ComplexConfig::Provider
     name, value = interpret_name_value(name, value)
     config_pathname = pathname(name).to_s
     if encrypt
-      key = provide_key(config_pathname, encrypt)
-      kb = key_to_bytes(key)
+      ks = provide_key_source(config_pathname, encrypt)
       File.secure_write(config_pathname + '.enc') do |out|
-        out.write ComplexConfig::Encryption.new(kb).encrypt(prepare_output(value))
+        out.write ComplexConfig::Encryption.new(ks.key_bytes).encrypt(prepare_output(value))
       end
       if store_key
         File.secure_write(config_pathname + '.key') do |out|
-          out.write key
+          out.write ks.key
         end
       end
-      key
+      ks.key
     else
       File.secure_write(config_pathname) do |out|
         out.puts prepare_output(value)
@@ -158,25 +166,23 @@ class ComplexConfig::Provider
 
   attr_writer :env
 
-  def key(pathname = nil)
+  def key_source(pathname = nil)
     [
-      @key,
-      read_key_from_file(pathname),
-      ENV['COMPLEX_CONFIG_KEY'],
-      ENV['RAILS_MASTER_KEY'],
-    ].compact[0, 1].map(&:strip).first
+      ComplexConfig::KeySource.new(pathname: pathname),
+      ComplexConfig::KeySource.new(var: @key),
+      ComplexConfig::KeySource.new(env_var: 'COMPLEX_CONFIG_KEY'),
+      ComplexConfig::KeySource.new(env_var: 'RAILS_MASTER_KEY'),
+      ComplexConfig::KeySource.new(master_key_pathname: master_key_pathname),
+    ].find(&:key)
   end
 
-  def key_as_bytes(pathname)
-    if k = key(pathname.sub(/\.enc\z/, ''))
-      key_to_bytes(k)
-    else
-      warn "encryption key is missing for #{pathname.to_s.inspect} => Ignoring it!"
-      nil
-    end
+  def key(pathname = nil)
+    key_source(pathname)&.key
   end
 
   attr_writer :key
+
+  attr_writer :master_key_pathname
 
   private
 
@@ -196,33 +202,22 @@ class ComplexConfig::Provider
     return name, value
   end
 
-  def provide_key(pathname, encrypt)
-    key = case encrypt
-    when :random
-      SecureRandom.hex(16)
-    when true
-      key(pathname)
-    when String
-      if encrypt =~ /\A\h{32}\z/
-        encrypt
-      else
-        raise ComplexConfig::EncryptionKeyInvalid,
-          "encryption key has wrong format, has to be hex number of length "\
-          "32, was #{encrypt.inspect}"
+  def provide_key_source(pathname, encrypt)
+    ks =
+      case encrypt
+      when :random
+        ComplexConfig::KeySource.new(var: SecureRandom.hex(16))
+      when true
+        key_source(pathname)
+      when String
+        if encrypt =~ /\A\h{32}\z/
+          ComplexConfig::KeySource.new(var: encrypt)
+        else
+          raise ComplexConfig::EncryptionKeyInvalid,
+            "encryption key has wrong format, has to be hex number of length "\
+            "32, was #{encrypt.inspect}"
+        end
       end
-    end
-    key or raise ComplexConfig::EncryptionKeyInvalid, "encryption key is missing"
-  end
-
-  def key_to_bytes(key)
-    [ key ].pack('H*')
-  end
-
-  def read_key_from_file(pathname)
-    if pathname
-      IO.binread(pathname.to_s + '.key')
-    end
-  rescue Errno::ENOENT
+    ks or raise ComplexConfig::EncryptionKeyInvalid, "encryption key is missing"
   end
 end
-
