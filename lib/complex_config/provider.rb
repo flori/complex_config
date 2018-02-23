@@ -177,7 +177,7 @@ class ComplexConfig::Provider
   end
 
   def key(pathname = nil)
-    key_source(pathname)&.key
+    key_source(pathname).ask_and_send(:key)
   end
 
   attr_writer :key
