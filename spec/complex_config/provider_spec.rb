@@ -209,6 +209,16 @@ RSpec.describe ComplexConfig::Provider do
       expect(provider.config(asset('new_config.yml'))).to eq config
     end
 
+    it 'can encrypt file content with RAILS_MASTER_KEY key' do
+      ENV['RAILS_MASTER_KEY'] = SecureRandom.hex(16)
+      encrypted = provider.encrypt_config(asset('new_config.yml'), 'test')
+      expect(encrypted).not_to be_empty
+      ks = ComplexConfig::KeySource.new(env_var: 'RAILS_MASTER_KEY')
+      expect(
+        ComplexConfig::Encryption.new(ks.key_bytes).decrypt(encrypted)
+      ).to eq 'test'
+    end
+
     it 'can be changed and written' do
       provider.deep_freeze = false
       expect(provider.config(asset('config.yml')).development.config.baz).to eq 'something'

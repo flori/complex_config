@@ -9,6 +9,7 @@ GemHadar do
   homepage    "https://github.com/flori/#{name}"
   summary     'configuration library'
   description 'This library allows you to access configuration files via a simple interface'
+  executables 'complex_config'
   test_dir    'spec'
   ignore      '.*.sw[pon]', 'pkg', 'Gemfile.lock', 'coverage', '.rvmrc',
     '.AppleDouble', '.DS_Store', '.byebug_history', 'errors.lst'

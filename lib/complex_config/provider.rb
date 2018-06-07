@@ -72,16 +72,27 @@ class ComplexConfig::Provider
     config_dir + "#{name}.yml"
   end
 
+  def decrypt_config(pathname)
+    enc_pathname = pathname.to_s + '.enc'
+    my_ks        = key_source(pathname)
+    if File.exist?(enc_pathname) && my_ks.ask_and_send(:key)
+      text = IO.binread(enc_pathname)
+      ComplexConfig::Encryption.new(my_ks.key_bytes).decrypt(text)
+    end
+  end
+
+  def encrypt_config(pathname, config)
+    ks = key_source(pathname)
+    ComplexConfig::Encryption.new(ks.key_bytes).encrypt(config)
+  end
+
   def config(pathname, name = nil)
     datas = []
     if File.exist?(pathname)
       datas << IO.binread(pathname)
     end
-    enc_pathname = pathname.to_s + '.enc'
-    my_ks        = key_source(pathname)
-    if File.exist?(enc_pathname) && my_ks.ask_and_send(:key)
-      text = IO.binread(enc_pathname)
-      datas << ComplexConfig::Encryption.new(my_ks.key_bytes).decrypt(text)
+    if decrypted = decrypt_config(pathname)
+      datas << decrypted
     end
     datas.empty? and raise ComplexConfig::ConfigurationFileMissing,
       "configuration file #{pathname.to_s.inspect} is missing"

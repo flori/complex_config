@@ -1,0 +1,92 @@
+#!/usr/bin/env ruby
+
+require 'complex_config/rude'
+require 'tins/xt'
+include Tins::GO
+require 'tempfile'
+
+$opts = go 'h'
+
+def usage(msg: 'Displaying help', rc: 0)
+  puts <<~end
+    #{msg}
+
+    Usage: #$0 COMMAND [OPTIONS] [FILENAME]"
+
+    Commands are
+      edit      edit encrypted file FILENAME (suffix .enc)
+      encrypt   encrypt file FILENAME (suffix not .enc)
+      decrypt   decrypt file FILENAME (suffix .enc)
+      display   decrypt and display encrypted file FILENAME (suffix .enc)
+
+    Options are
+
+      -c CONFIG_DIR  set CONFIG_DIR (default: "./config")
+      -h             this help
+
+  end
+  exit rc
+end
+
+def fetch_filename(suffix: true)
+  fn = ARGV.shift.dup or usage msg: "config filename required", rc: 1
+  if suffix
+    unless fn.end_with?('.enc')
+      usage msg: "config filename needs suffix .enc", rc: 1
+    end
+  else
+    if fn.end_with?('.enc')
+      usage msg: "config filename seems to be already encrypted with suffix .enc", rc: 1
+    end
+  end
+  File.exist?(fn) or usage msg: "config filename #{fn} doesn't exist", rc: 1
+  suffix and fn.sub!(/\.enc\z/, '')
+  fn
+end
+
+$opts[?h] and usage
+ComplexConfig::Provider.config_dir = File.expand_path($opts[?c] || './config')
+
+case command = ARGV.shift
+when 'edit'
+  fn = fetch_filename
+  did_not_change = Class.new(StandardError)
+  begin
+    File.secure_write(fn + '.enc') do |f|
+      Tempfile.open('complex_config') do |t|
+        config = ComplexConfig::Provider.decrypt_config(fn)
+        t.write config
+        t.flush
+        system ENV.fetch('EDITOR', 'vi'), t.path
+        new_config = IO.binread(t.path)
+        if config == new_config
+          puts "Configuration hasn't been changed."
+          raise did_not_change
+        else
+          f.write ComplexConfig::Provider.encrypt_config(fn, new_config)
+          puts "New configuration has been written."
+        end
+      end
+    end
+  rescue did_not_change
+  end
+when 'decrypt'
+  fn = fetch_filename
+  File.exist?(fn) and usage msg: "decrypted config #{fn.inspect} already exists", rc: 1
+  File.secure_write(fn) do |f|
+    f.write ComplexConfig::Provider.decrypt_config(fn)
+  end
+  puts "File was decrypted to #{fn.inspect}. You can remove #{(fn + '.enc').inspect} now."
+when 'display'
+  puts ComplexConfig::Provider.decrypt_config(fetch_filename)
+when 'encrypt'
+  fn = fetch_filename suffix: false
+  File.exist?(fn + '.enc') and usage msg: "encrypted config #{(fn + '.enc').inspect} already exists", rc: 1
+  File.secure_write(fn + '.enc') do |f|
+    f.write ComplexConfig::Provider.encrypt_config(fn, IO.binread(fn))
+  end
+  puts "File was encrypted to #{(fn + '.enc').inspect}. You can remove #{fn.inspect} now."
+else
+  usage msg: "Unknown command #{command.inspect}", rc: 1
+end
+
