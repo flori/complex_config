@@ -143,7 +143,9 @@ Here is the `ComplexConfig::Plugins::MONEY` plugin for example:
     end
 
 ## Changes
-
+* 2018-07-06 Release 0.14.0
+  * Better support for rails encryption
+  * Adds `complex_config` executable.
 * 2018-02-23 Release 0.13.3
   Change evaluation order of key sources
 * 2018-02-23 Release 0.13.2
