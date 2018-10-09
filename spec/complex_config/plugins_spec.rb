@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'complex_config/plugins/enable'
 
-RSpec.describe ComplexConfig::Settings do
+RSpec.describe ComplexConfig::Plugins do
   let :provider do
     ComplexConfig::Provider
   end
@@ -15,7 +15,7 @@ RSpec.describe ComplexConfig::Settings do
     ]
   end
 
-  context ComplexConfig::Plugins::URI do
+  context described_class::URI do
     it 'can return an URL string' do
       expect(settings.foo.test_url).to eq 'http://www.ping.de'
     end
@@ -33,7 +33,7 @@ RSpec.describe ComplexConfig::Settings do
     end
   end
 
-  context ComplexConfig::Plugins::MONEY do
+  context described_class::MONEY do
     it 'can return a Fixnum' do
       expect(settings.foo.cash_in_cents).to eq 100_00
     end

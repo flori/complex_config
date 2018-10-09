@@ -7,7 +7,7 @@ RSpec.describe ComplexConfig::Settings do
   end
 
   let :settings do
-    ComplexConfig::Settings[
+    described_class[
       foo: {
         bar: {
           baz: true
@@ -18,12 +18,12 @@ RSpec.describe ComplexConfig::Settings do
   end
 
   it 'can be initialized with a hash' do
-    s = ComplexConfig::Settings.new(foo: 'bar')
+    s = described_class.new(foo: 'bar')
     expect(s.foo).to eq 'bar'
   end
 
   it 'can be duped and changed' do
-    s = ComplexConfig::Settings.new(foo: 'bar')
+    s = described_class.new(foo: 'bar')
     t = s.dup
     expect(s.foo).to eq 'bar'
     t.foo = 'baz'
@@ -41,6 +41,10 @@ RSpec.describe ComplexConfig::Settings do
 
   it 'has a size' do
     expect(settings.size).to eq 1
+  end
+
+  it 'can be empty' do
+    expect(described_class.new).to be_empty
   end
 
   it 'can set its attributes via index method' do
@@ -87,8 +91,12 @@ foo/qux → "quux"
 EOT
   end
 
+  it 'responds with class name if #to_s is called on empty settigs' do
+    expect(described_class.new.to_s).to eq described_class.name
+  end
+
   it 'can be represented as a string if it has arrays' do
-    settings[:ary] = ComplexConfig::Settings[ [ 1, { nested: 2 }, 3 ] ]
+    settings[:ary] = described_class[ [ 1, { nested: 2 }, 3 ] ]
     expect(settings.to_s).to eq <<EOT
 foo.bar.baz = true
 foo.qux = "quux"
@@ -126,12 +134,12 @@ EOT
   end
 
   it 'handles arrays correctly' do
-    settings = ComplexConfig::Settings[ary: [ 1, { hsh: 2 }, 3 ]]
+    settings = described_class[ary: [ 1, { hsh: 2 }, 3 ]]
     expect(settings.to_h).to eq(ary: [ 1, { hsh: 2 }, 3 ])
   end
 
   it 'returns zip if it was set' do
-    settings = ComplexConfig::Settings[zip: 'a string']
+    settings = described_class[zip: 'a string']
     expect(settings.zip).to eq 'a string'
   end
 
