@@ -195,6 +195,18 @@ class ComplexConfig::Provider
 
   attr_writer :master_key_pathname
 
+  def new_key
+    SecureRandom.hex(16)
+  end
+
+  def valid_key?(key)
+    ks = ComplexConfig::KeySource.new(var: key)
+    ComplexConfig::Encryption.new(ks.key_bytes)
+    ks
+  rescue
+    false
+  end
+
   private
 
   def interpret_name_value(name, value)
@@ -217,7 +229,7 @@ class ComplexConfig::Provider
     ks =
       case encrypt
       when :random
-        ComplexConfig::KeySource.new(var: SecureRandom.hex(16))
+        ComplexConfig::KeySource.new(var: new_key)
       when true
         key_source(pathname)
       when String

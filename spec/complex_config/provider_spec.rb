@@ -156,6 +156,11 @@ RSpec.describe ComplexConfig::Provider do
     it 'can read when key is stored in file' do
       expect(described_class['with-key-file'].development.foo.bar).to eq 'baz'
     end
+
+    it 'can check the size of a given key' do
+      expect(described_class).to be_valid_key(key)
+      expect(described_class).not_to be_valid_key(key + ' blub')
+    end
   end
 
   context 'writing encrypted configurations' do

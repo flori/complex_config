@@ -10,7 +10,6 @@ class ComplexConfig::Encryption
   end
 
   def encrypt(text)
-
     @cipher.encrypt
     @cipher.key = @secret
     iv = @cipher.random_iv

@@ -4,8 +4,10 @@ require 'complex_config/rude'
 require 'tins/xt'
 include Tins::GO
 require 'tempfile'
+require 'fileutils'
+include FileUtils
 
-$opts = go 'h'
+$opts = go 'o:n:h'
 
 def usage(msg: 'Displaying help', rc: 0)
   puts <<~end
@@ -14,10 +16,12 @@ def usage(msg: 'Displaying help', rc: 0)
     Usage: #$0 COMMAND [OPTIONS] [FILENAME]"
 
     Commands are
-      edit      edit encrypted file FILENAME (suffix .enc)
-      encrypt   encrypt file FILENAME (suffix not .enc)
-      decrypt   decrypt file FILENAME (suffix .enc)
-      display   decrypt and display encrypted file FILENAME (suffix .enc)
+      edit        edit encrypted file FILENAME (suffix .enc)
+      encrypt     encrypt file FILENAME (suffix not .enc)
+      decrypt     decrypt file FILENAME (suffix .enc)
+      display     decrypt and display encrypted file FILENAME (suffix .enc)
+      new_key     generate a new key and display it
+      recrypt     recrypt a file, -o OLD_KEY to decrypt, -n NEW_KEY to encrypt
 
     Options are
 
@@ -86,7 +90,22 @@ when 'encrypt'
     f.write ComplexConfig::Provider.encrypt_config(fn, IO.binread(fn))
   end
   puts "File was encrypted to #{(fn + '.enc').inspect}. You can remove #{fn.inspect} now."
+when 'new_key'
+  puts ComplexConfig::Provider.new_key
+when 'recrypt'
+  old_key = $opts[?o] && ComplexConfig::Provider.valid_key?($opts[?o]) or
+    usage msg: "-o OLD_KEY option required and has to be valid", rc: 1
+  new_key = $opts[?n] && ComplexConfig::Provider.valid_key?($opts[?n]) or
+    usage msg: "-n NEW_KEY option required and has to be valid", rc: 1
+  encrypted_fn = fetch_filename
+  encrypted_text = IO.binread(encrypted_fn + '.enc')
+  decrypted_text = ComplexConfig::Encryption.new(old_key.key_bytes).decrypt(encrypted_text)
+  recrypted_text = ComplexConfig::Encryption.new(new_key.key_bytes).encrypt(decrypted_text)
+  File.secure_write(encrypted_fn + '.enc') do |f|
+    f.write(recrypted_text)
+    mv encrypted_fn + '.enc', encrypted_fn + '.enc.bak'
+  end
+  puts "File was recrypted as #{(encrypted_fn + '.enc').inspect}. You can remove #{(encrypted_fn + '.enc.bak').inspect} now."
 else
   usage msg: "Unknown command #{command.inspect}", rc: 1
 end
-
