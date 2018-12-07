@@ -24,4 +24,10 @@ RSpec.describe ComplexConfig::Encryption do
   it 'can decrypt' do
     expect(enc.decrypt(encrypted)).to eq value
   end
+
+  it 'raises exception if key is invalid' do
+    enc = described_class.new SecureRandom.bytes(secret.size)
+    expect { enc.decrypt(encrypted) }.to\
+      raise_error ComplexConfig::DecryptionFailed
+  end
 end

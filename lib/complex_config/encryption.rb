@@ -30,7 +30,7 @@ class ComplexConfig::Encryption
     encrypted, iv, auth_tag = text.split('--').map { |v| base64_decode(v) }
 
     auth_tag.nil? || auth_tag.bytes.length != 16 and
-      raise ComplexConfig::DecryptionFailed, "auth_tag #{auth_tag.inspect} invalid"
+      raise ComplexConfig::DecryptionFailed, "auth_tag was invalid"
 
     @cipher.decrypt
     @cipher.key = @secret
@@ -42,6 +42,8 @@ class ComplexConfig::Encryption
     decrypted_data << @cipher.final
 
     Marshal.load(decrypted_data)
+  rescue OpenSSL::Cipher::CipherError
+    raise ComplexConfig::DecryptionFailed, "decryption failed with this key"
   end
 
   private
