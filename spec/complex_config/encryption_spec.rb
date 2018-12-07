@@ -26,7 +26,9 @@ RSpec.describe ComplexConfig::Encryption do
   end
 
   it 'raises exception if key is invalid' do
-    enc = described_class.new SecureRandom.bytes(secret.size)
+    enc = described_class.new Tins::Token.new(
+      alphabet: (0..255).map(&:chr).join, bits: secret.size * 8
+    )
     expect { enc.decrypt(encrypted) }.to\
       raise_error ComplexConfig::DecryptionFailed
   end
