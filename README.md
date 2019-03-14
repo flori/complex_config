@@ -143,6 +143,14 @@ Here is the `ComplexConfig::Plugins::MONEY` plugin for example:
     end
 
 ## Changes
+
+* 2019-03-14 Release 0.16.0
+  * Enable `- trim_mode` for ERB in yml files
+  * Allow `to_json` calls on settings
+* 2019-03-14 Release 0.15.1
+  * Fix shared feature for empy top level settings
+* 2018-12-07 Release 0.15.0
+  * Allow inplace recrypt for encrypted files
 * 2018-07-06 Release 0.14.0
   * Better support for rails encryption
   * Adds `complex_config` executable.

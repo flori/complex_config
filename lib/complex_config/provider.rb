@@ -168,7 +168,7 @@ class ComplexConfig::Provider
   end
 
   def evaluate(pathname, data)
-    erb = ::ERB.new(data)
+    erb = ::ERB.new(data, trim_mode: '-')
     erb.filename = pathname.to_s
     erb.result
   end

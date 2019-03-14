@@ -109,6 +109,10 @@ class ComplexConfig::Settings < BasicObject
     to_h.to_yaml
   end
 
+  def to_json
+    to_h.to_json
+  end
+
   def size
     each.count
   end
