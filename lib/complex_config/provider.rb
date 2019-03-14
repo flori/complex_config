@@ -105,6 +105,8 @@ class ComplexConfig::Provider
       settings.each do |key, value|
         if value.is_a? ComplexConfig::Settings
           value.attributes_update(shared)
+        elsif value.nil?
+          settings[key] = ComplexConfig::Settings.build(nil, shared.dup)
         end
       end
     end

@@ -315,6 +315,7 @@ RSpec.describe ComplexConfig::Provider do
     it 'can share values' do
       expect(described_class['config'].development.shared).to eq true
       expect(described_class['config'].test.shared).to eq true
+      expect(described_class['config'].staging.shared).to eq true
     end
   end
 end

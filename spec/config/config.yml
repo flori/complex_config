@@ -8,6 +8,8 @@ development:
     baz: 'something'
     pi:  <%= Math::PI %>
 
+staging:
+
 test:
   config:
     foo: false
