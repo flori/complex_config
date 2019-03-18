@@ -144,6 +144,8 @@ Here is the `ComplexConfig::Plugins::MONEY` plugin for example:
 
 ## Changes
 
+* 2019-03-18 Release 0.16.2
+  * Improve error message for missing encryption key
 * 2019-03-18 Release 0.16.1
   * Improve error message for missing encryption key
 * 2019-03-14 Release 0.16.0

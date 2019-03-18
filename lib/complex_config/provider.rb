@@ -78,12 +78,13 @@ class ComplexConfig::Provider
     if File.exist?(enc_pathname)
       if my_ks.ask_and_send(:key)
         text = IO.binread(enc_pathname)
-        ComplexConfig::Encryption.new(my_ks.key_bytes).decrypt(text)
+        decrypted = ComplexConfig::Encryption.new(my_ks.key_bytes).decrypt(text)
+        return decrypted, :ok, enc_pathname
       else
-        datas.empty? and raise ComplexConfig::EncryptionKeyMissing,
-          "encryption key for #{enc_pathname.inspect} is missing"
+        return nil, :key_missing, enc_pathname
       end
     end
+    return nil, :file_missing, enc_pathname
   end
 
   def encrypt_config(pathname, config)
@@ -93,14 +94,21 @@ class ComplexConfig::Provider
 
   def config(pathname, name = nil)
     datas = []
-    if File.exist?(pathname)
+    path_exist = File.exist?(pathname)
+    if path_exist
       datas << IO.binread(pathname)
     end
-    if decrypted = decrypt_config(pathname)
+    decrypted, reason, enc_pathname = decrypt_config(pathname)
+    case reason
+    when :ok
       datas << decrypted
+    when :key_missing
+      datas.empty? and raise ComplexConfig::EncryptionKeyMissing,
+        "encryption key for #{enc_pathname.to_s.inspect} is missing"
+    when :file_missing
+      datas.empty? and raise ComplexConfig::ConfigurationFileMissing,
+        "configuration file #{pathname.to_s.inspect} is missing"
     end
-    datas.empty? and raise ComplexConfig::ConfigurationFileMissing,
-      "configuration file #{pathname.to_s.inspect} is missing"
     results = datas.map { |d| evaluate(pathname, d) }
     hashes = results.map { |r| ::YAML.load(r, pathname) }
     settings = ComplexConfig::Settings.build(name, hashes.shift)
@@ -158,7 +166,7 @@ class ComplexConfig::Provider
 
   def exist?(name)
     !!config(pathname(name), name)
-  rescue ComplexConfig::ConfigurationFileMissing
+  rescue ComplexConfig::ConfigurationFileMissing, ComplexConfig::EncryptionKeyMissing
     false
   end
 
