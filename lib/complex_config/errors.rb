@@ -23,6 +23,9 @@ module ComplexConfig
   class EncryptionKeyInvalid < EncryptionError
   end
 
+  class EncryptionKeyMissing < EncryptionError
+  end
+
   class DecryptionFailed < EncryptionError
   end
 end

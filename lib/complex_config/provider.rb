@@ -75,9 +75,14 @@ class ComplexConfig::Provider
   def decrypt_config(pathname)
     enc_pathname = pathname.to_s + '.enc'
     my_ks        = key_source(pathname)
-    if File.exist?(enc_pathname) && my_ks.ask_and_send(:key)
-      text = IO.binread(enc_pathname)
-      ComplexConfig::Encryption.new(my_ks.key_bytes).decrypt(text)
+    if File.exist?(enc_pathname)
+      if my_ks.ask_and_send(:key)
+        text = IO.binread(enc_pathname)
+        ComplexConfig::Encryption.new(my_ks.key_bytes).decrypt(text)
+      else
+        datas.empty? and raise ComplexConfig::EncryptionKeyMissing,
+          "encryption key for #{enc_pathname.inspect} is missing"
+      end
     end
   end
 
