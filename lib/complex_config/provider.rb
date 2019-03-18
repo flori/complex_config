@@ -73,18 +73,7 @@ class ComplexConfig::Provider
   end
 
   def decrypt_config(pathname)
-    enc_pathname = pathname.to_s + '.enc'
-    my_ks        = key_source(pathname)
-    if File.exist?(enc_pathname)
-      if my_ks.ask_and_send(:key)
-        text = IO.binread(enc_pathname)
-        decrypted = ComplexConfig::Encryption.new(my_ks.key_bytes).decrypt(text)
-        return decrypted, :ok, enc_pathname
-      else
-        return nil, :key_missing, enc_pathname
-      end
-    end
-    return nil, :file_missing, enc_pathname
+    decrypt_config_case(pathname).first
   end
 
   def encrypt_config(pathname, config)
@@ -98,7 +87,7 @@ class ComplexConfig::Provider
     if path_exist
       datas << IO.binread(pathname)
     end
-    decrypted, reason, enc_pathname = decrypt_config(pathname)
+    decrypted, reason, enc_pathname = decrypt_config_case(pathname)
     case reason
     when :ok
       datas << decrypted
@@ -223,6 +212,21 @@ class ComplexConfig::Provider
   end
 
   private
+
+  def decrypt_config_case(pathname)
+    enc_pathname = pathname.to_s + '.enc'
+    my_ks        = key_source(pathname)
+    if File.exist?(enc_pathname)
+      if my_ks.ask_and_send(:key)
+        text = IO.binread(enc_pathname)
+        decrypted = ComplexConfig::Encryption.new(my_ks.key_bytes).decrypt(text)
+        return decrypted, :ok, enc_pathname
+      else
+        return nil, :key_missing, enc_pathname
+      end
+    end
+    return nil, :file_missing, enc_pathname
+  end
 
   def interpret_name_value(name, value)
     if ComplexConfig::Settings === name
