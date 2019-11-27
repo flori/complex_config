@@ -9,8 +9,10 @@ development:
     pi:  <%= Math::PI %>
 
 staging:
+  shared: false
 
 test:
+  shared: null
   config:
     foo: false
     bar: true

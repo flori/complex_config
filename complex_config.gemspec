@@ -1,14 +1,14 @@
 # -*- encoding: utf-8 -*-
-# stub: complex_config 0.17.0 ruby lib
+# stub: complex_config 0.17.1 ruby lib
 
 Gem::Specification.new do |s|
   s.name = "complex_config".freeze
-  s.version = "0.17.0"
+  s.version = "0.17.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0".freeze) if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib".freeze]
   s.authors = ["Florian Frank".freeze]
-  s.date = "2019-03-18"
+  s.date = "2019-11-27"
   s.description = "This library allows you to access configuration files via a simple interface".freeze
   s.email = "flori@ping.de".freeze
   s.executables = ["complex_config".freeze]
@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.homepage = "https://github.com/flori/complex_config".freeze
   s.licenses = ["Apache-2.0".freeze]
   s.rdoc_options = ["--title".freeze, "ComplexConfig -- configuration library".freeze, "--main".freeze, "README.md".freeze]
-  s.rubygems_version = "3.0.3".freeze
+  s.rubygems_version = "3.0.6".freeze
   s.summary = "configuration library".freeze
   s.test_files = ["spec/complex_config/config_spec.rb".freeze, "spec/complex_config/encryption_spec.rb".freeze, "spec/complex_config/key_source_spec.rb".freeze, "spec/complex_config/plugins_spec.rb".freeze, "spec/complex_config/provider_spec.rb".freeze, "spec/complex_config/settings_spec.rb".freeze, "spec/complex_config/shortcuts_spec.rb".freeze, "spec/spec_helper.rb".freeze]
 
@@ -25,7 +25,7 @@ Gem::Specification.new do |s|
     s.specification_version = 4
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_development_dependency(%q<gem_hadar>.freeze, ["~> 1.9.1"])
+      s.add_development_dependency(%q<gem_hadar>.freeze, ["~> 1.11.0"])
       s.add_development_dependency(%q<rake>.freeze, [">= 0"])
       s.add_development_dependency(%q<simplecov>.freeze, [">= 0"])
       s.add_development_dependency(%q<rspec>.freeze, [">= 0"])
@@ -34,7 +34,7 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<tins>.freeze, [">= 0"])
       s.add_runtime_dependency(%q<mize>.freeze, ["~> 0.3", ">= 0.3.4"])
     else
-      s.add_dependency(%q<gem_hadar>.freeze, ["~> 1.9.1"])
+      s.add_dependency(%q<gem_hadar>.freeze, ["~> 1.11.0"])
       s.add_dependency(%q<rake>.freeze, [">= 0"])
       s.add_dependency(%q<simplecov>.freeze, [">= 0"])
       s.add_dependency(%q<rspec>.freeze, [">= 0"])
@@ -44,7 +44,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<mize>.freeze, ["~> 0.3", ">= 0.3.4"])
     end
   else
-    s.add_dependency(%q<gem_hadar>.freeze, ["~> 1.9.1"])
+    s.add_dependency(%q<gem_hadar>.freeze, ["~> 1.11.0"])
     s.add_dependency(%q<rake>.freeze, [">= 0"])
     s.add_dependency(%q<simplecov>.freeze, [">= 0"])
     s.add_dependency(%q<rspec>.freeze, [">= 0"])

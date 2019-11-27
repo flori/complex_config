@@ -12,7 +12,7 @@ GemHadar do
   executables 'complex_config'
   test_dir    'spec'
   ignore      '.*.sw[pon]', 'pkg', 'Gemfile.lock', 'coverage', '.rvmrc',
-    '.AppleDouble', '.DS_Store', '.byebug_history', 'errors.lst'
+    '.AppleDouble', '.DS_Store', '.byebug_history', 'errors.lst', 'tags'
 
   readme      'README.md'
   title       "#{name.camelize} -- configuration library"
