@@ -133,7 +133,7 @@ class ComplexConfig::Settings < BasicObject
   def to_s(pair_sep: ' = ', path_sep: ?.)
     empty? and return self.class.name
     pathes(path_sep: path_sep).inject('') do |result, (path, value)|
-      result << "#{path}#{pair_sep}#{value.inspect}\n"
+      result + "#{path}#{pair_sep}#{value.inspect}\n"
     end
   end
 
