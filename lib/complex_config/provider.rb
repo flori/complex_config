@@ -65,7 +65,7 @@ class ComplexConfig::Provider
   end
 
   def config_dir
-    @config_dir || (defined?(Rails) && Rails.root || Pathname.pwd) + 'config'
+    @config_dir || (defined?(Rails) && Rails.respond_to?(:root) && Rails.root || Pathname.pwd) + 'config'
   end
 
   def pathname(name)
