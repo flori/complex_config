@@ -176,7 +176,9 @@ class ComplexConfig::Provider
   end
 
   def env
-    @env || defined?(Rails) && Rails.env || ENV['RAILS_ENV'] || 'development'
+    @env || defined?(Rails) && Rails.respond_to?(:env) && Rails.env ||
+      ENV['RAILS_ENV'] ||
+      'development'
   end
 
   attr_writer :env

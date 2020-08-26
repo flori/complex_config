@@ -1,14 +1,14 @@
 # -*- encoding: utf-8 -*-
-# stub: complex_config 0.18.0 ruby lib
+# stub: complex_config 0.18.1 ruby lib
 
 Gem::Specification.new do |s|
   s.name = "complex_config".freeze
-  s.version = "0.18.0"
+  s.version = "0.18.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0".freeze) if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib".freeze]
   s.authors = ["Florian Frank".freeze]
-  s.date = "2020-01-07"
+  s.date = "2020-08-26"
   s.description = "This library allows you to access configuration files via a simple interface".freeze
   s.email = "flori@ping.de".freeze
   s.executables = ["complex_config".freeze]
