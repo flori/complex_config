@@ -133,6 +133,11 @@ EOT
     expect(settings.foo.baz?).to be_falsy
   end
 
+  it 'can trigger exception on attribute get' do
+    expect(settings.foo.attribute_get!(:bar)).to be_truthy
+    expect { settings.foo.attribute_get!(:baz) }.to raise_error ComplexConfig::AttributeMissing
+  end
+
   it 'handles arrays correctly' do
     settings = described_class[ary: [ 1, { hsh: 2 }, 3 ]]
     expect(settings.to_h).to eq(ary: [ 1, { hsh: 2 }, 3 ])

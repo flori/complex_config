@@ -111,7 +111,7 @@ class ComplexConfig::Settings < BasicObject
   end
 
   def ==(other)
-    to_h == other.to_h
+    other.respond_to?(:to_h) && to_h == other.to_h
   end
 
   def to_yaml
@@ -187,13 +187,23 @@ class ComplexConfig::Settings < BasicObject
     freeze
   end
 
-  def [](name)
+  def attribute_get(name)
     if !attribute_set?(name) and
       value = ::ComplexConfig::Provider.apply_plugins(self, name)
     then
       value
     else
       @table[name.to_sym]
+    end
+  end
+
+  alias [] attribute_get
+
+  def attribute_get!(name)
+    if attribute_set?(name)
+      attribute_get(name)
+    else
+      raise ::ComplexConfig::AttributeMissing, "no attribute named #{name.inspect}"
     end
   end
 
