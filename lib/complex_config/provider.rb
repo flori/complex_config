@@ -169,10 +169,18 @@ class ComplexConfig::Provider
     self
   end
 
-  def evaluate(pathname, data)
-    erb = ::ERB.new(data, nil, '-')
-    erb.filename = pathname.to_s
-    erb.result
+  if RUBY_VERSION >= "3"
+    def evaluate(pathname, data)
+      erb = ::ERB.new(data, trim_mode: '-')
+      erb.filename = pathname.to_s
+      erb.result
+    end
+  else
+    def evaluate(pathname, data)
+      erb = ::ERB.new(data, nil, '-')
+      erb.filename = pathname.to_s
+      erb.result
+    end
   end
 
   def env
