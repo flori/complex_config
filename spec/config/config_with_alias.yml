@@ -1,0 +1,6 @@
+common: &common
+  extended: true
+
+specific:
+  <<: *common
+  foo: true

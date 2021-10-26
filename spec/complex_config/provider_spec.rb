@@ -269,6 +269,17 @@ RSpec.describe ComplexConfig::Provider do
     end
   end
 
+  context 'handling configuration files with aliases (considered unsafe)' do
+    before do
+      described_class.config_dir = Pathname.new(__FILE__).dirname.dirname + 'config'
+    end
+
+    it 'reads yaml files with aliases just fine' do
+      expect { described_class.config(asset('config_with_alias.yml')) }.not_to\
+        raise_error
+    end
+  end
+
   context 'evaluating configuration files with ERB' do
     it 'evaluates a config file correctly' do
       expect(
