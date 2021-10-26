@@ -99,7 +99,12 @@ class ComplexConfig::Provider
         "configuration file #{pathname.to_s.inspect} is missing"
     end
     results = datas.map { |d| evaluate(pathname, d) }
-    hashes = results.map { |r| ::YAML.load(r, pathname) }
+    hashes =
+      if ::Psych::VERSION < "4"
+        results.map { |r| ::YAML.load(r, pathname) }
+      else
+        results.map { |r| ::YAML.load(r, filename: pathname, aliases: true) }
+      end
     settings = ComplexConfig::Settings.build(name, hashes.shift)
     hashes.each { |h| settings.attributes_update(h) }
     if shared = settings.shared?
