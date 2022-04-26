@@ -18,7 +18,7 @@ RSpec.describe ComplexConfig::Encryption do
   end
 
   it 'can encrypt' do
-    expect(enc.encrypt(value)).to match /\A.+--.+--.+==\z/
+    expect(enc.encrypt(value)).to match(/\A.+--.+--.+==\z/)
   end
 
   it 'can decrypt' do
