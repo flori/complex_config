@@ -122,6 +122,10 @@ EOT
 EOT
   end
 
+  it 'can be converted into JSON' do
+    expect(settings.to_json).to eq '{"foo":{"bar":{"baz":true},"qux":"quux"}}'
+  end
+
   it 'raises exception if expected attribute is missing' do
     expect { settings.nix }.to raise_error(ComplexConfig::AttributeMissing)
   end

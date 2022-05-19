@@ -118,8 +118,8 @@ class ComplexConfig::Settings < BasicObject
     to_h.to_yaml
   end
 
-  def to_json
-    to_h.to_json
+  def to_json(*a)
+    to_h.to_json(*a)
   end
 
   def size

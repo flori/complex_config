@@ -13,6 +13,8 @@ GemHadar do
   test_dir    'spec'
   ignore      '.*.sw[pon]', 'pkg', 'Gemfile.lock', 'coverage', '.rvmrc',
     '.AppleDouble', '.DS_Store', '.byebug_history', 'errors.lst', 'tags'
+  package_ignore '.all_images', '.utilsrc', '.rspec', '.tool-versions',
+    '.gitignore'
 
   readme      'README.md'
   title       "#{name.camelize} -- configuration library"
@@ -25,6 +27,7 @@ GemHadar do
   development_dependency 'simplecov'
   development_dependency 'rspec'
   development_dependency 'monetize'
+  development_dependency 'utils'
 end
 
 task :default => :spec
