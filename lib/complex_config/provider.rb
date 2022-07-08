@@ -103,7 +103,7 @@ class ComplexConfig::Provider
       if ::Psych::VERSION < "4"
         results.map { |r| ::YAML.load(r, pathname) }
       else
-        results.map { |r| ::YAML.load(r, filename: pathname, aliases: true) }
+        results.map { |r| ::YAML.load(r, filename: pathname, aliases: true, permitted_classes: [Date, Symbol]) }
       end
     settings = ComplexConfig::Settings.build(name, hashes.shift)
     hashes.each { |h| settings.attributes_update(h) }
