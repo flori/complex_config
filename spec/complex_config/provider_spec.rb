@@ -108,6 +108,13 @@ RSpec.describe ComplexConfig::Provider do
       expect { described_class.config(asset('broken_config.yml')) }.to\
         raise_error(ComplexConfig::ConfigurationSyntaxError)
     end
+
+    it 'can read a configuration file with YAML legacy class' do
+      settings = described_class.config(asset('legacy_classes.yml'))
+      expect(settings).to be_a ComplexConfig::Settings
+      expect(settings.symbol).to eq :symbol
+      expect(settings.date).to be_a Date
+    end
   end
 
   context 'writing configurations' do
