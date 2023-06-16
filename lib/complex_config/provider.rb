@@ -10,8 +10,8 @@ class ComplexConfig::Provider
   include ComplexConfig::Provider::Shortcuts
 
   def initialize
-    @plugins             = Set.new
-    @deep_freeze         = true
+    @plugins     = Set.new
+    @deep_freeze = true
   end
 
   attr_writer :master_key_pathname
