@@ -7,7 +7,7 @@ script: &script |-
   ruby -v
   echo -e "\e[0m"
   bundle
-  rake test
+  rake spec
 
 images:
   ruby:3.3-alpine: *script
