@@ -23,6 +23,7 @@ GemHadar do
   dependency             'json'
   dependency             'tins'
   dependency             'mize', '~> 0.3', '>= 0.3.4'
+  dependency             'base64'
   development_dependency 'rake'
   development_dependency 'simplecov'
   development_dependency 'rspec'
