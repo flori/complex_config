@@ -4,6 +4,7 @@ require 'pathname'
 require 'yaml'
 require 'mize'
 require 'tins/xt/secure_write'
+require 'tins/xt/ask_and_send'
 
 class ComplexConfig::Provider
   include Tins::SexySingleton

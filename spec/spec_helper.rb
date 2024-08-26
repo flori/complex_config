@@ -6,7 +6,7 @@ if ENV['START_SIMPLECOV'].to_i == 1
 end
 require 'rspec'
 begin
-  require 'byebug'
+  require 'debug'
 rescue LoadError
 end
 require 'complex_config'

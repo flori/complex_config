@@ -84,6 +84,12 @@ RSpec.describe ComplexConfig::Provider do
       ).to be_a ComplexConfig::Settings
     end
 
+    it 'cannot read from an empty configuration file' do
+      expect {
+        described_class.config(asset('empty_config.yml'))
+      }.to raise_error(TypeError)
+    end
+
     it 'has deep frozen settings' do
       settings = described_class.config(asset('config.yml'))
       expect(settings).to be_frozen

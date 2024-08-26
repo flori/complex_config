@@ -12,7 +12,7 @@ GemHadar do
   executables 'complex_config'
   test_dir    'spec'
   ignore      '.*.sw[pon]', 'pkg', 'Gemfile.lock', 'coverage', '.rvmrc',
-    '.AppleDouble', '.DS_Store', '.byebug_history', 'errors.lst', 'tags'
+    '.AppleDouble', '.DS_Store', 'errors.lst', 'tags'
   package_ignore '.all_images', '.utilsrc', '.rspec', '.tool-versions',
     '.gitignore'
 

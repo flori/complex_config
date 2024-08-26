@@ -28,6 +28,7 @@ class ComplexConfig::Settings < BasicObject
 
     def build(name, hash)
       name.nil? or self.name_prefix = name.to_sym
+      hash.respond_to?(:to_hash) or raise TypeError, 'require hash to build'
       from_hash(hash)
     ensure
       self.name_prefix = nil
