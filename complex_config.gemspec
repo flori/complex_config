@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0".freeze) if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib".freeze]
   s.authors = ["Florian Frank".freeze]
-  s.date = "2024-09-04"
+  s.date = "2024-09-08"
   s.description = "This library allows you to access configuration files via a simple interface".freeze
   s.email = "flori@ping.de".freeze
   s.executables = ["complex_config".freeze]
@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.homepage = "https://github.com/flori/complex_config".freeze
   s.licenses = ["Apache-2.0".freeze]
   s.rdoc_options = ["--title".freeze, "ComplexConfig -- configuration library".freeze, "--main".freeze, "README.md".freeze]
-  s.rubygems_version = "3.5.16".freeze
+  s.rubygems_version = "3.5.18".freeze
   s.summary = "configuration library".freeze
   s.test_files = ["spec/complex_config/config_spec.rb".freeze, "spec/complex_config/encryption_spec.rb".freeze, "spec/complex_config/key_source_spec.rb".freeze, "spec/complex_config/plugins_spec.rb".freeze, "spec/complex_config/provider_spec.rb".freeze, "spec/complex_config/settings_spec.rb".freeze, "spec/complex_config/shortcuts_spec.rb".freeze, "spec/spec_helper.rb".freeze]
 

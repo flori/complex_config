@@ -20,6 +20,8 @@ GemHadar do
   title       "#{name.camelize} -- configuration library"
   licenses    << 'Apache-2.0'
 
+  clobber 'coverage'
+
   dependency             'json'
   dependency             'tins'
   dependency             'mize', '~> 0.3', '>= 0.3.4'
