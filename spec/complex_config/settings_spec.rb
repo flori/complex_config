@@ -7,7 +7,7 @@ RSpec.describe ComplexConfig::Settings do
   end
 
   let :settings do
-    described_class[
+    obj = described_class[
       foo: {
         bar: {
           baz: true
@@ -15,6 +15,8 @@ RSpec.describe ComplexConfig::Settings do
         qux: 'quux'
       }
     ]
+    obj.name_prefix = 'root'
+    obj
   end
 
   it 'can be initialized with a hash' do
@@ -79,15 +81,15 @@ RSpec.describe ComplexConfig::Settings do
 
   it 'can return a hash with pathes as keys' do
     expect(settings.pathes(path_sep: ?:)).to eq(
-      'foo:bar:baz' => true,
-      'foo:qux'     => "quux"
+      'root:foo:bar:baz' => true,
+      'root:foo:qux'     => "quux"
     )
   end
 
   it 'can be represented as a string' do
     expect(settings.to_s(pair_sep: ' → ', path_sep: ?/)).to eq <<EOT
-foo/bar/baz → true
-foo/qux → "quux"
+root/foo/bar/baz → true
+root/foo/qux → "quux"
 EOT
   end
 
@@ -98,17 +100,33 @@ EOT
   it 'can be represented as a string if it has arrays' do
     settings[:ary] = described_class[ [ 1, { nested: 2 }, 3 ] ]
     expect(settings.to_s).to eq <<EOT
-foo.bar.baz = true
-foo.qux = "quux"
-ary[0] = 1
-ary[1].nested = 2
-ary[2] = 3
+root.foo.bar.baz = true
+root.foo.qux = "quux"
+root.ary[0] = 1
+root.ary[1].nested = 2
+root.ary[2] = 3
+EOT
+  end
+
+  it 'can be represented as tree' do
+    settings[:ary] = described_class[ [ 1, { nested: 2 }, 3 ] ]
+    expect(settings.to_tree.to_s).to eq <<EOT.chomp
+root
+├─ foo
+│  ├─ bar
+│  │  └─ baz = true
+│  └─ qux = "quux"
+└─ ary
+   ├─ 1
+   ├─ 1
+   │  └─ nested = 2
+   └─ 3
 EOT
   end
 
   it 'can be pretty printed' do
     q = double
-    expect(q).to receive(:text).with("foo.bar.baz = true\nfoo.qux = \"quux\"\n")
+    expect(q).to receive(:text).with("root.foo.bar.baz = true\nroot.foo.qux = \"quux\"\n")
     settings.pretty_print(q)
   end
 

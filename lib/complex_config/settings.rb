@@ -123,6 +123,10 @@ class ComplexConfig::Settings < BasicObject
     to_h.to_json(*a)
   end
 
+  def to_tree
+    ::ComplexConfig::Tree.convert(name_prefix, self)
+  end
+
   def size
     each.count
   end
