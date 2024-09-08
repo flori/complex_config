@@ -30,21 +30,40 @@ Given a config file like this and named `config/products.yml`
           name: Flux Capacitor Version 2.0
           price_in_cents: 12_000_00
           manual_pdf_url: "http://brown-inc.com/manuals/fc_20.pdf"
+          components:
+            - Miniature Chrono-Levitation Chamber (mCLC)
+            - Single Gravitational Displacement Coil (SGDC)
+            - Simple Quantum Flux Transducer (SQFT)
+            - Basic Time-Space Navigation System (BTN)
         pro_version:
           name: Flux Capacitor Professional
           price_in_cents: 23_000_00
           manual_pdf_url: "http://brown-inc.com/manuals/fc_pro.pdf"
+          components:
+            - Advanced Chrono-Levitation Chamber (ACL)
+            - Dual Gravitational Displacement Coils (DGDCs)
+            - Advanced Quantum Flux Transducer (AQFT)
+            - Professional Time-Space Navigation System (PTNS)
         enterprise_version:
           name: Flux Capacitor Enterpise
           price_in_cents: 1_600_000_00
           manual_pdf_url: "http://brown-inc.com/manuals/fc_enterprise.pdf"
-
+          components:
+            - Super-Advanced Chrono-Levitation Chamber (SACL)
+            - Quadruple Gravitational Displacement Coils (QGDCs)
+            - Ultra-Advanced Quantum Flux Transducer (UAQFT)
+            - Enterprise Time-Space Navigation System (ETNS)
     test:
       flux_capacitor:
         test_version:
           name: Yadayada
           price_in_cents: 6_66
           manual_pdf_url: "http://staging.brown-inc.com/manuals/fc_10.pdf"
+          components:
+            - Experimental Chrono-Levitation Chamber (ECLC)
+            - Modular Gravitational Displacement Coils (MGDCs)
+            - Variable Quantum Flux Transducer (VQFT)
+            - Development Time-Space Navigation System (DTNS)
 
 and using `require "complex_config/rude"` in the `"development"` environment you
 can now access the configuration.
@@ -82,6 +101,10 @@ You can also fetch config settings from a different environment:
     products.flux_capacitor.test_version.name = "Yadayada"
     products.flux_capacitor.test_version.price_in_cents = 666
     products.flux_capacitor.test_version.manual_pdf_url = "http://staging.brown-inc.com/manuals/fc_10.pdf"
+    products.flux_capacitor.test_version.components[0] = "Experimental Chrono-Levitation Chamber (ECLC)"
+    products.flux_capacitor.test_version.components[1] = "Modular Gravitational Displacement Coils (MGDCs)"
+    products.flux_capacitor.test_version.components[2] = "Variable Quantum Flux Transducer (VQFT)"
+    products.flux_capacitor.test_version.components[3] = "Development Time-Space Navigation System (DTNS)"
 
 Calling `complex_config.products.` instead of `cc(…)` would skip the implicite
 namespacing via the `RAILS_ENV` environment, so
