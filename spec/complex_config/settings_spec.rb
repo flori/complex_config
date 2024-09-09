@@ -86,47 +86,53 @@ RSpec.describe ComplexConfig::Settings do
     )
   end
 
-  it 'can be represented as a string' do
-    expect(settings.to_s(pair_sep: ' → ', path_sep: ?/)).to eq <<EOT
-root/foo/bar/baz → true
-root/foo/qux → "quux"
-EOT
+  it 'can be listed as string' do
+    expect(settings.list(pair_sep: ' → ', path_sep: ?/)).to eq <<~EOT
+      root/foo/bar/baz → true
+      root/foo/qux → "quux"
+    EOT
   end
 
   it 'responds with class name if #to_s is called on empty settigs' do
     expect(described_class.new.to_s).to eq described_class.name
   end
 
-  it 'can be represented as a string if it has arrays' do
+  it 'can be listesd as a string if it has arrays' do
     settings[:ary] = described_class[ [ 1, { nested: 2 }, 3 ] ]
-    expect(settings.to_s).to eq <<EOT
-root.foo.bar.baz = true
-root.foo.qux = "quux"
-root.ary[0] = 1
-root.ary[1].nested = 2
-root.ary[2] = 3
-EOT
+    expect(settings.list).to eq <<~EOT
+      root.foo.bar.baz = true
+      root.foo.qux = "quux"
+      root.ary[0] = 1
+      root.ary[1].nested = 2
+      root.ary[2] = 3
+    EOT
   end
 
   it 'can be represented as tree' do
     settings[:ary] = described_class[ [ 1, { nested: 2 }, 3 ] ]
-    expect(settings.to_tree.to_s).to eq <<EOT.chomp
-root
-├─ foo
-│  ├─ bar
-│  │  └─ baz = true
-│  └─ qux = "quux"
-└─ ary
-   ├─ 1
-   ├─ 1
-   │  └─ nested = 2
-   └─ 3
-EOT
+    expect(settings.to_tree.to_s).to eq <<~EOT.chomp
+      root
+      ├─ foo
+      │  ├─ bar
+      │  │  └─ baz = true
+      │  └─ qux = "quux"
+      └─ ary
+         ├─ 1
+         ├─ 1
+         │  └─ nested = 2
+         └─ 3
+    EOT
   end
 
   it 'can be pretty printed' do
     q = double
-    expect(q).to receive(:text).with("root.foo.bar.baz = true\nroot.foo.qux = \"quux\"\n")
+    expect(q).to receive(:text).with(<<~EOT.chomp)
+      root
+      └─ foo
+         ├─ bar
+         │  └─ baz = true
+         └─ qux = "quux"
+    EOT
     settings.pretty_print(q)
   end
 

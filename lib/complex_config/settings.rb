@@ -135,11 +135,16 @@ class ComplexConfig::Settings < BasicObject
     size == 0
   end
 
-  def to_s(pair_sep: ' = ', path_sep: ?.)
+  def list(pair_sep: ' = ', path_sep: ?.)
     empty? and return self.class.name
     pathes(path_sep: path_sep).inject('') do |result, (path, value)|
       result + "#{path}#{pair_sep}#{value.inspect}\n"
     end
+  end
+
+  def to_s(*)
+    empty? and return self.class.name
+    to_tree.to_s
   end
 
   def pathes(hash = table, path_sep: ?., prefix: name_prefix.to_s, result: {})

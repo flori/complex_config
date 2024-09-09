@@ -98,13 +98,17 @@ plugin return an URI instance:
 You can also fetch config settings from a different environment:
 
     >> pp cc.products(:test); nil
-    products.flux_capacitor.test_version.name = "Yadayada"
-    products.flux_capacitor.test_version.price_in_cents = 666
-    products.flux_capacitor.test_version.manual_pdf_url = "http://staging.brown-inc.com/manuals/fc_10.pdf"
-    products.flux_capacitor.test_version.components[0] = "Experimental Chrono-Levitation Chamber (ECLC)"
-    products.flux_capacitor.test_version.components[1] = "Modular Gravitational Displacement Coils (MGDCs)"
-    products.flux_capacitor.test_version.components[2] = "Variable Quantum Flux Transducer (VQFT)"
-    products.flux_capacitor.test_version.components[3] = "Development Time-Space Navigation System (DTNS)"
+    products
+    └─ flux_capacitor
+       └─ test_version
+          ├─ name = "Yadayada"
+          ├─ price_in_cents = 666
+          ├─ manual_pdf_url = "http://staging.brown-inc.com/manuals/fc_10.pdf"
+          └─ components
+             ├─ "Experimental Chrono-Levitation Chamber (ECLC)"
+             ├─ "Modular Gravitational Displacement Coils (MGDCs)"
+             ├─ "Variable Quantum Flux Transducer (VQFT)"
+             └─ "Development Time-Space Navigation System (DTNS)"kk
 
 Calling `complex_config.products.` instead of `cc(…)` would skip the implicite
 namespacing via the `RAILS_ENV` environment, so
