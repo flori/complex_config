@@ -1,5 +1,12 @@
 # Changes
 
+## 2024-09-09 v0.21.1
+
+* **API Changes**:
+  * The default string representation of ComplexConfig has been changed to a tree-like structure.
+  * The `to_s` method in ComplexConfig::Settings has been renamed to `list`.
+  * A new `list` method has been added to ComplexConfig::Settings for listing settings as a string.
+
 ## 2024-09-09 v0.21.0
 
 * **Tree Representation**:
