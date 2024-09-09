@@ -1,5 +1,11 @@
 # Changes
 
+## 2024-09-09 v0.21.2
+
+* **Settings List Method**:
+	+ Renamed `list` to `attributes_list`.
+	+ Updated tests in `settings_spec.rb` to use the new method name.
+
 ## 2024-09-09 v0.21.1
 
 * **API Changes**:
