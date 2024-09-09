@@ -87,7 +87,7 @@ RSpec.describe ComplexConfig::Settings do
   end
 
   it 'can be listed as string' do
-    expect(settings.list(pair_sep: ' → ', path_sep: ?/)).to eq <<~EOT
+    expect(settings.attributes_list(pair_sep: ' → ', path_sep: ?/)).to eq <<~EOT
       root/foo/bar/baz → true
       root/foo/qux → "quux"
     EOT
@@ -99,7 +99,7 @@ RSpec.describe ComplexConfig::Settings do
 
   it 'can be listesd as a string if it has arrays' do
     settings[:ary] = described_class[ [ 1, { nested: 2 }, 3 ] ]
-    expect(settings.list).to eq <<~EOT
+    expect(settings.attributes_list).to eq <<~EOT
       root.foo.bar.baz = true
       root.foo.qux = "quux"
       root.ary[0] = 1
