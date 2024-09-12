@@ -1,5 +1,13 @@
 # Changes
 
+## 2024-09-12 v0.22.0
+
+* **New Feature: UTF-8 Support**
+	+ Added `utf8` parameter to `Tree#initialize`
+	+ Introduced `default_utf8` method to determine default encoding based on environment variables
+	+ Modified `inner_child_prefix` and `last_child_prefix` methods for UTF-8 and ASCII encodings
+	+ Updated tests in `spec/complex_config/settings_spec.rb`
+
 ## 2024-09-09 v0.21.2
 
 * **Settings List Method**:
