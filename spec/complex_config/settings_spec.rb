@@ -6,6 +6,13 @@ RSpec.describe ComplexConfig::Settings do
     allow(ComplexConfig::Provider.instance).to receive(:plugins).and_return([])
   end
 
+  around do |example|
+    old_locale, ENV['LOCAL'] = 'en_US.UTF-8', ENV['LANG']
+    example.run
+  ensure
+    ENV['LOCAL'] = old_locale
+  end
+
   let :settings do
     obj = described_class[
       foo: {
@@ -124,7 +131,7 @@ RSpec.describe ComplexConfig::Settings do
     EOT
   end
 
-  it 'can be pretty printed' do
+  it 'can be pretty printed with utf8' do
     q = double
     expect(q).to receive(:text).with(<<~EOT.chomp)
       root
@@ -133,6 +140,19 @@ RSpec.describe ComplexConfig::Settings do
          │  └─ baz = true
          └─ qux = "quux"
     EOT
+    settings.pretty_print(q)
+  end
+
+  it 'can be pretty printed with ASCII7' do
+    q = double
+    expect(q).to receive(:text).with(<<~EOT.chomp)
+      root
+      `- foo
+         +- bar
+         |  `- baz = true
+         `- qux = "quux"
+    EOT
+    ENV['LANG'] = 'de_DE.ISO8859-15'
     settings.pretty_print(q)
   end
 

@@ -25,19 +25,32 @@ module ComplexConfig
       end
     end
 
-    def initialize(name)
+    def initialize(name, utf8: default_utf8)
       @name     = name
+      @utf8     = utf8
       @children = []
+    end
+
+    def default_utf8
+      !!(ENV['LANG'] =~ /utf-8\z/i)
     end
 
     private
 
     def inner_child_prefix(i)
-      i.zero? ? "├─ " : "│  "
+      if @utf8
+        i.zero? ? "├─ " : "│  "
+      else
+        i.zero? ? "+- " : "|  "
+      end
     end
 
     def last_child_prefix(i)
-      i.zero? ? "└─ " : "   "
+      if @utf8
+        i.zero? ? "└─ " : "   "
+      else
+        i.zero? ? "`- " : "   "
+      end
     end
 
     public
