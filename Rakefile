@@ -30,7 +30,6 @@ GemHadar do
   development_dependency 'simplecov'
   development_dependency 'rspec'
   development_dependency 'monetize'
-  development_dependency 'utils'
   development_dependency 'debug'
 end
 
