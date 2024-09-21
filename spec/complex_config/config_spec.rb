@@ -16,4 +16,3 @@ RSpec.describe ComplexConfig::Config do
     expect(ComplexConfig::Provider.plugins).to include plugin_code
   end
 end
-

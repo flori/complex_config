@@ -19,7 +19,8 @@ RSpec.describe ComplexConfig::Settings do
         bar: {
           baz: true
         },
-        qux: 'quux'
+        nix: nil,
+        qux: 'quux',
       }
     ]
     obj.name_prefix = 'root'
@@ -69,7 +70,7 @@ RSpec.describe ComplexConfig::Settings do
   end
 
   it 'can display its attribute_names' do
-    expect(settings.foo.attribute_names).to eq [ :bar, :qux ]
+    expect(settings.foo.attribute_names).to eq %i[ bar nix qux ]
   end
 
   it 'can display its attribute_values' do
@@ -83,19 +84,21 @@ RSpec.describe ComplexConfig::Settings do
   end
 
   it 'can be converted into a hash' do
-    expect(settings.foo.to_h).to eq(bar: { baz: true }, qux: 'quux')
+    expect(settings.foo.to_h).to eq(bar: { baz: true }, nix: nil, qux: 'quux')
   end
 
   it 'can return a hash with pathes as keys' do
     expect(settings.pathes(path_sep: ?:)).to eq(
       'root:foo:bar:baz' => true,
-      'root:foo:qux'     => "quux"
+      'root:foo:nix'     => nil,
+      'root:foo:qux'     => "quux",
     )
   end
 
   it 'can be listed as string' do
     expect(settings.attributes_list(pair_sep: ' → ', path_sep: ?/)).to eq <<~EOT
       root/foo/bar/baz → true
+      root/foo/nix → nil
       root/foo/qux → "quux"
     EOT
   end
@@ -108,6 +111,7 @@ RSpec.describe ComplexConfig::Settings do
     settings[:ary] = described_class[ [ 1, { nested: 2 }, 3 ] ]
     expect(settings.attributes_list).to eq <<~EOT
       root.foo.bar.baz = true
+      root.foo.nix = nil
       root.foo.qux = "quux"
       root.ary[0] = 1
       root.ary[1].nested = 2
@@ -122,6 +126,7 @@ RSpec.describe ComplexConfig::Settings do
       ├─ foo
       │  ├─ bar
       │  │  └─ baz = true
+      │  ├─ nix = nil
       │  └─ qux = "quux"
       └─ ary
          ├─ 1
@@ -138,6 +143,7 @@ RSpec.describe ComplexConfig::Settings do
       └─ foo
          ├─ bar
          │  └─ baz = true
+         ├─ nix = nil
          └─ qux = "quux"
     EOT
     settings.pretty_print(q)
@@ -150,6 +156,7 @@ RSpec.describe ComplexConfig::Settings do
       `- foo
          +- bar
          |  `- baz = true
+         +- nix = nil
          `- qux = "quux"
     EOT
     ENV['LANG'] = 'de_DE.ISO8859-15'
@@ -162,12 +169,13 @@ RSpec.describe ComplexConfig::Settings do
 :foo:
   :bar:
     :baz: true
+  :nix:
   :qux: quux
 EOT
   end
 
   it 'can be converted into JSON' do
-    expect(settings.to_json).to eq '{"foo":{"bar":{"baz":true},"qux":"quux"}}'
+    expect(settings.to_json).to eq '{"foo":{"bar":{"baz":true},"nix":null,"qux":"quux"}}'
   end
 
   it 'raises exception if expected attribute is missing' do

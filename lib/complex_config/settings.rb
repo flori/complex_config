@@ -104,7 +104,11 @@ class ComplexConfig::Settings < BasicObject
         if ::Array === v
           v.to_ary.map { |x| (x.ask_and_send(:to_h) rescue x) || x }
         elsif v.respond_to?(:to_h)
-          v.ask_and_send(:to_h) rescue v
+          if v.nil?
+            nil
+          else
+            v.ask_and_send(:to_h) rescue v
+          end
         else
           v
         end

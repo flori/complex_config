@@ -43,4 +43,3 @@ RSpec.describe ComplexConfig::Plugins do
     end
   end
 end
-
