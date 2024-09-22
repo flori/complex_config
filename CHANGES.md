@@ -1,5 +1,21 @@
 # Changes
 
+## 2024-09-22 v0.22.1
+
+#### Bug Fixes and Improvements
+
+* Refactor ComplexConfig settings and specs to handle nil values:
+  * Added `nil` handling in `ComplexConfig::Settings`
+  * Updated `settings_spec.rb` to test for `nil` values
+* Update dependencies and date in gemspec files:
+  - Removed development dependency `'utils'` from Rakefile.
+  - Updated date in `complex_config.gemspec` from "2024-09-13" to "2024-09-22"
+
+* Bumped version to **0.22.1**:
+  - Updated `VERSION` in `lib/complex_config/version.rb` from **0.22.0** to **0.22.1**
+  - Updated `s.version` in `complex_config.gemspec` from **0.22.0** to **0.22.1**
+  - Updated gem stub version in `complex_config.gemspec` from **0.22.0** to **0.22.1**
+
 ## 2024-09-12 v0.22.0
 
 * **New Feature: UTF-8 Support**
