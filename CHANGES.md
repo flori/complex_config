@@ -19,16 +19,16 @@
 ## 2024-09-12 v0.22.0
 
 * **New Feature: UTF-8 Support**
-	+ Added `utf8` parameter to `Tree#initialize`
-	+ Introduced `default_utf8` method to determine default encoding based on environment variables
-	+ Modified `inner_child_prefix` and `last_child_prefix` methods for UTF-8 and ASCII encodings
-	+ Updated tests in `spec/complex_config/settings_spec.rb`
+  + Added `utf8` parameter to `Tree#initialize`
+  + Introduced `default_utf8` method to determine default encoding based on environment variables
+  + Modified `inner_child_prefix` and `last_child_prefix` methods for UTF-8 and ASCII encodings
+  + Updated tests in `spec/complex_config/settings_spec.rb`
 
 ## 2024-09-09 v0.21.2
 
 * **Settings List Method**:
-	+ Renamed `list` to `attributes_list`.
-	+ Updated tests in `settings_spec.rb` to use the new method name.
+  + Renamed `list` to `attributes_list`.
+  + Updated tests in `settings_spec.rb` to use the new method name.
 
 ## 2024-09-09 v0.21.1
 
@@ -40,21 +40,21 @@
 ## 2024-09-09 v0.21.0
 
 * **Tree Representation**:
-	+ Add `Tree` class to convert complex config objects into trees.
-	+ Update `Settings` class to use `Tree` conversion in `to_tree` method.
-	+ Update tests to reflect changes.
+  + Add `Tree` class to convert complex config objects into trees.
+  + Update `Settings` class to use `Tree` conversion in `to_tree` method.
+  + Update tests to reflect changes.
 * **Components Array**: Add components array for flux capacitors
 * **Rakefile and Gemspec**:
-	- Add clobber task for coverage to Rakefile
-	- Update all_images script: update `bundle` to `bundle install --full-index`
+  - Add clobber task for coverage to Rakefile
+  - Update all_images script: update `bundle` to `bundle install --full-index`
 * **.gitignore**: Remove `.byebug_history` from ignored files
 * **Complex Config**:
-	+ Raise type error and add test for empty configuration file.
-	+ Update gemspec to use GemHadar 1.17.0
-	+ Add requirement for tins/xt/ask_and_send in complex_config/provider.rb
-	+ Add check for hash type in ComplexConfig::Settings#build method
-	+ Add test for reading from empty configuration file in provider_spec.rb
-	+ Replace byebug with debug in spec_helper.rb
+  + Raise type error and add test for empty configuration file.
+  + Update gemspec to use GemHadar 1.17.0
+  + Add requirement for tins/xt/ask_and_send in complex_config/provider.rb
+  + Add check for hash type in ComplexConfig::Settings#build method
+  + Add test for reading from empty configuration file in provider_spec.rb
+  + Replace byebug with debug in spec_helper.rb
 
 ## 2024-04-17 v0.20.0
 
@@ -91,13 +91,13 @@
 ## 2021-10-28 v0.19.2
 
 * **New Psych Support**
-	+ Added support for newest Psych 4 library
-	+ Defaults to disabling YAML alias feature
+  + Added support for newest Psych 4 library
+  + Defaults to disabling YAML alias feature
 * **Psych API Update**
-	+ Updated code to use new Psych/YAML API when Psych version < 4
-	+ Retained behavior of evaluating aliases
+  + Updated code to use new Psych/YAML API when Psych version < 4
+  + Retained behavior of evaluating aliases
 * **Ruby Version Bump**
-	+ Updated Ruby version in tool-versions to 3.0.2
+  + Updated Ruby version in tool-versions to 3.0.2
 
 ## 2021-04-09 v0.19.1
 
@@ -107,8 +107,8 @@
 ## 2021-01-05 v0.19.0
 
 * Added two new methods:
-	+ `get_attribute_by_name`
-	+ `get_attributes_by_name`
+  + `get_attribute_by_name`
+  + `get_attributes_by_name`
 
 ## 2020-08-26 v0.18.2
 
@@ -125,13 +125,13 @@
 ## 2020-01-07 v0.18.0
 
 * **New Version Summary**
-	+ Added support for Ruby 2.7.0
-	+ Updated tests to include Ruby 2.7.0
-	+ Refactored code to avoid string modifications
+  + Added support for Ruby 2.7.0
+  + Updated tests to include Ruby 2.7.0
+  + Refactored code to avoid string modifications
 * Significant Changes:
-	* Support added for Ruby 2.7.0
-	* Tests updated to include Ruby 2.7.0
-	* String modification stopped
+  * Support added for Ruby 2.7.0
+  * Tests updated to include Ruby 2.7.0
+  * String modification stopped
 
 ## 2019-11-27 v0.17.1
 
@@ -146,11 +146,11 @@
 ## 2019-03-18 v0.16.2
 
 * **New Feature**: Added support for handling complex scenarios
-	+ Implemented a new logic to handle intricate cases
+  + Implemented a new logic to handle intricate cases
 * Improved error handling and reporting
-	+ Enhanced logging to provide more detailed information about errors
+  + Enhanced logging to provide more detailed information about errors
 * Minor code refactoring
-	+ Simplified some conditional statements
+  + Simplified some conditional statements
 
 ## 2019-03-18 v0.16.1
 
@@ -161,12 +161,12 @@
 ## 2019-03-14 v0.16.0
 
 * **New Features**
-	+ Added support for `trim_mode` in legacy mode
-	+ Enabled `trim_mode` by default
-	+ Added `#to_json` method to settings objects
+  + Added support for `trim_mode` in legacy mode
+  + Enabled `trim_mode` by default
+  + Added `#to_json` method to settings objects
 * **Changes**
-	+ Updated code to use new `trim_mode` feature
-	+ Modified settings objects to include `#to_json` method
+  + Updated code to use new `trim_mode` feature
+  + Modified settings objects to include `#to_json` method
 
 ## 2019-03-14 v0.15.1
 
@@ -183,14 +183,14 @@
 
 * **New Version**: Bumped version
 * **Improved Error Handling**:
-	+ Improved error handling if key isn't valid
-	+ Raises `ComplexConfig::DecryptionFailed` for encrypted files
+  + Improved error handling if key isn't valid
+  + Raises `ComplexConfig::DecryptionFailed` for encrypted files
 * **Compatibility**:
-	+ Make this run on older rubies
+  + Make this run on older rubies
 * **Documentation**:
-	+ Cleanup documentation
+  + Cleanup documentation
 * **RubyGems**:
-	+ Use newest rubygems
+  + Use newest rubygems
 
 ## 2018-06-07 v0.14.0
 
@@ -199,24 +199,24 @@
 ## 2018-02-23 v0.13.3
 
 * **Changes in Evaluation Order**
-	+ The evaluation order of key sources has been modified.
+  + The evaluation order of key sources has been modified.
 
 ## 2018-02-23 v0.13.2
 
 * **Compatibility improvements**
-	+ Be compatible with ancient rubies^3
-	+ Be compatible with ancient rubies^2
-	+ Be compatible with ancient rubies
+  + Be compatible with ancient rubies^3
+  + Be compatible with ancient rubies^2
+  + Be compatible with ancient rubies
 * **Refactoring**
-	+ Refactor key provision with source object
+  + Refactor key provision with source object
 
 ## 2018-02-09 v0.13.1
 
 * **New Features**
-	+ Added information to README file
+  + Added information to README file
 * **Significant Changes**
-	+ Bumped version number
-	+ Improved error reporting for encrypted files with missing keys
+  + Bumped version number
+  + Improved error reporting for encrypted files with missing keys
 
 ## 2018-01-26 v0.13.0
 
@@ -235,11 +235,11 @@
 ## 2017-11-16 v0.12.0
 
 * **New Features**
-	+ Add support for writing configurations (encrypted or not)
+  + Add support for writing configurations (encrypted or not)
 * **Version Bump**
-	+ Bump version to 0.12.0
+  + Bump version to 0.12.0
 * **Compatibility Improvements**
-	+ Support older Rubies
+  + Support older Rubies
 
 ## 2017-11-02 v0.11.3
 
@@ -268,18 +268,18 @@
 
 * **New Version**: Released version 0.9.2.
 * **Performance Improvement**:
-	+ Memoized proxy object for improved performance.
+  + Memoized proxy object for improved performance.
 
 ## 2016-11-23 v0.9.1
 
 * **New Features**
-	+ Use newest RubyGems
-	+ Test on Ruby 2.3.3
+  + Use newest RubyGems
+  + Test on Ruby 2.3.3
 * **Bug Fixes**
-	+ Fix Travis builds
-	+ travis fiddles with RAILS_ENV variable, breaking specs (resolved)
+  + Fix Travis builds
+  + travis fiddles with RAILS_ENV variable, breaking specs (resolved)
 * **Testing Improvements**
-	+ Test newer Rubies
+  + Test newer Rubies
 
 ## 2016-11-22 v0.9.0
 
@@ -296,23 +296,23 @@
 ## 2016-07-18 v0.7.0
 
 * **New Features**
-	+ Added new date functionality
+  + Added new date functionality
 * **Improvements**
     + Simplified `ComplexConfig::Settings` interface by basing it on
       `BasicObject` and reducing mixin usage
 * **Documentation**
-	+ Updated README.md with new changes
+  + Updated README.md with new changes
 
 ## 2016-07-15 v0.6.0
 
 * **Caching Improvements**
-	+ Use `mize` for caching
+  + Use `mize` for caching
 
 ## 2016-06-23 v0.5.2
 
 * **Index Access Feature**
-	+ Fixed issue with incorrect indexing behavior (#56190d3)
-	+ Improved performance and reliability of index access functionality
+  + Fixed issue with incorrect indexing behavior (#56190d3)
+  + Improved performance and reliability of index access functionality
 
 ## 2016-06-23 v0.5.1
 
@@ -321,20 +321,20 @@
       `foo[:bar]` equivalent for a plugin key.
     + Test on Ruby 2.3.1 and 2.4.0-preview1
 * **Infrastructure Changes**
-	+ Use new infrastructure
+  + Use new infrastructure
 * **Bug Fixes**
-	+ Fix typo
+  + Fix typo
 
 ## 2015-11-19 v0.5.0
 
 * **New Features**
-	+ Add configure method
-	+ Add configuration example to README
+  + Add configure method
+  + Add configuration example to README
 * **Bug Fixes**
-	+ Flush cache for every request in rails development
-	+ Change the Changes
+  + Flush cache for every request in rails development
+  + Change the Changes
 * **Improvements**
-	+ Just always skip to avoid interference
+  + Just always skip to avoid interference
 
 ## 2015-11-17 v0.4.0
 
@@ -343,14 +343,14 @@
 ## 2015-11-03 v0.3.1
 
 * **New Features**
-	+ Add missing tins dependency
-	+ Show improved settings output in README.md
-	+ Adds a decent string representation for ComplexConfig::Settings objects
+  + Add missing tins dependency
+  + Show improved settings output in README.md
+  + Adds a decent string representation for ComplexConfig::Settings objects
 * **Dependency Updates**
-	+ Use newest gem hadar
-	+ Add some development_dependencies (including tins)
+  + Use newest gem hadar
+  + Add some development_dependencies (including tins)
 * **Code Improvements**
-	+ Shorten codeclimate snippet
+  + Shorten codeclimate snippet
 
 ## 2015-03-24 v0.3.0
 
@@ -381,28 +381,28 @@
 ## 2015-01-27 v0.2.0
 
 * **New Features**
-	+ Added support for JRuby in tests
-	+ Updated to newest Ruby 2.2
+  + Added support for JRuby in tests
+  + Updated to newest Ruby 2.2
 * **Improvements**
     + Replaced mixin with delegation for Enumerable, allowing attribute names
       like `zip`, `min`, or `max` without conflicts
 * **Documentation**
-	+ Added Apache license file
+  + Added Apache license file
 
 ## 2015-01-01 v0.1.1
 
 * **New Version Summary**
-	+ Use value from non-associative list arrays
-	+ Fix `puts` method to call `to_ary` correctly
-	+ Prevent cash leakage after flushing cache
-	+ Add `to_ary` method for level on demand
+  + Use value from non-associative list arrays
+  + Fix `puts` method to call `to_ary` correctly
+  + Prevent cash leakage after flushing cache
+  + Add `to_ary` method for level on demand
 
 ## 2014-12-15 v0.1.0
 
 * **Significant Changes**:
-	+ Freeze cached configuration by default (versioning)
-	+ Add to-do list for future development
-	+ Integrate CodeClimate for code analysis and improvement
+  + Freeze cached configuration by default (versioning)
+  + Add to-do list for future development
+  + Integrate CodeClimate for code analysis and improvement
 
 ## 2014-12-12 v0.0.0
 
