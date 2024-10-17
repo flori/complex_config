@@ -42,7 +42,6 @@ RSpec.describe ComplexConfig::Provider do
 
     it 'can apply plugins' do
       described_class.add_plugin plugin
-      allow(setting).to receive(:skip).and_throw :skip
       expect(described_class.apply_plugins(setting, :evaluate_plugin)).to eq :evaluated
     end
   end

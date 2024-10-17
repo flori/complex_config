@@ -54,7 +54,7 @@ RSpec.describe 'shortcuts' do
     settings = complex_config_with_env.config
     expect(settings).to be_a ComplexConfig::Settings
     expect(settings.config.baz).to eq 'something'
-    allow(provider).to receive(:env).and_return('test')
+    expect(provider).to receive(:env).and_return('test').at_least(:once)
     settings = complex_config_with_env.config
     expect(settings).to be_a ComplexConfig::Settings
     expect(settings.config.baz).to eq 'something else'
