@@ -24,7 +24,7 @@ class ComplexConfig::KeySource
     elsif @pathname
       IO.binread(@pathname + '.key').chomp
     end
-  rescue Errno::ENOENT
+  rescue Errno::ENOENT, Errno::ENOTDIR
   end
 
   def key_bytes
