@@ -1,5 +1,14 @@
 # Changes
 
+## 2024-10-21 v0.22.2
+
+* Update file to handle ENOENT and ENOTDIR errors when reading from file:
+  + Add `Errno::ENOTDIR` to rescue clause in `ComplexConfig::KeySource`
+  + Rescue both `Errno::ENOENT` and `Errno::ENOTDIR` exceptions for robustness
+* Improved test(s) in specs:
+  + Removed unneeded `allow` statement from `provider_spec.rb`
+  + Modified `shortcuts_spec.rb` to use `at_least(:once)` for `expect(provider).to receive(:env)`
+
 ## 2024-09-22 v0.22.1
 
 #### Bug Fixes and Improvements
