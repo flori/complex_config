@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe ComplexConfig::KeySource do
+describe ComplexConfig::KeySource do
   it 'should provide key from pathname' do
     ks = described_class.new(pathname: asset('with-key-file.yml'))
     expect(ks.key).to eq '90ec1139596f9dfdb51e72277735ce9a'

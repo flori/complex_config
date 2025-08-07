@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe ComplexConfig::Settings do
+describe ComplexConfig::Settings do
   before do
     # Disable all plugins for this spec b/c they interfere with how rspec works
     allow(ComplexConfig::Provider.instance).to receive(:plugins).and_return([])

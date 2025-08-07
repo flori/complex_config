@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'complex_config/plugins/enable'
 
-RSpec.describe ComplexConfig::Plugins do
+describe ComplexConfig::Plugins do
   let :provider do
     ComplexConfig::Provider
   end

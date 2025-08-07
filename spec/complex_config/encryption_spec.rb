@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe ComplexConfig::Encryption do
+describe ComplexConfig::Encryption do
   let :secret do
     "\x1A8\x9E\xA8\xC2\x7F@@6\xB2W\a\x9A)\xCDw"
   end

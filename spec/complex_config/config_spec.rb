@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe ComplexConfig::Config do
+describe ComplexConfig::Config do
   let :plugin_code do
     -> id { skip }
   end

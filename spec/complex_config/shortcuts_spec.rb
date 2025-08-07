@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'complex_config/shortcuts'
 
-RSpec.describe 'shortcuts' do
+describe 'shortcuts' do
   let :provider do
     ComplexConfig::Provider
   end

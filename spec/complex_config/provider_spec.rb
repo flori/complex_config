@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'fileutils'
 
-RSpec.describe ComplexConfig::Provider do
+describe ComplexConfig::Provider do
   reset_new_config = -> * {
     described_class.config_dir = Pathname.new(__FILE__).dirname.dirname + 'config'
     described_class.key = nil
