@@ -13,7 +13,7 @@ GemHadar do
   test_dir    'spec'
   ignore      '.*.sw[pon]', 'pkg', 'Gemfile.lock', 'coverage', '.rvmrc',
     '.AppleDouble', '.DS_Store', 'errors.lst', 'tags'
-  package_ignore '.all_images', '.utilsrc', '.rspec', '.tool-versions',
+  package_ignore '.all_images.yml', '.utilsrc', '.rspec', '.tool-versions',
     '.gitignore'
 
   readme      'README.md'
