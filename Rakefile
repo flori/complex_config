@@ -23,14 +23,15 @@ GemHadar do
   clobber 'coverage'
 
   dependency             'json'
-  dependency             'tins'
-  dependency             'mize', '~> 0.3', '>= 0.3.4'
+  dependency             'tins', '~> 1'
+  dependency             'mize', '~> 0.6'
   dependency             'base64'
   development_dependency 'rake'
   development_dependency 'simplecov'
   development_dependency 'rspec'
   development_dependency 'monetize'
   development_dependency 'debug'
+  development_dependency 'all_images', '~> 0.8'
 end
 
 task :default => :spec
