@@ -213,8 +213,6 @@ class ComplexConfig::Provider
 
   attr_writer :key
 
-  attr_writer :master_key_pathname
-
   def new_key
     SecureRandom.hex(16)
   end
