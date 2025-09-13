@@ -233,7 +233,7 @@ pp cc.products(:test); nil
 
 and output them.
 
-```bash
+```
 products
 └─ flux_capacitor
    └─ test_version
@@ -251,6 +251,147 @@ Calling `complex_config.products.` instead of `cc(…)` would skip the implicit
 namespacing via the `RAILS_ENV` environment, so
 `complex_config(:products).test.flux_capacitor` returns the same settings
 object.
+
+## Encryption Support in ComplexConfig 🛡️
+
+ComplexConfig provides robust encryption capabilities for securing sensitive
+configuration data, with built-in compatibility with Rails' secret encryption
+system.
+
+### Secure Configuration Files 🔐
+
+The library supports encrypting YAML configuration files using AES-128-GCM
+encryption. This allows you to store sensitive information like API keys,
+passwords, and other secrets in your version control without exposing them in
+plain text.
+
+#### Basic Usage 🛠️
+
+```ruby
+# Write encrypted configuration
+ComplexConfig::Provider.write_config('database', 
+  value: { password: 'secret_password' }, 
+  encrypt: :random
+)
+# => Returns the random 128-bit master key as hexadecimal string.
+```
+
+This creates `config/database.yml.enc` which contains the encrypted data and
+returns the master key, which you can provide via an environment variable for
+later read access.
+
+#### Key Management 🔑
+
+ComplexConfig supports multiple key sources in priority order:
+
+1. **Explicit key setting**: Direct assignment via `config.key = 'your-key'`
+2. **Environment variables**: `COMPLEX_CONFIG_KEY` or `RAILS_MASTER_KEY`
+3. **Key files**: Files with `.key` extension alongside encrypted files
+4. **Master key files**: `config/master.key` (Rails-compatible)
+
+#### Rails Integration 🚀
+
+ComplexConfig is fully compatible with Rails' secret encryption system:
+
+```ruby
+# Works seamlessly with Rails master.key
+ENV['RAILS_MASTER_KEY'] = '0123456789abcdef0123456789abcdef' # Do not use this key.
+# Encrypted files created by Rails can be read by ComplexConfig
+```
+
+#### Encryption Process 🔐
+
+The system uses OpenSSL's AES-128-GCM cipher mode which provides both
+confidentiality and authenticity. The encryption process:
+
+1. **Marshals** the configuration object into binary format
+2. **Encrypts** using AES-128-GCM with a randomly generated IV
+3. **Authenticates** with an authentication tag to ensure integrity
+4. **Encodes** all components in base64 and combines them with `--` separators
+
+#### Security Features 🛡️
+
+- **Authenticated Encryption**: Ensures data hasn't been tampered with
+- **Secure Key Handling**: Validates key length requirements (16 bytes for
+  AES-128)
+- **Multiple Sources**: Flexible key management for different deployment
+  scenarios
+- **Atomic Writes**: Uses secure file writing to prevent corruption during
+  encryption operations
+
+This approach allows you to maintain sensitive configuration data securely
+while keeping the same familiar YAML-based workflow that developers expect.
+
+### Command-Line Interface and Encryption Management 🛡️
+
+The `complex_config` executable provides a convenient command-line interface
+for managing encrypted configuration files. This tool is particularly useful
+when you need to securely store sensitive configuration data while maintaining
+easy access during development and deployment.
+
+#### Features ⚙️
+
+- **Secure File Operations**: Encrypts/decrypts configuration files with
+  automatic backup handling
+- **Edit Support**: Opens encrypted files in your preferred editor (`EDITOR`
+  environment variable or `vi` by default) 
+- **Key Management**: Generates new encryption keys and supports key rotation
+- **Atomic Writes**: Uses secure file writing to prevent data corruption
+
+#### Usage Examples 📋
+
+```bash
+# Encrypt a configuration file
+complex_config encrypt config/database.yml
+
+# Decrypt a configuration file  
+complex_config decrypt config/database.yml.enc
+
+# Edit an encrypted configuration file
+complex_config edit config/database.yml.enc
+
+# Display decrypted content without writing to disk
+complex_config display config/database.yml.enc
+
+# Generate a new encryption key
+complex_config new_key
+
+# Recrypt a file with a different key
+complex_config recrypt -o OLD_KEY -n NEW_KEY config/database.yml.enc
+```
+
+#### Security Considerations ⚠️
+
+The script uses symmetric encryption for configuration files. When using
+encrypted configurations:
+
+1. **Key Management**: Store your encryption keys securely (never in version
+   control)
+2. **File Permissions**: Ensure encrypted `.enc` files have appropriate
+   permissions
+3. **Backup Strategy**: The `recrypt` command automatically creates backup
+   files
+
+#### Integration with ComplexConfig 🔗
+
+When you use the `complex_config` executable, it works with the same encryption
+mechanism that ComplexConfig uses internally for its encrypted configuration
+files. This ensures consistency between your application's configuration
+loading and your manual encryption/decryption workflows.
+
+The tool is particularly valuable in development environments where you want to
+maintain sensitive configurations without committing them to version control
+while still being able to easily edit and manage them during development.
+
+#### Environment Variables 📝
+
+- `EDITOR`: Sets the preferred text editor for editing encrypted files
+  (defaults to `vi`)
+- `COMPLEX_CONFIG_KEY`: Can be set to provide a default encryption key
+
+This command-line tool provides a bridge between secure configuration
+management and practical workflow needs, making it easier to maintain encrypted
+configurations without sacrificing usability.
 
 ## Debugging and Troubleshooting 🔍
 
@@ -341,7 +482,7 @@ classDiagram
 
 ### Error Scenarios 🚨
 
-#### Configuration File Access
+#### Configuration File Access 📁
 
 When a configuration file is missing, `ConfigurationFileMissing` is raised.
 This includes both regular `.yml` files and encrypted `.yml.enc` files:
@@ -351,7 +492,7 @@ This includes both regular `.yml` files and encrypted `.yml.enc` files:
 cc.products.flux_capacitor.enterprise_version.name
 ```
 
-#### YAML Syntax Errors
+#### YAML Syntax Errors 🧾
 
 Invalid YAML syntax in configuration files raises `ConfigurationSyntaxError`,
 which wraps the underlying Psych::SyntaxError to provide context:
@@ -361,7 +502,7 @@ which wraps the underlying Psych::SyntaxError to provide context:
 cc.products # ... with invalid YAML content
 ```
 
-#### Attribute Access Errors
+#### Attribute Access Errors ❌
 
 Accessing non-existent attributes raises `AttributeMissing`:
 
@@ -370,7 +511,7 @@ Accessing non-existent attributes raises `AttributeMissing`:
 cc.products.nonexistent_attribute
 ```
 
-#### Encryption Errors
+#### Encryption Errors 🔐
 
 When using encrypted configuration files without proper encryption keys,
 `EncryptionKeyMissing` is raised:
