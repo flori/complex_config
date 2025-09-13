@@ -14,7 +14,7 @@ GemHadar do
   ignore      '.*.sw[pon]', 'pkg', 'Gemfile.lock', 'coverage', '.rvmrc',
     '.AppleDouble', '.DS_Store', 'errors.lst', 'tags'
   package_ignore '.all_images.yml', '.utilsrc', '.rspec', '.tool-versions',
-    '.gitignore'
+    '.gitignore', '.contexts'
 
   readme      'README.md'
   title       "#{name.camelize} -- configuration library"
@@ -31,7 +31,8 @@ GemHadar do
   development_dependency 'rspec'
   development_dependency 'monetize'
   development_dependency 'debug'
-  development_dependency 'all_images', '~> 0.8'
+  development_dependency 'all_images',    '~> 0.8'
+  development_dependency 'context_spook', '~> 0.4'
 end
 
 task :default => :spec
