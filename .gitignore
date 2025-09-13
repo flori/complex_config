@@ -4,6 +4,7 @@
 .yardoc
 Gemfile.lock
 coverage
+cscope.out
 doc
 errors.lst
 pkg

@@ -23,3 +23,30 @@ end
 ssh_tunnel do
   terminal_multiplexer :tmux
 end
+
+code_indexer do
+  verbose false
+
+  gems = %w[
+    base64
+    bigdecimal
+    date
+    erb
+    json
+    mize
+    monetize
+    more_math
+    ostruct
+    psych
+    search_ui
+    stringio
+    sync
+    term-ansicolor
+    test-unit
+    tins
+  ]
+
+  paths {
+    %w[ lib ] + gems.map { `bundle show #{it}` }.map(&:chomp)
+  }
+end

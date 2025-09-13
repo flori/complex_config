@@ -12,7 +12,8 @@ GemHadar do
   executables 'complex_config'
   test_dir    'spec'
   ignore      '.*.sw[pon]', 'pkg', 'Gemfile.lock', 'coverage',
-    '.AppleDouble', '.DS_Store', 'errors.lst', 'tags', 'doc', '.yardoc'
+    '.AppleDouble', '.DS_Store', 'errors.lst', 'tags', 'cscope.out', 'doc',
+    '.yardoc'
   package_ignore '.all_images.yml', '.utilsrc', '.rspec', '.tool-versions',
     '.gitignore', '.contexts'
 
