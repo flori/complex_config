@@ -1,37 +1,37 @@
-# ComplexConfig
+# ComplexConfig 🧠
 
-## Description
+## Description 📝
 
 This library makes your YAML configuration files available via a nice API. It
 also supports different configurations for each `RAILS_ENV` environment and
-using plugins to return more complex settings values.
+using plugins to return more complex settings values. 🚀
 
-## Architecture Overview
+## Architecture Overview 🏗️
 
 ComplexConfig follows a well-defined architectural pattern with clear
 separation of concerns between several key components:
 
-### Core Components
+### Core Components 🧩
 
 **Provider** (`ComplexConfig::Provider`)
-- The central hub managing configuration loading, caching, and access
-- Handles environment-specific configuration selection
-- Manages plugin registration and execution
-- Provides memoization for performance optimization
+- The central hub managing configuration loading, caching, and access 🔄
+- Handles environment-specific configuration selection 🌍
+- Manages plugin registration and execution 🔌
+- Provides memoization for performance optimization ⚡
 
 **Settings** (`ComplexConfig::Settings`)
-- Represents structured configuration data with nested access
-- Implements dynamic attribute access through `method_missing`
-- Supports conversion between different representations (hash, YAML, JSON)
-- Provides deep freezing for immutability
+- Represents structured configuration data with nested access 📊
+- Implements dynamic attribute access through `method_missing` 🧠
+- Supports conversion between different representations (hash, YAML, JSON) 🔄
+- Provides deep freezing for immutability 🔒
 
 **Proxy** (`ComplexConfig::Proxy`)
-- Enables lazy evaluation of configuration access
-- Defers loading until first method call
-- Supports environment-specific lookups
-- Handles safe existence checking
+- Enables lazy evaluation of configuration access ⏳
+- Defers loading until first method call 🚦
+- Supports environment-specific lookups 🌐
+- Handles safe existence checking ❓
 
-### Component Interactions
+### Component Interactions 🔄
 
 ```mermaid
 graph LR
@@ -47,19 +47,19 @@ The Provider acts as the main coordinator, loading configuration files and
 creating Settings objects. The Proxy enables lazy loading, while Plugins can
 augment or transform attribute values at runtime.
 
-### Loading Mechanism
+### Loading Mechanism 📥
 
 ComplexConfig supports two primary access patterns if required via `require
 "complex_config/rude"`:
 
-1. **Environment-aware access** via `cc.config_name` (uses `RAILS_ENV` by default):
+1. **Environment-aware access** via `cc.config_name` (uses `RAILS_ENV` by default): 🌐
 
    ```ruby
    # Loads config/products.yml and applies environment-specific settings
    cc.products
    ```
 
-2. **Explicit environment access** via `complex_config.config_name` (skips automatic environment namespace):
+2. **Explicit environment access** via `complex_config.config_name` (skips automatic environment namespace): 🧪
 
    ```ruby
    # Loads config/products.yml without environment prefix
@@ -69,7 +69,7 @@ ComplexConfig supports two primary access patterns if required via `require
 The proxy system automatically resolves configuration file paths based on
 method names, mapping `cc.products` to `config/products.yml`.
 
-### Environment Prefix Behavior
+### Environment Prefix Behavior 🌍
 
 When using the default `cc` accessor, ComplexConfig automatically applies
 environment-specific configurations. For example, with a YAML file like:
@@ -89,7 +89,7 @@ Accessing `cc.database.host` will return `"localhost"` in development and
 `"db.production.example.com"` in production, automatically selecting the
 appropriate environment section.
 
-### Rails Integration
+### Rails Integration 🚀
 
 ComplexConfig integrates seamlessly with Rails application lifecycle. During
 development, when Rails reloads classes (or the user types `reload!` into the
@@ -97,26 +97,26 @@ console), ComplexConfig automatically flushes its internal cache to ensure that
 configuration changes are picked up correctly. This behavior is handled through
 the Railtie integration which hooks into Rails' `to_prepare` callback.
 
-### Caching Strategy
+### Caching Strategy 📦
 
 ComplexConfig employs memoization through the `mize` gem to cache expensive
 operations like file loading and parsing. In production environments, this
 caching provides performance benefits, while in development, Rails' reloading
 mechanism ensures configuration changes are respected.
 
-### Design Patterns
+### Design Patterns 🎯
 
-- **Delegation**: Provider delegates to Settings for attribute access
+- **Delegation**: Provider delegates to Settings for attribute access 🔄
 - **Strategy Pattern**: Plugins provide different strategies for attribute
-  resolution
-- **Lazy Loading**: Proxy defers configuration loading until needed
+  resolution 🧠
+- **Lazy Loading**: Proxy defers configuration loading until needed ⏳
 - **Singleton**: Provider follows singleton pattern for consistent
-  configuration access
+  configuration access 🔁
 
 This architecture enables flexible, performant configuration management while
 maintaining clean separation between concerns.
 
-## Installation
+## Installation 📦
 
 You can use rubygems to fetch the gem and install it for you:
 
@@ -134,7 +134,7 @@ and bundle. This command will enable all the default plugins and make the `cc`
 and `complex_config` shortcuts available. The configurations are expected to be
 in the `config` subdirectory according to the rails convention.
 
-## Usage
+## Usage 🛠️
 
 Given a config file like this and named `config/products.yml`
 
@@ -184,7 +184,7 @@ test:
 and using `require "complex_config/rude"` in the `"development"` environment
 you can now access the configuration.
 
-### Accessing configuration settings
+### Accessing configuration settings 📦
 
 Fetching the name of a product:
 
@@ -250,19 +250,21 @@ namespacing via the `RAILS_ENV` environment, so
 `complex_config(:products).test.flux_capacitor` returns the same settings
 object.
 
-## Debugging and Troubleshooting
+## Debugging and Troubleshooting 🔍
 
 ComplexConfig provides several built-in methods for inspecting and debugging
 configuration data:
 
-### Inspecting Configuration Structure
+### Inspecting Configuration Structure 🧮
 
 To see all available attributes and their values in a structured format:
 ```ruby
 puts cc.products.flux_capacitor.enterprise_version.attributes_list
 ```
 
-This outputs a tree-like representation showing all configuration paths and values:
+This outputs a representation showing all configuration paths and values listed
+like this:
+
 ```
 name = "Flux Capacitor Enterpise"
 price_in_cents = 160000000
@@ -273,9 +275,10 @@ components[2] = "Ultra-Advanced Quantum Flux Transducer (UAQFT)"
 components[3] = "Enterprise Time-Space Navigation System (ETNS)"
 ```
 
-### Visual Tree Representation
+### Visual Tree Representation 🌲
 
 For a more visual representation of the configuration hierarchy:
+
 ```ruby
 puts cc.products.flux_capacitor.enterprise_version
 ```
@@ -297,13 +300,13 @@ These debugging methods are particularly useful during development when you
 need to verify that your configuration files are loaded correctly and contain
 the expected values.
 
-## Error Handling
+## Error Handling ⚠️
 
 ComplexConfig provides a comprehensive error handling system with specific
 exceptions for different failure scenarios, following Ruby conventions for
 predictable behavior.
 
-### Exception Hierarchy
+### Exception Hierarchy 📚
 
 The library defines a clear exception hierarchy that inherits from `ComplexConfig::ComplexConfigError`:
 
@@ -333,7 +336,7 @@ classDiagram
     EncryptionError <|-- DecryptionFailed
 ```
 
-### Error Scenarios
+### Error Scenarios 🚨
 
 #### Configuration File Access
 
@@ -374,7 +377,7 @@ When using encrypted configuration files without proper encryption keys,
 cc.products # ... with encrypted config but missing key
 ```
 
-### Safe Access Patterns
+### Safe Access Patterns 🛡️
 
 ComplexConfig supports safe access patterns to avoid exceptions in conditional
 contexts:
@@ -390,7 +393,7 @@ if cc.products?(:test)
 end
 ```
 
-### Error Recovery
+### Error Recovery 🛠️
 
 For robust applications, consider wrapping critical configuration access in
 exception handlers:
@@ -410,11 +413,9 @@ end
 The error handling system ensures that configuration loading and access
 failures are predictable and can be handled gracefully by application code.
 
-```
+## Configuration ⚙️
 
-### Configuration
-
-You can complex\_config by passing a block to its configure method, which you
+You can complex_config by passing a block to its configure method, which you
 can for example do in a rails config/initializers file:
 
 ```ruby
@@ -439,33 +440,33 @@ end
 📝 **Note** the `deep_freeze` setting, that is just enabled during testing and
 is explained in the next section.
 
-### Frozen Configuration: Safety and Optimization
+### Frozen Configuration: Safety and Optimization 🔒
 
 The `deep_freeze` setting controls whether configuration objects are deeply
 frozen after initialization. When enabled (default), this provides several
 important benefits:
 
-### Safety Benefits
+#### Safety Benefits 🛡️
 
 - **Immutability**: Configuration values cannot be modified after loading,
-  preventing accidental runtime changes
+  preventing accidental runtime changes 🚫
 - **Thread Safety**: Frozen configurations can be safely shared across threads
-  without synchronization
+  without synchronization 🔄
 - **Security**: Protects against runtime tampering of critical configuration
-  data
+  data 🔒
 
-### Performance Benefits
+#### Performance Benefits ⚡
 
 - **Memory Efficiency**: Ruby's garbage collector can optimize frozen objects
-  more effectively
-- **Cache Efficiency**: Immutable objects can be cached more aggressively
+  more effectively 🧠
+- **Cache Efficiency**: Immutable objects can be cached more aggressively 💾
 - **CPU Optimization**: Ruby's internal optimizations for frozen objects can
   provide performance improvements, if configuration settings are accessed
-  often.
+  often. ⚙️
 - **Predictable Behavior**: Eliminates potential race conditions and state
-  corruption
+  corruption 🧭
 
-### Development Considerations
+#### Development Considerations 🧪
 
 In test environments, you might disable deep freezing to allow for easier
 testing and modification:
@@ -479,7 +480,7 @@ end
 This setting is particularly important in production environments where
 configuration stability and performance are paramount.
 
-### Adding plugins
+### Adding plugins 🔌
 
 You can add your own plugins by calling
 
@@ -495,7 +496,7 @@ ComplexConfig.configure do |config|
 end
 ```
 
-### Implementing your own plugins
+### Implementing your own plugins 🛠️
 
 A plugin is just a lambda expression with a single argument `id` which
 identifies the attribute that is being accessed. If it calls `skip` it won't
@@ -518,16 +519,16 @@ module ComplexConfig::Plugins
 end
 ```
 
-## Download
+## Download 📥
 
 The homepage of this library is located at
 
-* https://github.com/flori/complex\_config
+* https://github.com/flori/complex_config
 
-## Author
+## Author 👨‍💻
 
 [Florian Frank](mailto:flori@ping.de)
 
-## License
+## License 📄
 
 This software is licensed under the Apache 2.0 license.
