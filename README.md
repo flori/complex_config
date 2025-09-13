@@ -415,7 +415,7 @@ failures are predictable and can be handled gracefully by application code.
 
 ## Configuration ⚙️
 
-You can complex_config by passing a block to its configure method, which you
+You can `complex_config` by passing a block to its configure method, which you
 can for example do in a rails config/initializers file:
 
 ```ruby
@@ -437,8 +437,19 @@ ComplexConfig.configure do |config|
 end
 ```
 
+- **`#env`**: Explicitly sets the environment instead of auto-detecting from
+  `RAILS_ENV`
+
+- **`#config_dir`**: Changes the directory where configuration files are loaded
+  from instead of using the default `config` folder
+
+- **`add_plugin`** registers custom lambdas that can transform configuration
+  values at runtime, allowing for intelligent data processing like base64
+  decoding or automatic type conversion when accessing config attributes. See
+  [Adding plugins](#adding-plugins-) below.
+
 📝 **Note** the `deep_freeze` setting, that is just enabled during testing and
-is explained in the next section.
+is explained in the [next section](#frozen-configuration-safety-and-optimization-).
 
 ### Frozen Configuration: Safety and Optimization 🔒
 
@@ -496,7 +507,7 @@ ComplexConfig.configure do |config|
 end
 ```
 
-### Implementing your own plugins 🛠️
+#### Implementing your own plugins 🛠️
 
 A plugin is just a lambda expression with a single argument `id` which
 identifies the attribute that is being accessed. If it calls `skip` it won't
