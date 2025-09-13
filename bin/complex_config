@@ -1,4 +1,14 @@
 #!/usr/bin/env ruby
+#
+# Complex Config Manager
+#
+# A command-line tool for managing encrypted configuration files.
+#
+# Features:
+# - Edit, encrypt, decrypt, and display configuration files
+# - Generate new encryption keys
+# - Re-encrypt files with different keys
+# - Secure file operations to prevent data corruption
 
 require 'complex_config/rude'
 require 'tins/xt'
@@ -9,6 +19,14 @@ include FileUtils
 
 $opts = go 'o:n:h'
 
+# The usage method displays help information and exits the program
+#
+# This method outputs a formatted help message to the standard output,
+# including usage instructions, available commands, and options. It then
+# terminates the program with the specified exit code.
+#
+# @param msg [String] the help message to display
+# @param rc [Integer] the exit code to use when terminating the program
 def usage(msg: 'Displaying help', rc: 0)
   puts <<~end
     #{msg}
@@ -32,6 +50,15 @@ def usage(msg: 'Displaying help', rc: 0)
   exit rc
 end
 
+# The fetch_filename method processes and validates a configuration filename
+#
+# This method retrieves a filename from the command line arguments, verifies
+# its existence, and optionally ensures it has the correct file extension
+# suffix. It handles validation for encrypted configuration files and provides
+# appropriate error messages when requirements are not met.
+#
+# @param suffix [TrueClass, FalseClass] whether to validate or remove the .enc suffix
+# @return [String] the validated filename without the .enc suffix if requested
 def fetch_filename(suffix: true)
   fn = ARGV.shift.dup or usage msg: "config filename required", rc: 1
   if suffix
@@ -105,7 +132,10 @@ when 'recrypt'
     f.write(recrypted_text)
     mv encrypted_fn + '.enc', encrypted_fn + '.enc.bak'
   end
-  puts "File was recrypted as #{(encrypted_fn + '.enc').inspect}. You can remove #{(encrypted_fn + '.enc.bak').inspect} now."
+  puts <<~EOT
+    File was recrypted as #{(encrypted_fn + '.enc').inspect}.
+    You can remove #{(encrypted_fn + '.enc.bak').inspect} now.
+  EOT
 else
   usage msg: "Unknown command #{command.inspect}", rc: 1
 end
