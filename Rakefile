@@ -11,8 +11,8 @@ GemHadar do
   description 'This library allows you to access configuration files via a simple interface'
   executables 'complex_config'
   test_dir    'spec'
-  ignore      '.*.sw[pon]', 'pkg', 'Gemfile.lock', 'coverage', '.rvmrc',
-    '.AppleDouble', '.DS_Store', 'errors.lst', 'tags'
+  ignore      '.*.sw[pon]', 'pkg', 'Gemfile.lock', 'coverage',
+    '.AppleDouble', '.DS_Store', 'errors.lst', 'tags', 'doc', '.yardoc'
   package_ignore '.all_images.yml', '.utilsrc', '.rspec', '.tool-versions',
     '.gitignore', '.contexts'
 

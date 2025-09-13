@@ -1,9 +1,10 @@
 .*.sw[pon]
 .AppleDouble
 .DS_Store
-.rvmrc
+.yardoc
 Gemfile.lock
 coverage
+doc
 errors.lst
 pkg
 tags
