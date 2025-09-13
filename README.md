@@ -141,6 +141,121 @@ namespacing via the `RAILS_ENV` environment, so
 `complex_config(:products).test.flux_capacitor` returns the same settings
 object.
 
+## Error Handling
+
+ComplexConfig provides a comprehensive error handling system with specific
+exceptions for different failure scenarios, following Ruby conventions for
+predictable behavior.
+
+### Exception Hierarchy
+
+The library defines a clear exception hierarchy that inherits from `ComplexConfig::ComplexConfigError`:
+
+```mermaid
+classDiagram
+    class ComplexConfigError {
+        <<abstract>>
+        +message
+    }
+    
+    class AttributeMissing
+    class ConfigurationFileMissing
+    class ConfigurationSyntaxError
+    class EncryptionError {
+        <<abstract>>
+    }
+    class EncryptionKeyInvalid
+    class EncryptionKeyMissing
+    class DecryptionFailed
+    
+    ComplexConfigError <|-- AttributeMissing
+    ComplexConfigError <|-- ConfigurationFileMissing
+    ComplexConfigError <|-- ConfigurationSyntaxError
+    ComplexConfigError <|-- EncryptionError
+    EncryptionError <|-- EncryptionKeyInvalid
+    EncryptionError <|-- EncryptionKeyMissing
+    EncryptionError <|-- DecryptionFailed
+```
+
+### Error Scenarios
+
+#### Configuration File Access
+
+When a configuration file is missing, `ConfigurationFileMissing` is raised.
+This includes both regular `.yml` files and encrypted `.yml.enc` files:
+
+```ruby
+# Raises ComplexConfig::ConfigurationFileMissing if config/products.yml doesn't exist
+cc.products.flux_capacitor.enterprise_version.name
+```
+
+#### YAML Syntax Errors
+
+Invalid YAML syntax in configuration files raises `ConfigurationSyntaxError`,
+which wraps the underlying Psych::SyntaxError to provide context:
+
+```ruby
+# Raises ComplexConfig::ConfigurationSyntaxError for malformed YAML
+cc.products # ... with invalid YAML content
+```
+
+#### Attribute Access Errors
+
+Accessing non-existent attributes raises `AttributeMissing`:
+
+```ruby
+# Raises ComplexConfig::AttributeMissing if 'nonexistent_attribute' doesn't exist
+cc.products.nonexistent_attribute
+```
+
+#### Encryption Errors
+
+When using encrypted configuration files without proper encryption keys,
+`EncryptionKeyMissing` is raised:
+
+```ruby
+# Raises ComplexConfig::EncryptionKeyMissing when no key is available for .enc files
+cc.products # ... with encrypted config but missing key
+```
+
+### Safe Access Patterns
+
+ComplexConfig supports safe access patterns to avoid exceptions in conditional
+contexts:
+
+```ruby
+# Using method names ending with '?' returns nil instead of raising exceptions
+cc.products?(:test)        # Returns nil if 'test' environment doesn't exist
+cc.products.flux_capacitor.enterprise_version.name?  # Returns nil if name attribute missing
+
+# Safe access to configuration that may not exist
+if cc.products?(:test)
+  # Safe to access test config here
+end
+```
+
+### Error Recovery
+
+For robust applications, consider wrapping critical configuration access in
+exception handlers:
+
+```ruby
+begin
+  price = cc.products.flux_capacitor.enterprise_version.price_in_cents
+rescue ComplexConfig::ConfigurationFileMissing => e
+  Rails.logger.warn "Configuration file missing: #{e.message}"
+  # Provide default value or fallback behavior
+rescue ComplexConfig::ConfigurationSyntaxError => e
+  Rails.logger.error "Invalid YAML in configuration: #{e.message}"
+  # Handle invalid syntax appropriately
+end
+```
+
+The error handling system ensures that configuration loading and access
+failures are predictable and can be handled gracefully by application code.
+
+```
+
 ### Configuration
 
 You can complex\_config by passing a block to its configure method, which you
