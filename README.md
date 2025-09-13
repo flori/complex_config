@@ -52,14 +52,16 @@ augment or transform attribute values at runtime.
 ComplexConfig supports two primary access patterns if required via `require
 "complex_config/rude"`:
 
-1. **Environment-aware access** via `cc.config_name` (uses `RAILS_ENV` by default): 🌐
+1. **Environment-aware access** via `cc.config_name` (uses `RAILS_ENV` by
+   default): 🌐
 
    ```ruby
    # Loads config/products.yml and applies environment-specific settings
    cc.products
    ```
 
-2. **Explicit environment access** via `complex_config.config_name` (skips automatic environment namespace): 🧪
+2. **Explicit environment access** via `complex_config.config_name` (skips
+   automatic environment namespace): 🧪
 
    ```ruby
    # Loads config/products.yml without environment prefix
@@ -308,7 +310,8 @@ predictable behavior.
 
 ### Exception Hierarchy 📚
 
-The library defines a clear exception hierarchy that inherits from `ComplexConfig::ComplexConfigError`:
+The library defines a clear exception hierarchy that inherits from
+`ComplexConfig::ComplexConfigError`:
 
 ```mermaid
 classDiagram
