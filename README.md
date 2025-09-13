@@ -19,7 +19,7 @@ separation of concerns between several key components:
 - Manages plugin registration and execution
 - Provides memoization for performance optimization
 
-**Settings** (`ComplexConfig::Settings`) 
+**Settings** (`ComplexConfig::Settings`)
 - Represents structured configuration data with nested access
 - Implements dynamic attribute access through `method_missing`
 - Supports conversion between different representations (hash, YAML, JSON)
@@ -108,7 +108,7 @@ mechanism ensures configuration changes are respected.
 
 - **Delegation**: Provider delegates to Settings for attribute access
 - **Strategy Pattern**: Plugins provide different strategies for attribute
-  resolution  
+  resolution
 - **Lazy Loading**: Proxy defers configuration loading until needed
 - **Singleton**: Provider follows singleton pattern for consistent
   configuration access
@@ -208,7 +208,6 @@ plugin to format it:
 cc.products.flux_capacitor.enterprise_version.price.format # => "€1,600,000.00"
 ```
 
-
 Fetching the URL of a product manual as a string:
 
 ```ruby
@@ -251,6 +250,53 @@ namespacing via the `RAILS_ENV` environment, so
 `complex_config(:products).test.flux_capacitor` returns the same settings
 object.
 
+## Debugging and Troubleshooting
+
+ComplexConfig provides several built-in methods for inspecting and debugging
+configuration data:
+
+### Inspecting Configuration Structure
+
+To see all available attributes and their values in a structured format:
+```ruby
+puts cc.products.flux_capacitor.enterprise_version.attributes_list
+```
+
+This outputs a tree-like representation showing all configuration paths and values:
+```
+name = "Flux Capacitor Enterpise"
+price_in_cents = 160000000
+manual_pdf_url = "http://brown-inc.com/manuals/fc_enterprise.pdf"
+components[0] = "Super-Advanced Chrono-Levitation Chamber (SACL)"
+components[1] = "Quadruple Gravitational Displacement Coils (QGDCs)"
+components[2] = "Ultra-Advanced Quantum Flux Transducer (UAQFT)"
+components[3] = "Enterprise Time-Space Navigation System (ETNS)"
+```
+
+### Visual Tree Representation
+
+For a more visual representation of the configuration hierarchy:
+```ruby
+puts cc.products.flux_capacitor.enterprise_version
+```
+
+This displays the configuration in a tree format:
+```
+products.flux_capacitor.enterprise_version
+├─ name = "Flux Capacitor Enterpise"
+├─ price_in_cents = 160000000
+├─ manual_pdf_url = "http://brown-inc.com/manuals/fc_enterprise.pdf"
+└─ components
+   ├─ "Super-Advanced Chrono-Levitation Chamber (SACL)"
+   ├─ "Quadruple Gravitational Displacement Coils (QGDCs)"
+   ├─ "Ultra-Advanced Quantum Flux Transducer (UAQFT)"
+   └─ "Enterprise Time-Space Navigation System (ETNS)"
+```
+
+These debugging methods are particularly useful during development when you
+need to verify that your configuration files are loaded correctly and contain
+the expected values.
+
 ## Error Handling
 
 ComplexConfig provides a comprehensive error handling system with specific
@@ -267,7 +313,7 @@ classDiagram
         <<abstract>>
         +message
     }
-    
+
     class AttributeMissing
     class ConfigurationFileMissing
     class ConfigurationSyntaxError
@@ -277,7 +323,7 @@ classDiagram
     class EncryptionKeyInvalid
     class EncryptionKeyMissing
     class DecryptionFailed
-    
+
     ComplexConfigError <|-- AttributeMissing
     ComplexConfigError <|-- ConfigurationFileMissing
     ComplexConfigError <|-- ConfigurationSyntaxError
