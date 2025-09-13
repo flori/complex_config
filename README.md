@@ -436,6 +436,49 @@ ComplexConfig.configure do |config|
 end
 ```
 
+📝 **Note** the `deep_freeze` setting, that is just enabled during testing and
+is explained in the next section.
+
+### Frozen Configuration: Safety and Optimization
+
+The `deep_freeze` setting controls whether configuration objects are deeply
+frozen after initialization. When enabled (default), this provides several
+important benefits:
+
+### Safety Benefits
+
+- **Immutability**: Configuration values cannot be modified after loading,
+  preventing accidental runtime changes
+- **Thread Safety**: Frozen configurations can be safely shared across threads
+  without synchronization
+- **Security**: Protects against runtime tampering of critical configuration
+  data
+
+### Performance Benefits
+
+- **Memory Efficiency**: Ruby's garbage collector can optimize frozen objects
+  more effectively
+- **Cache Efficiency**: Immutable objects can be cached more aggressively
+- **CPU Optimization**: Ruby's internal optimizations for frozen objects can
+  provide performance improvements, if configuration settings are accessed
+  often.
+- **Predictable Behavior**: Eliminates potential race conditions and state
+  corruption
+
+### Development Considerations
+
+In test environments, you might disable deep freezing to allow for easier
+testing and modification:
+
+```ruby
+ComplexConfig.configure do |config|
+  config.deep_freeze = false
+end
+```
+
+This setting is particularly important in production environments where
+configuration stability and performance are paramount.
+
 ### Adding plugins
 
 You can add your own plugins by calling
