@@ -6,6 +6,116 @@ This library makes your YAML configuration files available via a nice API. It
 also supports different configurations for each `RAILS_ENV` environment and
 using plugins to return more complex settings values.
 
+## Architecture Overview
+
+ComplexConfig follows a well-defined architectural pattern with clear
+separation of concerns between several key components:
+
+### Core Components
+
+**Provider** (`ComplexConfig::Provider`)
+- The central hub managing configuration loading, caching, and access
+- Handles environment-specific configuration selection
+- Manages plugin registration and execution
+- Provides memoization for performance optimization
+
+**Settings** (`ComplexConfig::Settings`) 
+- Represents structured configuration data with nested access
+- Implements dynamic attribute access through `method_missing`
+- Supports conversion between different representations (hash, YAML, JSON)
+- Provides deep freezing for immutability
+
+**Proxy** (`ComplexConfig::Proxy`)
+- Enables lazy evaluation of configuration access
+- Defers loading until first method call
+- Supports environment-specific lookups
+- Handles safe existence checking
+
+### Component Interactions
+
+```mermaid
+graph LR
+    A[Provider] --> B[Settings]
+    A --> C[Proxy]
+    B --> D[Configuration Files]
+    C --> B
+    A --> E[Plugins]
+    E --> B
+```
+
+The Provider acts as the main coordinator, loading configuration files and
+creating Settings objects. The Proxy enables lazy loading, while Plugins can
+augment or transform attribute values at runtime.
+
+### Loading Mechanism
+
+ComplexConfig supports two primary access patterns if required via `require
+"complex_config/rude"`:
+
+1. **Environment-aware access** via `cc.config_name` (uses `RAILS_ENV` by default):
+
+   ```ruby
+   # Loads config/products.yml and applies environment-specific settings
+   cc.products
+   ```
+
+2. **Explicit environment access** via `complex_config.config_name` (skips automatic environment namespace):
+
+   ```ruby
+   # Loads config/products.yml without environment prefix
+   complex_config.products
+   ```
+
+The proxy system automatically resolves configuration file paths based on
+method names, mapping `cc.products` to `config/products.yml`.
+
+### Environment Prefix Behavior
+
+When using the default `cc` accessor, ComplexConfig automatically applies
+environment-specific configurations. For example, with a YAML file like:
+
+```yaml
+development:
+  database:
+    host: localhost
+    port: 5432
+production:
+  database:
+    host: db.production.example.com
+    port: 5432
+```
+
+Accessing `cc.database.host` will return `"localhost"` in development and
+`"db.production.example.com"` in production, automatically selecting the
+appropriate environment section.
+
+### Rails Integration
+
+ComplexConfig integrates seamlessly with Rails application lifecycle. During
+development, when Rails reloads classes (or the user types `reload!` into the
+console), ComplexConfig automatically flushes its internal cache to ensure that
+configuration changes are picked up correctly. This behavior is handled through
+the Railtie integration which hooks into Rails' `to_prepare` callback.
+
+### Caching Strategy
+
+ComplexConfig employs memoization through the `mize` gem to cache expensive
+operations like file loading and parsing. In production environments, this
+caching provides performance benefits, while in development, Rails' reloading
+mechanism ensures configuration changes are respected.
+
+### Design Patterns
+
+- **Delegation**: Provider delegates to Settings for attribute access
+- **Strategy Pattern**: Plugins provide different strategies for attribute
+  resolution  
+- **Lazy Loading**: Proxy defers configuration loading until needed
+- **Singleton**: Provider follows singleton pattern for consistent
+  configuration access
+
+This architecture enables flexible, performant configuration management while
+maintaining clean separation between concerns.
+
 ## Installation
 
 You can use rubygems to fetch the gem and install it for you:
