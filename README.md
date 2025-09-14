@@ -686,4 +686,4 @@ The homepage of this library is located at
 
 ## License 📄
 
-This software is licensed under the Apache 2.0 license.
+This software is licensed under the [Apache 2.0 license](LICENSE).
