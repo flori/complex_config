@@ -1,5 +1,16 @@
 # Changes
 
+## 2025-09-14 v0.23.0
+
+- **README overhaul** with comprehensive encryption documentation, debugging
+  section, architecture overview, error handling guides, YARD integration,
+  emoji formatting, and updated license link
+- **Enhanced YARD documentation** integrated at module and class levels with
+  comprehensive method documentation, for improved code documentation quality
+  and developer experience.
+- **Test coverage configuration** updated to use `GemHadar::SimpleCov` for
+  improved coverage analysis.
+
 ## 2025-09-11 v0.22.3
 
 - Dependencies updated
@@ -15,11 +26,10 @@
   + Rescue both `Errno::ENOENT` and `Errno::ENOTDIR` exceptions for robustness
 * Improved test(s) in specs:
   + Removed unneeded `allow` statement from `provider_spec.rb`
-  + Modified `shortcuts_spec.rb` to use `at_least(:once)` for `expect(provider).to receive(:env)`
+  + Modified `shortcuts_spec.rb` to use `at_least(:once)` for
+    `expect(provider).to receive(:env)`
 
 ## 2024-09-22 v0.22.1
-
-#### Bug Fixes and Improvements
 
 * Refactor ComplexConfig settings and specs to handle nil values:
   * Added `nil` handling in `ComplexConfig::Settings`
@@ -28,17 +38,14 @@
   - Removed development dependency `'utils'` from Rakefile.
   - Updated date in `complex_config.gemspec` from "2024-09-13" to "2024-09-22"
 
-* Bumped version to **0.22.1**:
-  - Updated `VERSION` in `lib/complex_config/version.rb` from **0.22.0** to **0.22.1**
-  - Updated `s.version` in `complex_config.gemspec` from **0.22.0** to **0.22.1**
-  - Updated gem stub version in `complex_config.gemspec` from **0.22.0** to **0.22.1**
-
 ## 2024-09-12 v0.22.0
 
 * **New Feature: UTF-8 Support**
   + Added `utf8` parameter to `Tree#initialize`
-  + Introduced `default_utf8` method to determine default encoding based on environment variables
-  + Modified `inner_child_prefix` and `last_child_prefix` methods for UTF-8 and ASCII encodings
+  + Introduced `default_utf8` method to determine default encoding based on
+    environment variables
+  + Modified `inner_child_prefix` and `last_child_prefix` methods for UTF-8 and
+    ASCII encodings
   + Updated tests in `spec/complex_config/settings_spec.rb`
 
 ## 2024-09-09 v0.21.2
@@ -50,9 +57,11 @@
 ## 2024-09-09 v0.21.1
 
 * **API Changes**:
-  * The default string representation of ComplexConfig has been changed to a tree-like structure.
+  * The default string representation of ComplexConfig has been changed to a
+    tree-like structure.
   * The `to_s` method in ComplexConfig::Settings has been renamed to `list`.
-  * A new `list` method has been added to ComplexConfig::Settings for listing settings as a string.
+  * A new `list` method has been added to ComplexConfig::Settings for listing
+    settings as a string.
 
 ## 2024-09-09 v0.21.0
 
@@ -63,15 +72,15 @@
 * **Components Array**: Add components array for flux capacitors
 * **Rakefile and Gemspec**:
   - Add clobber task for coverage to Rakefile
-  - Update all_images script: update `bundle` to `bundle install --full-index`
+  - Update `all_images` script: update `bundle` to `bundle install --full-index`
 * **.gitignore**: Remove `.byebug_history` from ignored files
 * **Complex Config**:
   + Raise type error and add test for empty configuration file.
   + Update gemspec to use GemHadar 1.17.0
-  + Add requirement for tins/xt/ask_and_send in complex_config/provider.rb
+  + Add requirement for `tins/xt/ask_and_send` in `complex_config/provider.rb`
   + Add check for hash type in ComplexConfig::Settings#build method
-  + Add test for reading from empty configuration file in provider_spec.rb
-  + Replace byebug with debug in spec_helper.rb
+  + Add test for reading from empty configuration file in `provider_spec.rb`
+  + Replace byebug with debug in `spec_helper.rb`
 
 ## 2024-04-17 v0.20.0
 
@@ -294,13 +303,13 @@
   + Test on Ruby 2.3.3
 * **Bug Fixes**
   + Fix Travis builds
-  + travis fiddles with RAILS_ENV variable, breaking specs (resolved)
+  + travis fiddles with `RAILS_ENV` variable, breaking specs (resolved)
 * **Testing Improvements**
   + Test newer Rubies
 
 ## 2016-11-22 v0.9.0
 
-* **Gem Update**: Updated to newest gem_hadar.
+* **Gem Update**: Updated to newest `gem_hadar`.
 * **Coverage Report**: Only send new coverage report on success.
 * **Manual Run**: We are supposed to run this manually now.
 * **Code Organization**: Moved provider shortcuts into its own module.
@@ -365,7 +374,7 @@
   + Adds a decent string representation for ComplexConfig::Settings objects
 * **Dependency Updates**
   + Use newest gem hadar
-  + Add some development_dependencies (including tins)
+  + Add some `development_dependencies` (including tins)
 * **Code Improvements**
   + Shorten codeclimate snippet
 
