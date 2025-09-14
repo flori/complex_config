@@ -1,5 +1,13 @@
 # Changes
 
+## 2025-09-11 v0.22.3
+
+- Dependencies updated
+  - `gem_hadar`: Updated to **2.4**
+  - `tins`: Updated to **1**
+  - `mize`: Updated to **0.6**
+- Added support for **Ruby 3.4** images in `all_images`
+
 ## 2024-10-21 v0.22.2
 
 * Update file to handle ENOENT and ENOTDIR errors when reading from file:
