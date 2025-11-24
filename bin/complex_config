@@ -17,7 +17,7 @@ require 'tempfile'
 require 'fileutils'
 include FileUtils
 
-$opts = go 'o:n:h'
+$opts = go 'o:n:Ih'
 
 # The usage method displays help information and exits the program
 #
@@ -44,6 +44,7 @@ def usage(msg: 'Displaying help', rc: 0)
     Options are
 
       -c CONFIG_DIR  set CONFIG_DIR (default: "./config")
+      -I             read input from stdin instead of file
       -h             this help
 
   end
@@ -59,7 +60,7 @@ end
 #
 # @param suffix [TrueClass, FalseClass] whether to validate or remove the .enc suffix
 # @return [String] the validated filename without the .enc suffix if requested
-def fetch_filename(suffix: true)
+def fetch_filename(suffix: true, check_exist: true)
   fn = ARGV.shift.dup or usage msg: "config filename required", rc: 1
   if suffix
     unless fn.end_with?('.enc')
@@ -70,7 +71,9 @@ def fetch_filename(suffix: true)
       usage msg: "config filename seems to be already encrypted with suffix .enc", rc: 1
     end
   end
-  File.exist?(fn) or usage msg: "config filename #{fn} doesn't exist", rc: 1
+  if check_exist
+    File.exist?(fn) or usage msg: "config filename #{fn} doesn't exist", rc: 1
+  end
   suffix and fn.sub!(/\.enc\z/, '')
   fn
 end
@@ -109,12 +112,21 @@ when 'decrypt'
 when 'display'
   puts ComplexConfig::Provider.decrypt_config(fetch_filename)
 when 'encrypt'
-  fn = fetch_filename suffix: false
+  fn = fetch_filename suffix: false, check_exist: !$opts[?I]
   File.exist?(fn + '.enc') and usage msg: "encrypted config #{(fn + '.enc').inspect} already exists", rc: 1
-  File.secure_write(fn + '.enc') do |f|
-    f.write ComplexConfig::Provider.encrypt_config(fn, IO.binread(fn))
+  if $opts[?I]
+    encrypted_data = ComplexConfig::Provider.encrypt_config(fn, $stdin.read)
+    File.secure_write(fn + '.enc') do |f|
+      f.write encrypted_data
+    end
+    puts "File was encrypted to #{(fn + '.enc').inspect} from stdin."
+  else
+    encrypted_data = ComplexConfig::Provider.encrypt_config(fn, IO.binread(fn))
+    File.secure_write(fn + '.enc') do |f|
+      f.write encrypted_data
+    end
+    puts "File was encrypted to #{(fn + '.enc').inspect}. You can remove #{fn.inspect} now."
   end
-  puts "File was encrypted to #{(fn + '.enc').inspect}. You can remove #{fn.inspect} now."
 when 'new_key'
   puts ComplexConfig::Provider.new_key
 when 'recrypt'
