@@ -17,7 +17,7 @@ require 'tempfile'
 require 'fileutils'
 include FileUtils
 
-$opts = go 'o:n:Ih'
+$opts = go 'o:n:IOh'
 
 # The usage method displays help information and exits the program
 #
@@ -37,14 +37,15 @@ def usage(msg: 'Displaying help', rc: 0)
       edit        edit encrypted file FILENAME (suffix .enc)
       encrypt     encrypt file FILENAME (suffix not .enc)
       decrypt     decrypt file FILENAME (suffix .enc)
-      display     decrypt and display encrypted file FILENAME (suffix .enc)
+      display     alias for for decrypt -O
       new_key     generate a new key and display it
       recrypt     recrypt a file, -o OLD_KEY to decrypt, -n NEW_KEY to encrypt
 
     Options are
 
       -c CONFIG_DIR  set CONFIG_DIR (default: "./config")
-      -I             read input from stdin instead of file
+      -I             read input from stdin instead of file (encrypt)
+      -O             write output to stdout instead of file (decrypt)
       -h             this help
 
   end
@@ -104,13 +105,17 @@ when 'edit'
   end
 when 'decrypt'
   fn = fetch_filename
-  File.exist?(fn) and usage msg: "decrypted config #{fn.inspect} already exists", rc: 1
-  File.secure_write(fn) do |f|
-    f.write ComplexConfig::Provider.decrypt_config(fn)
+  if $opts[?O]
+    $stdout.puts ComplexConfig::Provider.decrypt_config(fn)
+  else
+    File.exist?(fn) and usage msg: "decrypted config #{fn.inspect} already exists", rc: 1
+    File.secure_write(fn) do |f|
+      f.write ComplexConfig::Provider.decrypt_config(fn)
+    end
+    puts "File was decrypted to #{fn.inspect}. You can remove #{(fn + '.enc').inspect} now."
   end
-  puts "File was decrypted to #{fn.inspect}. You can remove #{(fn + '.enc').inspect} now."
 when 'display'
-  puts ComplexConfig::Provider.decrypt_config(fetch_filename)
+  $stdout.puts ComplexConfig::Provider.decrypt_config(fetch_filename)
 when 'encrypt'
   fn = fetch_filename suffix: false, check_exist: !$opts[?I]
   File.exist?(fn + '.enc') and usage msg: "encrypted config #{(fn + '.enc').inspect} already exists", rc: 1
