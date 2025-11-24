@@ -21,4 +21,3 @@ context do
 
   meta ruby: RUBY_DESCRIPTION
 end
-
