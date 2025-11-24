@@ -1,5 +1,16 @@
 # Changes
 
+## 2025-11-24 v0.24.0
+
+- Added `-O` option to `complex_config` decrypt command to write output to stdout
+- Added `-I` option to `complex_config` encrypt command to read input from stdin
+- Modified `decrypt` command to handle stdout output when `-O` flag is present
+- Marked `display` as alias for `decrypt -O` in help text
+- Replaced custom `did_not_change` exception with `catch`/`throw` mechanism in edit command
+- Updated `rubygems_version` from **3.6.9** to **3.7.2**
+- Updated `gem_hadar` development dependency from **~> 2.6** to **~> 2.8**
+- Added `openssl-dev` to apk packages in `.all_images.yml`
+
 ## 2025-09-14 v0.23.0
 
 - **README overhaul** with comprehensive encryption documentation, debugging
