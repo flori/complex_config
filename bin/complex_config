@@ -81,8 +81,7 @@ ComplexConfig::Provider.config_dir = File.expand_path($opts[?c] || './config')
 case command = ARGV.shift
 when 'edit'
   fn = fetch_filename
-  did_not_change = Class.new(StandardError)
-  begin
+  catch :did_not_change do
     File.secure_write(fn + '.enc') do |f|
       Tempfile.open('complex_config') do |t|
         config = ComplexConfig::Provider.decrypt_config(fn)
@@ -92,14 +91,13 @@ when 'edit'
         new_config = IO.binread(t.path)
         if config == new_config
           puts "Configuration hasn't been changed."
-          raise did_not_change
+          throw :did_not_change
         else
           f.write ComplexConfig::Provider.encrypt_config(fn, new_config)
           puts "New configuration has been written."
         end
       end
     end
-  rescue did_not_change
   end
 when 'decrypt'
   fn = fetch_filename
