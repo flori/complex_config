@@ -674,6 +674,26 @@ module ComplexConfig::Plugins
 end
 ```
 
+### MONEY Plugin Configuration
+
+The `MONEY` plugin supports configurable default currencies through the
+`COMPLEX_CONFIG_MONEY_DEFAULT_CURRENCY` environment variable:
+
+```ruby
+# Default behavior - uses EUR if no environment variable is set
+MONEY = -> id, currency = ENV.fetch('COMPLEX_CONFIG_MONEY_DEFAULT_CURRENCY', 'EUR') do
+  if cents = ask_and_send("#{id}_in_cents")
+    Money.from_cents(cents, currency.upcase)
+  else
+    skip
+  end
+end
+```
+
+**Important Note**: Modern versions of the `money` gem require explicit
+currency specification. The plugin now uses `Money.from_cents(cents, currency)`
+instead of `Money.new(cents)` to ensure proper currency handling.
+
 ## Download 📥
 
 The homepage of this library is located at

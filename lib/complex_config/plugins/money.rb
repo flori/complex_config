@@ -8,8 +8,9 @@ rescue LoadError
 else
   module ComplexConfig::Plugins
     MONEY = -> id do
+      currency = ENV.fetch('COMPLEX_CONFIG_MONEY_DEFAULT_CURRENCY', 'EUR')
       if cents = ask_and_send("#{id}_in_cents")
-        Money.new(cents)
+        Money.from_cents(cents, currency.upcase)
       else
         skip
       end
