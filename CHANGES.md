@@ -1,4 +1,20 @@
-# Changes
+## 2025-12-19 v0.25.0
+
+- Added support for Ruby **4.0**-rc-alpine image in test matrix
+- Enhanced `ComplexConfig::Plugins::MONEY` plugin to support configurable
+  default currency via `COMPLEX_CONFIG_MONEY_DEFAULT_CURRENCY` environment
+  variable
+- Changed money gem usage from `Money.new(cents)` to `Money.from_cents(cents,
+  currency.upcase)` for proper currency handling
+- Updated plugin to default to **EUR** currency when no environment variable is set
+- Added comprehensive test coverage for default **EUR** and custom **BTC**
+  currency scenarios
+- Implemented proper environment variable isolation in tests using `around`
+  blocks
+- Updated `s.rubygems_version` from **3.7.2** to **4.0.2**
+- Updated `gem_hadar` development dependency from version **2.8** to **2.10**
+- Changed `bundle update` to `bundle update --all` in `.all_images.yml` to
+  ensure all gems are updated
 
 ## 2025-11-24 v0.24.0
 
