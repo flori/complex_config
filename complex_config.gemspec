@@ -17,13 +17,13 @@ Gem::Specification.new do |s|
   s.homepage = "https://github.com/flori/complex_config".freeze
   s.licenses = ["Apache-2.0".freeze]
   s.rdoc_options = ["--title".freeze, "ComplexConfig -- configuration library".freeze, "--main".freeze, "README.md".freeze]
-  s.rubygems_version = "3.7.2".freeze
+  s.rubygems_version = "4.0.2".freeze
   s.summary = "configuration library".freeze
   s.test_files = ["spec/complex_config/config_spec.rb".freeze, "spec/complex_config/encryption_spec.rb".freeze, "spec/complex_config/key_source_spec.rb".freeze, "spec/complex_config/plugins_spec.rb".freeze, "spec/complex_config/provider_spec.rb".freeze, "spec/complex_config/settings_spec.rb".freeze, "spec/complex_config/shortcuts_spec.rb".freeze, "spec/spec_helper.rb".freeze]
 
   s.specification_version = 4
 
-  s.add_development_dependency(%q<gem_hadar>.freeze, ["~> 2.8".freeze])
+  s.add_development_dependency(%q<gem_hadar>.freeze, ["~> 2.10".freeze])
   s.add_development_dependency(%q<rake>.freeze, [">= 0".freeze])
   s.add_development_dependency(%q<simplecov>.freeze, [">= 0".freeze])
   s.add_development_dependency(%q<rspec>.freeze, [">= 0".freeze])
