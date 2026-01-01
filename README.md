@@ -6,6 +6,10 @@ This library makes your YAML configuration files available via a nice API. It
 also supports different configurations for each `RAILS_ENV` environment and
 using plugins to return more complex settings values. 🚀
 
+## Documentation
+
+Complete API documentation is available at: [GitHub.io](https://flori.github.io/complex_config/)
+
 ## Architecture Overview 🏗️
 
 ComplexConfig follows a well-defined architectural pattern with clear
