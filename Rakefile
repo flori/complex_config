@@ -21,6 +21,10 @@ GemHadar do
   title       "#{name.camelize} -- configuration library"
   licenses    << 'Apache-2.0'
 
+  changelog do
+    filename 'CHANGES.md'
+  end
+
   clobber 'coverage'
 
   dependency             'json'
