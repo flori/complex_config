@@ -25,6 +25,10 @@ GemHadar do
     filename 'CHANGES.md'
   end
 
+  github_workflows(
+    'static.yml' => {}
+  )
+
   clobber 'coverage'
 
   dependency             'json'
