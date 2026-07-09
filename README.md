@@ -345,14 +345,14 @@ easy access during development and deployment.
 #### Usage Examples 📋
 
 ```bash
+# 🛡️ Safely edit an encrypted configuration file
+complex_config edit config/database.yml.enc
+
 # Encrypt a configuration file
 complex_config encrypt config/database.yml
 
 # Decrypt a configuration file  
 complex_config decrypt config/database.yml.enc
-
-# Edit an encrypted configuration file
-complex_config edit config/database.yml.enc
 
 # Display decrypted content without writing to disk
 complex_config display config/database.yml.enc
@@ -369,12 +369,19 @@ complex_config recrypt -o OLD_KEY -n NEW_KEY config/database.yml.enc
 The script uses symmetric encryption for configuration files. When using
 encrypted configurations:
 
-1. **Key Management**: Store your encryption keys securely (never in version
+
+1. **Avoid Manual Decryption**: Strictly avoid using `complex_config decrypt`
+   to create plain-text copies of secrets on your filesystem. Plain-text secret
+   files are frequently committed to version control by accident (e.g., via
+   `git add .`), leading to catastrophic security breaches. Always use
+   `complex_config edit`, which uses a tempfile and avoids the creation of a
+   unencrypted copy in the repository.
+2. **Key Management**: Store your encryption keys securely (never in version
    control)
-2. **File Permissions**: Ensure encrypted `.enc` files have appropriate
+3. **File Permissions**: Ensure encrypted `.enc` files have appropriate
    permissions
-3. **Backup Strategy**: The `recrypt` command automatically creates backup
-   files
+4. **Backup Strategy**: The `recrypt` command automatically creates backup
+   files, you can delete them afterwards if everything worked.
 
 #### Integration with ComplexConfig 🔗
 

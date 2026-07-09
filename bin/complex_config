@@ -87,7 +87,7 @@ when 'edit'
   fn = fetch_filename
   catch :did_not_change do
     File.secure_write(fn + '.enc') do |f|
-      Tempfile.open('complex_config') do |t|
+      Tempfile.create(%w[ complex_config .yml ]) do |t|
         config = ComplexConfig::Provider.decrypt_config(fn)
         t.write config
         t.flush
