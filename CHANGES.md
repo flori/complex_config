@@ -1,3 +1,55 @@
+# Changes
+
+## 2026-07-10 v0.26.0
+
+### New Features
+
+- Added raw data decryption and CLI piping support via
+  `ComplexConfig::Provider#decrypt_data`.
+- Enhanced the `complex_config` CLI:
+    - Added `-k` flag to specify an explicit key file path.
+    - Added `-I` flag to enable streaming decryption from stdin directly to
+      stdout.
+- Introduced a GitHub Actions workflow (`static.yml`) for automated
+  documentation deployment to GitHub Pages using Ruby **3.4**.
+
+### Improvements & Changes
+
+- Renamed `ComplexConfig::Settings#attributes_update_if_nil` to
+  `ComplexConfig::Settings#attributes_update_if_undefined` to better reflect
+  that it preserves existing keys, including explicit `nil` overrides. A
+  deprecation layer was added to the old method.
+- Hardened the encryption CLI by replacing `Tempfile.open` with
+  `Tempfile.create` and adding a `.yml` suffix to temporary files for improved
+  editor syntax highlighting.
+- Updated dependencies:
+    - `gem_hadar` updated from **~> 2.10** to **>= 2.17.1**.
+    - `s.rubygems_version` updated from **4.0.2** to **4.0.10**.
+- Updated the Alpine build image to use stable Ruby **4.0** instead of
+  **4.0-rc**.
+- Added changelog configuration to the `Rakefile` using `GemHadar`.
+
+### Documentation
+
+- Expanded `README.md` with:
+  - A guide on securely comparing encrypted secrets using process
+    substitution and the `-I` flag.
+  - Examples for automation and piping using input redirection (`<`).
+  - Critical security warnings regarding plain-text secrets in version
+    control.
+  - Updated instructions for the `edit` command and `recrypt` backup
+    strategies.
+  - A link to the API documentation.
+- Added an `@example` block to `ComplexConfig::Provider#decrypt_config`
+  documenting the automatic appending of the `.enc` extension.
+
+### Tests
+
+- Added test cases in `spec/complex_config/provider_spec.rb` for
+  `ComplexConfig::Provider#decrypt_config`.
+- Expanded `spec/complex_config/settings_spec.rb` to cover `attributes_update`,
+  `attributes_update_if_undefined`, and the associated deprecation warning.
+
 ## 2025-12-19 v0.25.0
 
 - Added support for Ruby **4.0**-rc-alpine image in test matrix
