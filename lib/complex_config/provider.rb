@@ -187,6 +187,12 @@ class ComplexConfig::Provider
   # The decrypt_config method retrieves decrypted configuration data from an
   # encrypted file
   #
+  # @example Decrypting a configuration file
+  #   provider = ComplexConfig::Provider
+  #   # Note: The method automatically appends '.enc' to the provided path
+  #   decrypted_yaml = provider.decrypt_config('config/database.yml')
+  #   puts decrypted_yaml if decrypted_yaml
+  #
   # @param pathname [String, Pathname] the path to the encrypted configuration
   #   file
   #
