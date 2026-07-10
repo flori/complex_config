@@ -364,6 +364,21 @@ complex_config new_key
 complex_config recrypt -o OLD_KEY -n NEW_KEY config/database.yml.enc
 ```
 
+#### Automation & Piping 🚀
+
+The `complex_config` tool can be used as a filter in shell pipelines by reading
+encrypted data from standard input via the `-I` flag. This is ideal for CI/CD
+pipelines or secret managers where keys are provided via environment variables
+or explicit paths.
+
+```bash
+# Decrypt a file using redirection
+< config/database.yml.enc complex_config decrypt -I
+
+# Decrypt using an explicit key file instead of environment variables
+< config/database.yml.enc complex_config decrypt -I -k config/database.yml.key
+```
+
 #### Security Considerations ⚠️
 
 The script uses symmetric encryption for configuration files. When using

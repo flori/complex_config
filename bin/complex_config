@@ -17,7 +17,7 @@ require 'tempfile'
 require 'fileutils'
 include FileUtils
 
-$opts = go 'o:n:IOh'
+$opts = go 'o:n:k:IOh'
 
 # The usage method displays help information and exits the program
 #
@@ -44,7 +44,9 @@ def usage(msg: 'Displaying help', rc: 0)
     Options are
 
       -c CONFIG_DIR  set CONFIG_DIR (default: "./config")
-      -I             read input from stdin instead of file (encrypt)
+      -k KEY_PATH    the path to the keyfile used if any (decrypt -I)
+      -I             read input from stdin instead of file (encrypt/decrypt)
+                     for decrypt this option implies -O
       -O             write output to stdout instead of file (decrypt)
       -h             this help
 
@@ -104,10 +106,13 @@ when 'edit'
     end
   end
 when 'decrypt'
-  fn = fetch_filename
-  if $opts[?O]
+  if $opts[?I]
+    $stdout.puts ComplexConfig::Provider.decrypt_data($stdin.read, $opts[?k])
+  elsif $opts[?O]
+    fn = fetch_filename
     $stdout.puts ComplexConfig::Provider.decrypt_config(fn)
   else
+    fn = fetch_filename
     File.exist?(fn) and usage msg: "decrypted config #{fn.inspect} already exists", rc: 1
     File.secure_write(fn) do |f|
       f.write ComplexConfig::Provider.decrypt_config(fn)

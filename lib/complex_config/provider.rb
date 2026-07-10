@@ -205,6 +205,23 @@ class ComplexConfig::Provider
     decrypt_config_case(pathname).first
   end
 
+  # The decrypt_data method decrypts raw ciphertext using the provider's key
+  # source
+  #
+  # This method bypasses filesystem lookups for the encrypted data itself,
+  # allowing decryption of raw bytes. It uses the provided pathname to resolve
+  # the encryption key; if no pathname is provided, it relies on environment
+  # variables or the master key.
+  #
+  # @param ciphertext [String] the encrypted data to decrypt
+  # @param pathname [String, nil] an optional path used to locate a key file (e.g., .key)
+  # @return [String, nil] the decrypted plain text, or nil if no valid key was found
+  def decrypt_data(ciphertext, pathname = nil)
+    ks = key_source(pathname)
+    return nil unless ks && ks.key
+    ComplexConfig::Encryption.new(ks.key_bytes).decrypt(ciphertext)
+  end
+
   # The encrypt_config method encrypts configuration data using a key source
   #
   # @param pathname [String, Pathname] the path to the configuration file to be
