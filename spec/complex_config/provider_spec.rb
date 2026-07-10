@@ -165,6 +165,18 @@ describe ComplexConfig::Provider do
       ENV['RAILS_MASTER_KEY'] = nil
     end
 
+    it 'can decrypt from pathname returning content' do
+      described_class.key = key
+      expect(described_class.key).to eq key.chomp
+      decrypted = described_class.decrypt_config(asset('without-key-file.yml'))
+      expect(decrypted).to eq <<~EOT
+        ---
+        :development:
+          :foo:
+            :bar: baz
+      EOT
+    end
+
     it 'can read when key is stored in file' do
       expect(described_class['with-key-file'].development.foo.bar).to eq 'baz'
     end
