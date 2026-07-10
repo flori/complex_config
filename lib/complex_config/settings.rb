@@ -20,7 +20,6 @@ class ComplexConfig::Settings < BasicObject
   include ::Tins::AskAndSend
 
   class << self
-
     # The [] method converts a hash-like object into a Settings object
     #
     # This method serves as a convenience accessor that delegates to the
@@ -202,8 +201,6 @@ class ComplexConfig::Settings < BasicObject
   #
   # @param other [Object] the source containing attributes to merge, which can
   #   be any object that responds to to_hash or to_ary
-  #
-  # @return [void] Returns nothing
   def attributes_update(other)
     unless other.is_a? self.class
       other = self.class.from_hash(other)
@@ -211,25 +208,41 @@ class ComplexConfig::Settings < BasicObject
     @table.update(other.table)
   end
 
-  # The attributes_update_if_nil method merges configuration attributes from
-  # another source, updating only nil values
+  # The attributes_update_if_undefined method merges configuration attributes from
+  # another source, updating only those that are completely missing (undefined)
+  # in this settings object.
   #
-  # This method updates the current object's internal table with attributes
-  # from another source, but only assigns new values when the existing keys
-  # have nil values. It preserves existing non-nil attribute values while
-  # allowing nil values to be overridden.
+  # This is specifically used for shared settings patterns where environment-specific
+  # configurations must be respected. Because it only updates missing keys, any
+  # attribute explicitly set—including an explicit `nil` value intended to disable
+  # a feature or clear a default—will be preserved and not overwritten by the
+  # provided shared configuration source.
   #
   # @param other [Object] the source containing attributes to merge, which can
   #   be any object that responds to to_hash or to_ary
-  #
-  # @return [void] Returns nothing
-  def attributes_update_if_nil(other)
+  def attributes_update_if_undefined(other)
     unless other.is_a? self.class
       other = self.class.from_hash(other)
     end
     @table.update(other.table) do |key, oldval, newval|
       @table.key?(key) ? oldval : newval
     end
+  end
+
+  # The attributes_update_if_nil does the same attributes_update_if_undefined
+  # does.
+  #
+  # @deprecated Use #attributes_update_if_undefined instead. This method is kept
+  #   for backward compatibility but now delegates to #attributes_update_if_undefined
+  #   to ensure explicit `nil` overrides are respected.
+  #
+  # @param other [Object] the source containing attributes to merge, which can
+  #   be any object that responds to to_hash or to_ary
+  def attributes_update_if_nil(other)
+    warn '[DEPRECATION] `%{method}` is deprecated. Please use `%{new_method}` instead.' % {
+      method: __method__, new_method: :attributes_update_if_undefined
+    }
+    attributes_update_if_undefined(other)
   end
 
   # The replace_attributes method replaces all attributes with those from the
@@ -447,7 +460,6 @@ class ComplexConfig::Settings < BasicObject
   # string representation for display purposes
   #
   # @param q [PrettyPrint] the pretty printer object to use for formatting
-  # @return [void] Returns nothing
   def pretty_print(q)
     q.text inspect
   end
@@ -599,9 +611,6 @@ class ComplexConfig::Settings < BasicObject
   end
 
   # The skip method raises a skip exception to bypass plugin execution
-  #
-  # @return [void] This method always raises a :skip exception and never
-  #   returns normally
   def skip
     throw :skip
   end

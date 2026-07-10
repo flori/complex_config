@@ -209,4 +209,53 @@ EOT
     expect(settings.foo.replaced).to eq true
     expect(settings.foo).to eq result
   end
+
+  it 'can update attributes from a hash' do
+    settings.foo.attributes_update(updated: 'yes', baz: 'new')
+    expect(settings.foo.updated).to eq 'yes'
+    expect(settings.foo.baz).to eq 'new'
+  end
+
+  it 'can update attributes from another Settings object' do
+    other = described_class[val: 'new']
+    settings.foo.attributes_update(other)
+    expect(settings.foo.val).to eq 'new'
+  end
+
+  it 'can update attributes only if they are missing (attributes_update_if_undefined)' do
+    # Current settings.foo has { bar: { baz: true }, nix: nil, qux: 'quux' }
+    updates = {
+      nix:     'filled',
+      qux:     'should_stay_quux',
+      new_key: 'added'
+    }
+
+    settings.foo.attributes_update_if_undefined(updates)
+
+    expect(settings.foo.nix).to be_nil
+    expect(settings.foo.qux).to eq 'quux'               # Key exists and is not nil, should NOT be updated
+    expect(settings.foo.new_key).to eq 'added'          # Key missing, should be added
+  end
+
+  it 'does not overwrite existing values with attributes_update_if_undefined' do
+    s = described_class.new(existing: 'keep')
+    updates = { existing: 'change', other: 'add' }
+
+    s.attributes_update_if_undefined(updates)
+
+    expect(s.existing).to eq 'keep'
+    expect(s.other).to eq 'add'
+  end
+
+  it 'calls attributes_update_if_undefined and warns when using deprecated attributes_update_if_nil' do
+    s = described_class.new(existing: 'keep')
+    updates = { existing: 'change', other: 'add' }
+
+    expect {
+      s.attributes_update_if_nil(updates)
+    }.to output(/DEPRECATION.*attributes_update_if_undefined/).to_stderr
+
+    expect(s.existing).to eq 'keep'
+    expect(s.other).to eq 'add'
+  end
 end
