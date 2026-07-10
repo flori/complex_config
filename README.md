@@ -273,8 +273,8 @@ plain text.
 
 ```ruby
 # Write encrypted configuration
-ComplexConfig::Provider.write_config('database', 
-  value: { password: 'secret_password' }, 
+ComplexConfig::Provider.write_config('database',
+  value: { password: 'secret_password' },
   encrypt: :random
 )
 # => Returns the random 128-bit master key as hexadecimal string.
@@ -338,7 +338,7 @@ easy access during development and deployment.
 - **Secure File Operations**: Encrypts/decrypts configuration files with
   automatic backup handling
 - **Edit Support**: Opens encrypted files in your preferred editor (`EDITOR`
-  environment variable or `vi` by default) 
+  environment variable or `vi` by default)
 - **Key Management**: Generates new encryption keys and supports key rotation
 - **Atomic Writes**: Uses secure file writing to prevent data corruption
 
@@ -351,7 +351,7 @@ complex_config edit config/database.yml.enc
 # Encrypt a configuration file
 complex_config encrypt config/database.yml
 
-# Decrypt a configuration file  
+# Decrypt a configuration file
 complex_config decrypt config/database.yml.enc
 
 # Display decrypted content without writing to disk
@@ -377,6 +377,18 @@ or explicit paths.
 
 # Decrypt using an explicit key file instead of environment variables
 < config/database.yml.enc complex_config decrypt -I -k config/database.yml.key
+```
+
+#### Advanced: Securely Comparing Encrypted Secrets 🧙‍♂️
+
+For the ultimate security workflow, you can combine process substitution with
+the piping feature to compare encrypted files without ever writing plain-text
+secrets to your disk. This is particularly useful for diffing a current secret
+against a previous version in Git history.
+
+```bash
+# Diff secrets in the current branch against those stored in the master branch
+diff --color -u <(git show master:config/secrets.yml.enc | complex_config decrypt -I) <(complex_config decrypt -O config/secrets.yml.enc)
 ```
 
 #### Security Considerations ⚠️
