@@ -610,7 +610,7 @@ class ComplexConfig::Settings < BasicObject
     id =~ /\?\z/ || attribute_set?(id)
   end
 
-  # The skip method raises a skip exception to bypass plugin execution
+  # The skip method throws a :skip symbol to bypass plugin execution
   def skip
     throw :skip
   end

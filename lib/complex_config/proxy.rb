@@ -6,9 +6,6 @@ module ComplexConfig
   # the actual configuration loading until a method is first called. It
   # supports environment-specific configuration lookups and can handle both
   # direct configuration access and existence checks.
-  #
-  # @attr_reader [String, nil] env The environment name used for configuration
-  # lookups
   class Proxy < BasicObject
     # The proxy object's initialization method sets up the environment for
     # configuration access.
@@ -17,6 +14,20 @@ module ComplexConfig
     #   lookups, defaults to nil which will use the default environment
     def initialize(env = nil)
       @env = env
+    end
+
+    # The complex_config_env method retrieves the configured environment name
+    # for the proxy
+    #
+    # This method returns the environment name that was set during the
+    # initialization of the proxy object. It is used internally to determine
+    # the specific configuration environment to access when resolving dynamic
+    # method calls.
+    #
+    # @return [String, nil] the environment name configured for this proxy
+    #   instance, or nil if no specific environment was set
+    def complex_config_env
+      @env
     end
 
     # The to_s method returns a string representation of the proxy object.

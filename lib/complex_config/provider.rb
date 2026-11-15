@@ -329,7 +329,7 @@ class ComplexConfig::Provider
   # @param store_key [Boolean] Whether to store the encryption key in a
   #   separate file
   #
-  # @return [String, Boolean] The encryption key if stored, otherwise true
+  # @return [String, Boolean] The encryption key when encrypting, otherwise true
   # @see prepare_output for data formatting
   # @see provide_key_source for key management
   # @see flush_cache to clear the configuration cache after writing
