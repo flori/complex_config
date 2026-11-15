@@ -1,5 +1,41 @@
 # Changes
 
+## 2026-11-15 v0.27.0
+
+### Fixes
+
+- Corrected the misspelled `guidelins` key to `guidelines` in
+  `.contexts/code_comment.rb`.
+- Fixed YARD documentation inaccuracies in `Proxy`, `Settings`, and `Provider`:
+  - Replaced the phantom `@attr_reader` in `Proxy` with a proper YARD block for
+    the `#complex_config_env` method.
+  - Corrected the description of `Settings#skip` to state that it throws a
+    `:skip` symbol rather than raising an exception.
+  - Clarified the `@return` tag for `Provider#write_config` to indicate that
+    the key is returned whenever encrypting, not only when `store_key` is true.
+
+### Improvements
+
+- Rewrote the YARD cheatsheet in `.contexts/yard.md` as a documentation
+  generation guide:
+  - Replaced template-based references with an instructional guide for
+    generating YARD comments.
+  - Added a comprehensive example demonstrating documentation for classes,
+    methods, and attributes.
+  - Introduced rules specifying that only documentation comments should be
+    generated, omitting executable code.
+  - Defined constraints to exclude `@return` tags for void returns.
+
+### Build & CI
+
+- Updated `s.rubygems_version` to **4.0.24** in `complex_config.gemspec`.
+- Bumped the `gem_hadar` development dependency constraint to **>= 2.21.0**.
+
+### Documentation
+
+- Added detailed header comments to `lib/complex_config/version.rb` explaining
+  its auto-generated nature and regeneration via `rake version`.
+
 ## 2026-07-10 v0.26.0
 
 ### New Features
