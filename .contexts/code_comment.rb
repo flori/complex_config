@@ -21,7 +21,7 @@ context do
 
   file '.contexts/yard.md', tags: [ 'yard', 'cheatsheet' ]
 
-  meta guidelins: <<~EOT
+  meta guidelines: <<~EOT
     # Guidelines for creating YARD documentation
 
     - Look into the file, with tags yard and cheatsheet for how comment ruby
