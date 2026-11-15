@@ -5,7 +5,7 @@
 # by hand; it is rewritten on every `rake version` invocation.
 module ComplexConfig
   # The current version of the ComplexConfig gem as a String.
-  VERSION         = '0.26.0'
+  VERSION         = '0.27.0'
   VERSION_ARRAY   = VERSION.split('.').map(&:to_i) # :nodoc:
   VERSION_MAJOR   = VERSION_ARRAY[0] # :nodoc:
   VERSION_MINOR   = VERSION_ARRAY[1] # :nodoc:
