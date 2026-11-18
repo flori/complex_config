@@ -1,5 +1,3 @@
-# vim: set filetype=ruby et sw=2 ts=2:
-
 require 'gem_hadar'
 
 GemHadar do
@@ -41,7 +39,7 @@ GemHadar do
   development_dependency 'monetize'
   development_dependency 'debug'
   development_dependency 'all_images',    '~> 0.8'
-  development_dependency 'context_spook', '~> 0.4'
+  development_dependency 'context_spook', '~> 1.8'
 end
 
 task :default => :spec
