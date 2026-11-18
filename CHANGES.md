@@ -1,5 +1,13 @@
 # Changes
 
+## 2026-11-18 v0.28.0
+
+### Build & CI
+
+- Removed vim modeline comments from `Gemfile` and `Rakefile`.
+- Updated development dependency `context_spook` from **0.4** to **1.8**.
+- Updated development dependency `gem_hadar` from **2.21.0** to **2.24.1**.
+
 ## 2026-11-15 v0.27.0
 
 ### Fixes
